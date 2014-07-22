@@ -16,6 +16,7 @@
 @property (nonatomic) NSMutableDictionary *preferences;
 @property (nonatomic) BOOL shouldDeleteFolders;
 @property (nonatomic) BOOL shouldBadgeDockIcon;
+@property (nonatomic) BOOL shouldNotify;
 
 @end
 
@@ -33,14 +34,17 @@
 - (void)windowWillLoad {
     BOOL badgeState = (BOOL)[[self preferences] valueForKey:@"CZBadgeApp"];
     BOOL deleteState = (BOOL)[[self preferences] valueForKey:@"CZDeleteFolderAfterCompress"];
+    BOOL notifyState = (BOOL)[[self preferences] valueForKey:@"CZNotify"];
     [self setShouldBadgeDockIcon:badgeState];
     [self setShouldDeleteFolders:deleteState];
+    [self setShouldNotify:notifyState];
 }
 
 - (void)windowDidLoad {
     [super windowDidLoad];    
     [[self checkBoxCompressedCount] setState:[self shouldBadgeDockIcon]];
     [[self checkBoxDeleteFolders] setState:[self shouldDeleteFolders]];
+    [[self checkBoxNotify] setState:[self shouldNotify]];
 }
 
 - (void)windowWillClose:(NSNotification *)notification {

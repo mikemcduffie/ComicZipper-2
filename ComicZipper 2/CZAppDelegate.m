@@ -50,7 +50,7 @@
 @property (nonatomic) int numberOfItemsCompressed, numberOfItemsToCompress, badgeCount, applicationState;
 @property (nonatomic) NSString *cacheDirectory;
 @property (nonatomic, getter = applicationIsResigned) BOOL applicationResigned;
-@property (nonatomic, readonly) BOOL shouldDisplayBadgeCount, shouldDeleteFoldersAfterCompress;
+@property (nonatomic, readonly) BOOL shouldDisplayBadgeCount, shouldDeleteFoldersAfterCompress, shouldNotify;
 
 @property (nonatomic) FinderApplication *finder;
 @property (nonatomic) SBElementArray *selection;
@@ -71,7 +71,6 @@
 - (NSLayoutConstraint *)constraintWithItem:(id)firstItem toItem:(id)secondItem withAttribute:(NSLayoutAttribute)attribute andConstant:(float)constant;
 - (void)showProgressIndicator:(BOOL)state;
 - (void)updateTopLabel:(NSString *)label andShowProgressIndicator:(BOOL)progress;
-
 
 - (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row;
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView;
@@ -125,6 +124,7 @@
 - (void)setPreferences:(NSDictionary *)preferences {
     _shouldDisplayBadgeCount = [[preferences valueForKey:@"CZBadgeApp"] boolValue];
     _shouldDeleteFoldersAfterCompress = [[preferences valueForKey:@"CZDeleteFolderAfterCompress"] boolValue];
+    _shouldNotify = [[preferences valueForKey:@"CZNotify"] boolValue];
 }
 
 #pragma mark APPLICATION DELEGATE METHODS
@@ -378,7 +378,6 @@
     } else if (applicationState == CZ_APP_STATE_FILEDROP) {
         // Run when folders been dropped (after first time).
         [[self tableView] reloadData];
-        // RELOAD DATA DOES NOT REALLY WORK WITH REUSE CELL...?
     }
 }
 
@@ -674,7 +673,7 @@
         self.totalSizeInBytes = 0.0;
         
         // Notify user if app is in background
-        if ([self applicationIsResigned]) {
+        if ([self applicationIsResigned] && [self shouldNotify]) {
             [self displayNotification:@"Compression done!"];
         }
     }

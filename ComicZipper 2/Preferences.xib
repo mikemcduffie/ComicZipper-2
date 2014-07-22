@@ -8,6 +8,7 @@
             <connections>
                 <outlet property="checkBoxCompressedCount" destination="j4P-v9-ufx" id="XVM-yz-MY8"/>
                 <outlet property="checkBoxDeleteFolders" destination="fgE-tn-33U" id="ynH-CJ-Clq"/>
+                <outlet property="checkBoxNotify" destination="fDl-ie-OAQ" id="Ra2-sF-tBV"/>
                 <outlet property="popUpFormat" destination="ujk-ZJ-JVa" id="xiv-dq-Odl"/>
                 <outlet property="window" destination="3t5-1p-QtY" id="Av4-dg-DQd"/>
             </connections>
@@ -51,7 +52,7 @@
                                         <action selector="checkBoxClicked:" target="-2" id="x1s-o1-nd8"/>
                                     </connections>
                                 </button>
-                                <button identifier="CZNotifications" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fDl-ie-OAQ">
+                                <button identifier="CZNotify" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fDl-ie-OAQ">
                                     <rect key="frame" x="15" y="53" width="221" height="18"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <buttonCell key="cell" type="check" title="Notify when complete" bezelStyle="regularSquare" imagePosition="left" inset="2" id="ecl-Ga-Kog">
