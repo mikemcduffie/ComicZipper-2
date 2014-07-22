@@ -16,5 +16,6 @@
 @property (weak) IBOutlet NSPopUpButton *popUpFormat;
 
 - (IBAction)checkBoxClicked:(id)sender;
+- (IBAction)popUpClicked:(id)sender;
 
 @end

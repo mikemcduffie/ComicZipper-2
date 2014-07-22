@@ -18,7 +18,7 @@
         <window title="Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" releasedWhenClosed="NO" showsToolbarButton="NO" animationBehavior="default" id="3t5-1p-QtY">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <rect key="contentRect" x="514" y="320" width="289" height="240"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1058"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="878"/>
             <view key="contentView" id="Djw-NA-YW9">
                 <rect key="frame" x="0.0" y="0.0" width="289" height="240"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -74,20 +74,23 @@
                                         <action selector="checkBoxClicked:" target="-2" id="70S-S0-kQ4"/>
                                     </connections>
                                 </button>
-                                <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ujk-ZJ-JVa">
+                                <popUpButton verticalHuggingPriority="750" fixedFrame="YES" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ujk-ZJ-JVa">
                                     <rect key="frame" x="15" y="10" width="222" height="26"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <popUpButtonCell key="cell" type="push" title="Choose naming format" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="bPV-SD-FJA" id="j6i-ZL-HOO">
+                                    <popUpButtonCell key="cell" type="push" title="Choose naming format" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" identifier="CZFormat" tag="99" imageScaling="proportionallyDown" inset="2" autoenablesItems="NO" selectedItem="bPV-SD-FJA" id="j6i-ZL-HOO">
                                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                                        <font key="font" metaFont="menu"/>
-                                        <menu key="menu" title="OtherViews" id="8m0-2w-BrP">
+                                        <font key="font" size="13" name="LucidaGrande"/>
+                                        <menu key="menu" title="OtherViews" autoenablesItems="NO" id="8m0-2w-BrP">
                                             <items>
-                                                <menuItem title="Choose naming format" state="on" id="bPV-SD-FJA"/>
-                                                <menuItem title="Item 2" id="bBl-fV-Jxc"/>
-                                                <menuItem title="Item 3" id="HKe-CB-9SD"/>
+                                                <menuItem title="Choose naming format" state="on" tag="99" enabled="NO" id="bPV-SD-FJA"/>
+                                                <menuItem title="With number sign (#740)" tag="1" id="uka-8q-nN7"/>
+                                                <menuItem title="Without number sign (740)" id="2Qa-lV-Ppx"/>
                                             </items>
                                         </menu>
                                     </popUpButtonCell>
+                                    <connections>
+                                        <action selector="popUpClicked:" target="-2" id="s5Q-x7-1d2"/>
+                                    </connections>
                                 </popUpButton>
                             </subviews>
                         </view>
