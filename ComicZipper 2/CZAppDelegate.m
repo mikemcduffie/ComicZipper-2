@@ -691,7 +691,6 @@
 // Invoked if archiver is set to delete folders
 // after the compression process and has done so.
 - (void)archiverDidRemoveDirectory:item {
-    //    [[self archiveItems] removeObject:item];
 }
 
 #pragma mark MISC METHODS
