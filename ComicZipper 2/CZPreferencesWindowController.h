@@ -13,9 +13,7 @@
 @property (weak) IBOutlet NSButton *checkBoxDeleteFolders;
 @property (weak) IBOutlet NSButton *checkBoxCompressedCount;
 @property (weak) IBOutlet NSButton *checkBoxNotify;
-@property (weak) IBOutlet NSPopUpButton *popUpFormat;
 
 - (IBAction)checkBoxClicked:(id)sender;
-- (IBAction)popUpClicked:(id)sender;
 
 @end

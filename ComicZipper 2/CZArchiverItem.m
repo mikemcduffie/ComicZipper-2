@@ -23,11 +23,10 @@ static NSString *const kCZLaunchPath = @"/bin/bash";
 @property (nonatomic, readonly) NSArray *returnCodes;
 @property (nonatomic, setter = setRunning:) BOOL isRunning;
 
-@property (nonatomic, copy) NSString *folderName, *folderPath, *parentFolder;
-@property (nonatomic, copy) NSString *archivePath;
+@property (nonatomic, copy) NSString *folderName, *folderPath, *parentFolder, *archivePath;
 @property (nonatomic, copy) NSURL *fileURL;
 @property (nonatomic) double sizeCompressed;
-@property (nonatomic) int deleteCount;
+@property (nonatomic) int deleteCount, formatStyle;
 
 + (NSArray *)readableTypesForPasteboard:(NSPasteboard *)pasteboard;
 + (NSPasteboardReadingOptions)readingOptionsForType:(NSString *)type
@@ -158,7 +157,6 @@ static NSString *const kCZLaunchPath = @"/bin/bash";
 // Sets up the required paths, the new files name and the command
 // that NSTask will run. Runs when instance is initialized.
 - (void)setUpPath:(NSURL *)url {
-
     // Get the name for the new file (foldername)
     // and relevant paths (folderPath + parentFolder).
     self.folderPath = [url path];

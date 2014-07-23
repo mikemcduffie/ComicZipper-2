@@ -34,11 +34,9 @@
     BOOL badgeState = (BOOL)[[self preferences] valueForKey:@"CZBadgeApp"];
     BOOL deleteState = (BOOL)[[self preferences] valueForKey:@"CZDeleteFolderAfterCompress"];
     BOOL notifyState = (BOOL)[[self preferences] valueForKey:@"CZNotify"];
-    NSNumber *formatStyle = [[self preferences] valueForKey:@"CZFormat"];
     [self setShouldBadgeDockIcon:badgeState];
     [self setShouldDeleteFolders:deleteState];
     [self setShouldNotify:notifyState];
-    [[self popUpFormat] selectItemAtIndex:[formatStyle integerValue]];
 }
 
 - (void)windowDidLoad {
@@ -66,11 +64,6 @@
     }
 
     [[self preferences] setValue:checkValue forKey:[sender identifier]];
-}
-
-- (IBAction)popUpClicked:(id)sender {
-    NSNumber *value = [NSNumber numberWithLong:[[self popUpFormat] indexOfSelectedItem]];
-    [[self preferences] setValue:value forKey:@"CZFormat"];
 }
 
 @end
