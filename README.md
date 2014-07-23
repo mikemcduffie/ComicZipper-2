@@ -1,4 +1,4 @@
-[![Screenshot](https://raw.github.com/pkrll/ComicZipper-2/blob/master/Screenshot.png "screenshot")]
+[![Screenshot](https://github.com/pkrll/ComicZipper-2/blob/master/Screenshot.png)
 
 ComicZipper-2
 =============
