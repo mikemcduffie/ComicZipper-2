@@ -110,7 +110,7 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Help" systemMenu="help" id="F2S-fz-NVQ">
                         <items>
-                            <menuItem title="ComicZipper Help" image="NSStopProgressTemplate" keyEquivalent="?" id="FKE-Sm-Kum">
+                            <menuItem title="ComicZipper Help" keyEquivalent="?" id="FKE-Sm-Kum">
                                 <attributedString key="attributedTitle"/>
                                 <connections>
                                     <action selector="showHelp:" target="-1" id="y7X-2Q-9no"/>
@@ -124,7 +124,7 @@
         <window title="ComicZipper 2" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" releasedWhenClosed="NO" animationBehavior="default" id="QvC-M9-y7g">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" texturedBackground="YES"/>
             <rect key="contentRect" x="525" y="268" width="402" height="322"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1058"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="878"/>
             <value key="minSize" type="size" width="401" height="322"/>
             <view key="contentView" id="EiT-Mj-1SZ">
                 <rect key="frame" x="0.0" y="0.0" width="402" height="322"/>
@@ -144,7 +144,4 @@
             </view>
         </window>
     </objects>
-    <resources>
-        <image name="NSStopProgressTemplate" width="11" height="11"/>
-    </resources>
 </document>

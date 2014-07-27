@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6A034AC219844E1B007DB70E /* ComicZipper 2 Help in Resources */ = {isa = PBXBuildFile; fileRef = 6A034AC119844E1B007DB70E /* ComicZipper 2 Help */; };
 		6A513BDF197D29C300324684 /* CZScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A513BDE197D29C300324684 /* CZScrollView.m */; };
 		6A833661197911A8001CFC98 /* CZPreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A833660197911A8001CFC98 /* CZPreferencesWindowController.m */; };
 		6A83366519791537001CFC98 /* Preferences.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6A83366419791537001CFC98 /* Preferences.plist */; };
@@ -40,6 +41,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6A034AC119844E1B007DB70E /* ComicZipper 2 Help */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "ComicZipper 2 Help"; sourceTree = "<group>"; };
 		6A513BDD197D29C300324684 /* CZScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZScrollView.h; sourceTree = "<group>"; };
 		6A513BDE197D29C300324684 /* CZScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZScrollView.m; sourceTree = "<group>"; };
 		6A83365F197911A8001CFC98 /* CZPreferencesWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZPreferencesWindowController.h; sourceTree = "<group>"; };
@@ -175,6 +177,7 @@
 		6AF7740D19752E42004D47C2 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				6A034AC119844E1B007DB70E /* ComicZipper 2 Help */,
 				6A83366419791537001CFC98 /* Preferences.plist */,
 				6AF7740E19752E42004D47C2 /* ComicZipper 2-Info.plist */,
 				6AF7740F19752E42004D47C2 /* InfoPlist.strings */,
@@ -290,6 +293,7 @@
 			files = (
 				6A9AD026197CF3DD00301BD0 /* Preferences.xib in Resources */,
 				6A83366519791537001CFC98 /* Preferences.plist in Resources */,
+				6A034AC219844E1B007DB70E /* ComicZipper 2 Help in Resources */,
 				6AF7744219758847004D47C2 /* CZIcon-tiff.tiff in Resources */,
 				6AF7741119752E42004D47C2 /* InfoPlist.strings in Resources */,
 				6AF7741F19752E42004D47C2 /* Images.xcassets in Resources */,
@@ -320,7 +324,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "#!/bin/bash\nversionNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleShortVersionString\" \"$INFOPLIST_FILE\")\nversionNumber=$(($versionNumber + 1))\n\nbuildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"$INFOPLIST_FILE\")\nbuildNumber=$((0x$buildNumber))\nbuildNumber=$(($buildNumber + 1))\nbuildNumber=$(printf \"%04X\" $buildNumber)\n\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"$INFOPLIST_FILE\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleShortVersionString $versionNumber\" \"$INFOPLIST_FILE\"";
+			shellScript = "#!/bin/bash\nbuildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"$INFOPLIST_FILE\")\nbuildNumber=$((0x$buildNumber))\nbuildNumber=$(($buildNumber + 1))\nbuildNumber=$(printf \"%04X\" $buildNumber)\n\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"$INFOPLIST_FILE\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 

@@ -1,0 +1,30 @@
+body {
+    min-width: 350px;
+    font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 18px;
+    -webkit-text-size-adjust: 100%;
+    background-color: #fff;
+    -webkit-overflow-scrolling: touch
+}
+
+#content {
+	margin: 10px;
+}
+
+#title img {
+	float: left;
+	margin: 0 10px 0 0;
+}
+
+#title h2 {
+	font-size: 18pt;
+	margin: 0px 0 5px 0;
+	padding: 5px 0 5px 0;
+}
+
+#title p {
+	font-size: 10pt;
+	margin: 0;
+	color: gray;
+}
