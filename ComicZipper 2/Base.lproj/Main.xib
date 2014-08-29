@@ -7,12 +7,17 @@
         <customObject id="-2" userLabel="File's Owner" customClass="CZAppDelegate">
             <connections>
                 <outlet property="delegate" destination="Voe-Tx-rLC" id="GzC-gU-4Uq"/>
+                <outlet property="drawer" destination="SCH-WI-q6R" id="XZC-Ce-qZe"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application"/>
         <customObject id="Voe-Tx-rLC" customClass="CZAppDelegate">
             <connections>
+                <outlet property="checkBoxCompressedCount" destination="Iig-Lh-a7H" id="KUz-fY-3CZ"/>
+                <outlet property="checkBoxDeleteFolders" destination="8Y4-uy-43G" id="kHa-mW-fsC"/>
+                <outlet property="checkBoxNotify" destination="Oy9-S8-agL" id="f4U-ed-QGP"/>
+                <outlet property="drawer" destination="SCH-WI-q6R" id="w79-dP-EJs"/>
                 <outlet property="superView" destination="EiT-Mj-1SZ" id="pJa-RQ-qPY"/>
                 <outlet property="view" destination="cF3-Lk-3cX" id="cY4-Oi-Kt5"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
@@ -143,5 +148,79 @@
                 </constraints>
             </view>
         </window>
+        <customView id="CrV-G8-TKm" userLabel="Drawer Content View">
+            <rect key="frame" x="0.0" y="0.0" width="270" height="270"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <subviews>
+                <box autoresizesSubviews="NO" fixedFrame="YES" title="General" translatesAutoresizingMaskIntoConstraints="NO" id="8Qt-lk-5V8">
+                    <rect key="frame" x="17" y="137" width="236" height="113"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <view key="contentView">
+                        <rect key="frame" x="2" y="2" width="232" height="96"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button identifier="CZBadgeApp" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Iig-Lh-a7H">
+                                <rect key="frame" x="15" y="37" width="202" height="18"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="check" title="Dock compressed count" bezelStyle="regularSquare" imagePosition="left" inset="2" id="dQJ-7V-ZQB">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="cellTitle"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="checkBoxClicked:" target="Voe-Tx-rLC" id="6bq-1e-tYB"/>
+                                </connections>
+                            </button>
+                            <button identifier="CZNotify" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Oy9-S8-agL">
+                                <rect key="frame" x="15" y="11" width="202" height="18"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="check" title="Notify when complete" bezelStyle="regularSquare" imagePosition="left" inset="2" id="MVF-Sf-Ldy">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="cellTitle"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="checkBoxClicked:" target="Voe-Tx-rLC" id="yeO-t7-LcF"/>
+                                </connections>
+                            </button>
+                            <button identifier="CZDeleteFolderAfterCompress" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8Y4-uy-43G">
+                                <rect key="frame" x="15" y="62" width="202" height="18"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="check" title="Delete folders when complete" bezelStyle="regularSquare" imagePosition="left" inset="2" id="1Uh-I1-rX1">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="cellTitle"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="checkBoxClicked:" target="Voe-Tx-rLC" id="d4O-k8-jvz"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                    </view>
+                    <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
+                    <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                </box>
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="d1K-Ag-R9X">
+                    <rect key="frame" x="178" y="13" width="74" height="32"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="push" title="Close" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="xJO-ks-hxy">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="close:" target="SCH-WI-q6R" id="RX1-Go-xS6"/>
+                    </connections>
+                </button>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="d1K-Ag-R9X" secondAttribute="bottom" constant="20" id="Cgl-Ez-a1p"/>
+                <constraint firstAttribute="trailing" secondItem="d1K-Ag-R9X" secondAttribute="trailing" constant="24" id="yHz-b1-Rmh"/>
+            </constraints>
+        </customView>
+        <drawer trailingOffset="15" id="SCH-WI-q6R">
+            <size key="contentSize" width="100" height="100"/>
+            <size key="maxContentSize" width="10000" height="10000"/>
+            <connections>
+                <outlet property="contentView" destination="CrV-G8-TKm" id="NYi-3p-cxb"/>
+                <outlet property="parentWindow" destination="QvC-M9-y7g" id="mHc-6Q-oBG"/>
+            </connections>
+        </drawer>
     </objects>
 </document>

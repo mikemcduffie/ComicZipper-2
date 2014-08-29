@@ -48,7 +48,7 @@
 
 - (void)windowWillClose:(NSNotification *)notification {
     CZAppDelegate *delegate = [[NSApplication sharedApplication] delegate];
-    [delegate setPreferences:[self.preferences copy]];
+    [delegate loadPreferences:[self.preferences copy]];
     [[self preferences] writeToFile:CZ_PLIST_PATH atomically:YES];
     
 }

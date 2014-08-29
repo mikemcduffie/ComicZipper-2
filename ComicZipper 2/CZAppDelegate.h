@@ -14,8 +14,15 @@
 @property (weak) IBOutlet CZDropView *view;
 @property (weak) IBOutlet NSView *superView;
 
+@property (weak) IBOutlet NSDrawer *drawer;
+@property (weak) IBOutlet NSButton *checkBoxDeleteFolders;
+@property (weak) IBOutlet NSButton *checkBoxCompressedCount;
+@property (weak) IBOutlet NSButton *checkBoxNotify;
+
 - (IBAction)buttonPreferences:(id)sender;
-- (void)setPreferences:(NSDictionary *)preferences;
+- (IBAction)checkBoxClicked:(id)sender;
+
+- (void)loadPreferences:(NSDictionary *)preferences;
 
 
 @end

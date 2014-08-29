@@ -25,6 +25,7 @@
 @property (nonatomic) id delegate;
 @property (nonatomic) long double fileSizeInBytes;
 @property (nonatomic, getter = isArchived) BOOL archived;
+@property (nonatomic, setter = shouldSkipRemoval:) BOOL shouldSkipRemoval;
 
 - (instancetype)initWithSelection:(FinderFolder *)folder;
 - (void)startCompression;

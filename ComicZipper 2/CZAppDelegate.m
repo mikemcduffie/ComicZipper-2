@@ -14,6 +14,7 @@
 //                       √ Bug fixes: The count is now correct. And hopefully the Zero KB bug is solved.
 //
 // TODO: Add help
+// BUG: When changing to delete folder preference, the compressing status never changes.
 
 #import "CZAppDelegate.h"
 #import "CZDropView.h"
@@ -46,6 +47,7 @@
 @property (strong) CZPreferencesWindowController *preferencesWindowController;
 
 @property (nonatomic) NSMutableArray *archiveItems;
+@property (nonatomic) NSMutableDictionary *preferences;
 @property (nonatomic) long double totalSizeInBytes;
 @property (nonatomic) int numberOfItemsCompressed, numberOfItemsToCompress, badgeCount, applicationState;
 @property (nonatomic) NSString *cacheDirectory;
@@ -116,12 +118,12 @@
     [[NSUserNotificationCenter defaultUserNotificationCenter] setDelegate:self];
     self.archiveItems = [[NSMutableArray alloc] init];
     self.finder = [SBApplication applicationWithBundleIdentifier:@"com.apple.Finder"];
-    [self setCacheDirectory:[[NSBundle mainBundle] bundleIdentifier]];
-    NSDictionary *preferences = [NSDictionary dictionaryWithContentsOfFile:CZ_PLIST_PATH];
-    [self setPreferences:preferences];
+    self.cacheDirectory = [[NSBundle mainBundle] bundleIdentifier];
+    self.preferences = [NSMutableDictionary dictionaryWithContentsOfFile:CZ_PLIST_PATH];
+    [self loadPreferences:[self preferences]];
 }
 
-- (void)setPreferences:(NSDictionary *)preferences {
+- (void)loadPreferences:(NSDictionary *)preferences {
     _shouldDisplayBadgeCount = [[preferences valueForKey:@"CZBadgeApp"] boolValue];
     _shouldDeleteFoldersAfterCompress = [[preferences valueForKey:@"CZDeleteFolderAfterCompress"] boolValue];
     _shouldNotify = [[preferences valueForKey:@"CZNotify"] boolValue];
@@ -208,8 +210,32 @@
 }
 
 - (IBAction)buttonPreferences:(id)sender {
-    self.preferencesWindowController = [[CZPreferencesWindowController alloc] initWithWindowNibName:@"Preferences"];
-    [[[self preferencesWindowController] window] makeKeyAndOrderFront:self];
+//    self.preferencesWindowController = [[CZPreferencesWindowController alloc] initWithWindowNibName:@"Preferences"];
+//    [[[self preferencesWindowController] window] makeKeyAndOrderFront:self];
+    
+    if ([[self drawer] state] == NSDrawerClosedState ||
+        [[self drawer] state] == NSDrawerClosingState) {
+        NSSize drawerSize = {270,300};
+        [[self drawer] setMaxContentSize:drawerSize];
+        [[self drawer] setContentSize:drawerSize];
+        [[self drawer] open];
+        [[self checkBoxDeleteFolders] setState:_shouldDeleteFoldersAfterCompress];
+        [[self checkBoxCompressedCount] setState:_shouldDisplayBadgeCount];
+        [[self checkBoxNotify] setState:_shouldNotify];
+    } else {
+        [[self drawer] close];
+    }
+}
+
+- (IBAction)checkBoxClicked:(id)sender {
+    NSNumber *checkValue = [NSNumber numberWithBool:YES];
+    if ([sender state] != NSOnState) {
+        checkValue = @NO;
+    }
+    
+    [[self preferences] setValue:checkValue forKey:[sender identifier]];
+    [self loadPreferences:[self.preferences copy]];
+    [[self preferences] writeToFile:CZ_PLIST_PATH atomically:YES];
 }
 
 #pragma mark USER INTERFACE METHODS
@@ -663,6 +689,8 @@
         // after compression?
         if ([self shouldDeleteFoldersAfterCompress]) {
             [self deleteFolders];
+        } else {
+            [self skipDeletion];
         }
         // Remove progress indicator and reenable
         // drag function again.
@@ -674,7 +702,7 @@
         
         // Notify user if app is in background
         if ([self applicationIsResigned] && [self shouldNotify]) {
-            [self displayNotification:@"Compression done!"];
+            [self displayNotification:@"Compression process completed!"];
         }
     }
 }
@@ -693,66 +721,26 @@
 - (void)archiverDidRemoveDirectory:item {
 }
 
-#pragma mark MISC METHODS
-// Convert the file size from bytes to proper format.
-- (NSString *)stringFromByte:(double)fileSize {
-    NSString *size = [NSByteCountFormatter stringFromByteCount:fileSize
-                                                    countStyle:NSByteCountFormatterCountStyleFile];
-    return size;
-}
-
-// Invoked for compressed items in the list, fetching
-// the cover image from the archive to be displayed.
-- (NSImage *)updateImageForItem:(CZArchiverItem *)archiver atRow:(NSInteger)row isCached:(BOOL)cached {
-    // Fetch the contents of the folder
-    // and search for the first image (which
-    // usually is the cover image).
-    NSData *data;
-    NSString *cachePath = [NSString stringWithFormat:@"%@/%@", [self cacheDirectory], [archiver description]];
-    if (!cached) {
-        NSArray *contentsArray = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[archiver path] error:nil];
-        NSUInteger index = [contentsArray indexOfObjectPassingTest:
-                            ^(id obj, NSUInteger idx, BOOL *stop) {
-                                BOOL found = ([obj hasSuffix:@"jpg"] || [obj hasSuffix:@"jpeg"] || [obj hasSuffix:@"gif"] || [obj hasSuffix:@"png"]);
-                                return found;
-                            }];
-        // Create an NSURL object from the path
-        // and create the image to be sent back.
-        NSString *path = [NSString stringWithFormat:@"%@/%@", [archiver path], [contentsArray objectAtIndex:index]];
-        data = [NSData dataWithContentsOfFile:path];
-        [data writeToFile:cachePath options:NSDataWritingAtomic error:nil];
-    } else {
-        data = [NSData dataWithContentsOfFile:cachePath];
-    }
-
-    return [[NSImage alloc] initWithData:data];
-}
-
-// Controls the badge label
-- (void)controlApplicationBadge:(int)state {
-    NSString *badgeLabel = nil;
-    if (state == CZ_APP_STATE_BADGE_INCREMENT) {
-        // Increment the badge count
-        self.badgeCount++;
-        // If the application is not in front
-        // badge the dock icon.
-        if ([self applicationIsResigned]) {
-            badgeLabel = [NSString stringWithFormat:@"%i", [self badgeCount]];
-        }
-        // Reset the badge count
-    } else if ([self badgeCount]) {
-        self.badgeCount = 0;
-    }
-    // Update the badge
-    [self setApplicationBadgeLabel:badgeLabel];
-}
+#pragma mark FOLDER DELETION METHODS
 
 // Invoked if the delete folders after
 // compression option is set.
 - (void)deleteFolders {
     for (int i=0; i<[[self archiveItems] count]; i++) {
-        if ([[[self archiveItems] objectAtIndex:i] isArchived]) {
+        if ([[[self archiveItems] objectAtIndex:i] isArchived] &&
+            ![[[self archiveItems] objectAtIndex:i] shouldSkipRemoval]) {
             [[[self archiveItems] objectAtIndex:i] removeDirectory];
+        }
+    }
+}
+// Invoked if the deleted folders after compression option is not set.
+// This guarantees that folders of already compressed items do not get
+// deleted when a new batch of folders are loaded, and the to delete-option
+// then is changed.
+- (void)skipDeletion {
+    for (id item in [self archiveItems]) {
+        if (![item shouldSkipRemoval]) {
+            [item shouldSkipRemoval:YES];
         }
     }
 }
@@ -822,6 +810,60 @@
     }
     
     return [folders copy];
+}
+
+#pragma mark MISC METHODS
+// Convert the file size from bytes to proper format.
+- (NSString *)stringFromByte:(double)fileSize {
+    NSString *size = [NSByteCountFormatter stringFromByteCount:fileSize
+                                                    countStyle:NSByteCountFormatterCountStyleFile];
+    return size;
+}
+
+// Invoked for compressed items in the list, fetching
+// the cover image from the archive to be displayed.
+- (NSImage *)updateImageForItem:(CZArchiverItem *)archiver atRow:(NSInteger)row isCached:(BOOL)cached {
+    // Fetch the contents of the folder
+    // and search for the first image (which
+    // usually is the cover image).
+    NSData *data;
+    NSString *cachePath = [NSString stringWithFormat:@"%@/%@", [self cacheDirectory], [archiver description]];
+    if (!cached) {
+        NSArray *contentsArray = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[archiver path] error:nil];
+        NSUInteger index = [contentsArray indexOfObjectPassingTest:
+                            ^(id obj, NSUInteger idx, BOOL *stop) {
+                                BOOL found = ([obj hasSuffix:@"jpg"] || [obj hasSuffix:@"jpeg"] || [obj hasSuffix:@"gif"] || [obj hasSuffix:@"png"]);
+                                return found;
+                            }];
+        // Create an NSURL object from the path
+        // and create the image to be sent back.
+        NSString *path = [NSString stringWithFormat:@"%@/%@", [archiver path], [contentsArray objectAtIndex:index]];
+        data = [NSData dataWithContentsOfFile:path];
+        [data writeToFile:cachePath options:NSDataWritingAtomic error:nil];
+    } else {
+        data = [NSData dataWithContentsOfFile:cachePath];
+    }
+    
+    return [[NSImage alloc] initWithData:data];
+}
+
+// Controls the badge label
+- (void)controlApplicationBadge:(int)state {
+    NSString *badgeLabel = nil;
+    if (state == CZ_APP_STATE_BADGE_INCREMENT) {
+        // Increment the badge count
+        self.badgeCount++;
+        // If the application is not in front
+        // badge the dock icon.
+        if ([self applicationIsResigned]) {
+            badgeLabel = [NSString stringWithFormat:@"%i", [self badgeCount]];
+        }
+        // Reset the badge count
+    } else if ([self badgeCount]) {
+        self.badgeCount = 0;
+    }
+    // Update the badge
+    [self setApplicationBadgeLabel:badgeLabel];
 }
 
 // Do some clean up after
