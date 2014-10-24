@@ -28,6 +28,7 @@
 		6AF7743D19752F64004D47C2 /* CZDropView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AF7743C19752F64004D47C2 /* CZDropView.m */; };
 		6AF7744019753CF1004D47C2 /* CZArchiverItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AF7743F19753CF1004D47C2 /* CZArchiverItem.m */; };
 		6AF7744219758847004D47C2 /* CZIcon-tiff.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6AF7744119758847004D47C2 /* CZIcon-tiff.tiff */; };
+		6AF814BE19FADE070029D7E1 /* CZCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AF814BD19FADE070029D7E1 /* CZCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +78,8 @@
 		6AF7743E19753CF1004D47C2 /* CZArchiverItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZArchiverItem.h; sourceTree = "<group>"; };
 		6AF7743F19753CF1004D47C2 /* CZArchiverItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZArchiverItem.m; sourceTree = "<group>"; };
 		6AF7744119758847004D47C2 /* CZIcon-tiff.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "CZIcon-tiff.tiff"; sourceTree = "<group>"; };
+		6AF814BC19FADE070029D7E1 /* CZCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZCell.h; sourceTree = "<group>"; };
+		6AF814BD19FADE070029D7E1 /* CZCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -161,6 +164,8 @@
 				6A513BDE197D29C300324684 /* CZScrollView.m */,
 				6AF1140E197B1E5B000008D4 /* CZTableView.h */,
 				6AF1140F197B1E5B000008D4 /* CZTableView.m */,
+				6AF814BC19FADE070029D7E1 /* CZCell.h */,
+				6AF814BD19FADE070029D7E1 /* CZCell.m */,
 				6AF7743E19753CF1004D47C2 /* CZArchiverItem.h */,
 				6AF7743F19753CF1004D47C2 /* CZArchiverItem.m */,
 				6A83365F197911A8001CFC98 /* CZPreferencesWindowController.h */,
@@ -338,6 +343,7 @@
 				6AF7744019753CF1004D47C2 /* CZArchiverItem.m in Sources */,
 				6AF11410197B1E5B000008D4 /* CZTableView.m in Sources */,
 				6AAFEE3F197C3D7700D48A18 /* CZApplication.m in Sources */,
+				6AF814BE19FADE070029D7E1 /* CZCell.m in Sources */,
 				6AF7741A19752E42004D47C2 /* CZAppDelegate.m in Sources */,
 				6A833661197911A8001CFC98 /* CZPreferencesWindowController.m in Sources */,
 				6AF7743D19752F64004D47C2 /* CZDropView.m in Sources */,

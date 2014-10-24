@@ -22,9 +22,9 @@
 - (id)initWithFrame:(NSRect)frameRect {
     self = [super initWithFrame:frameRect];
     if (self) {
-        _menu = [[NSMenu alloc] initWithTitle:@"Contextual Menu"];
-        [_menu insertItemWithTitle:@"Show in Finder" action:@selector(menuItemOpenFinder) keyEquivalent:@"" atIndex:0];
-        [_menu insertItemWithTitle:@"Remove from list" action:@selector(menuItemRemove) keyEquivalent:@"" atIndex:1];
+        self.menu = [[NSMenu alloc] initWithTitle:@"Contextual Menu"];
+        [[self menu] insertItemWithTitle:@"Show in Finder" action:@selector(menuItemOpenFinder) keyEquivalent:@"" atIndex:0];
+        [[self menu] insertItemWithTitle:@"Remove from list" action:@selector(menuItemRemove) keyEquivalent:@"" atIndex:1];
     }
     
     return self;

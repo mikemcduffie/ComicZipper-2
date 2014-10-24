@@ -23,6 +23,7 @@
 #import "Finder.h"
 #import "CZTableView.h"
 #import "CZScrollView.h"
+#import "CZCell.h"
 
 #pragma mark CONSTANTS
 #define CZ_APP_STATE_START 1
@@ -480,12 +481,12 @@
         double fileSize = [item fileSizeInBytes];
         
         // The cells that will display the name...
-        NSCell *leftCell = [self createCell];
+        CZCell *leftCell = [self createCell];
         [leftCell setStringValue:leftCellText];
         [leftCell setFont:[NSFont fontWithName:@"Lucida Grande Bold" size:13.0]];
-        
+
         // ...and the file size + other information
-        NSCell *detailCell = [self createCell];
+        CZCell *detailCell = [self createCell];
         [detailCell setStringValue:[self stringFromByte:fileSize]];
         [detailCell setFont:[NSFont fontWithName:@"Lucida Grande" size:9.5]];
         
@@ -555,8 +556,8 @@
 
 // Returns a simple cell for
 // use in the table view.
-- (NSCell *)createCell {
-    NSCell *cell = [[NSCell alloc] init];
+- (CZCell *)createCell {
+    CZCell *cell = [[CZCell alloc] init];
     [cell setSelectable:NO];
     [cell setEditable:NO];
     [cell setLineBreakMode:NSLineBreakByTruncatingMiddle];
