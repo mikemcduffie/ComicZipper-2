@@ -12,6 +12,7 @@
 //                       √ Changes made in preferences does not require app reboot. Reflects instantly.
 //                       √ Added: Notifications, contextual menu with options to remove or open items in Finder.
 //                       √ Bug fixes: The count is now correct. And hopefully the Zero KB bug is solved.
+//  2.1.4 ADDED SUPPORT: √ Support for OS X 10.10.
 //
 // TODO: Add help
 // BUG: When changing to delete folder preference, the compressing status never changes.
