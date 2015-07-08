@@ -482,12 +482,12 @@
         double fileSize = [item fileSizeInBytes];
         
         // The cells that will display the name...
-        CZCell *leftCell = [self createCell];
+        NSCell *leftCell = [self createCell];
         [leftCell setStringValue:leftCellText];
         [leftCell setFont:[NSFont fontWithName:@"Lucida Grande Bold" size:13.0]];
 
         // ...and the file size + other information
-        CZCell *detailCell = [self createCell];
+        NSCell *detailCell = [self createCell];
         [detailCell setStringValue:[self stringFromByte:fileSize]];
         [detailCell setFont:[NSFont fontWithName:@"Lucida Grande" size:9.5]];
         
