@@ -18,6 +18,7 @@
 //                  √ Fixed the bug where the app remains in a "compressing" state.
 //  2.2.0 CHANGES:  √ Files can now be added by drag and drop on app icon.
 //                  √ Removed support for adding files by selection on launch.
+//  2.3.0 CHANGES:  √ File cleaning support added.
 // TODO: Add help
 
 #import "CZAppDelegate.h"
@@ -58,6 +59,7 @@
 @property (nonatomic) NSString *cacheDirectory;
 @property (nonatomic, getter = applicationIsResigned) BOOL applicationResigned;
 @property (nonatomic, readonly) BOOL shouldDisplayBadgeCount, shouldDeleteFoldersAfterCompress, shouldNotify;
+@property (nonatomic, readonly) NSString *filesToIgnore;
 
 @property (nonatomic) FinderApplication *finder;
 @property (nonatomic) SBElementArray *selection;
@@ -163,6 +165,7 @@
     _shouldDisplayBadgeCount = [[preferences valueForKey:@"CZBadgeApp"] boolValue];
     _shouldDeleteFoldersAfterCompress = [[preferences valueForKey:@"CZDeleteFolderAfterCompress"] boolValue];
     _shouldNotify = [[preferences valueForKey:@"CZNotify"] boolValue];
+    _filesToIgnore = [preferences valueForKey:@"CZIgnoreFiles"];
 }
 
 #pragma mark APPLICATION DELEGATE METHODS
@@ -240,6 +243,7 @@
             // Do not compress already
             // archived items.
             if (![item isArchived]) {
+                [item setFilesToIgnore:self.filesToIgnore];
                 [item setDelegate:self];
                 [item startCompression];
             }
@@ -250,9 +254,6 @@
 }
 
 - (IBAction)buttonPreferences:(id)sender {
-//    self.preferencesWindowController = [[CZPreferencesWindowController alloc] initWithWindowNibName:@"Preferences"];
-//    [[[self preferencesWindowController] window] makeKeyAndOrderFront:self];
-    
     if ([[self drawer] state] == NSDrawerClosedState ||
         [[self drawer] state] == NSDrawerClosingState) {
         NSSize drawerSize = {270,300};
@@ -262,7 +263,9 @@
         [[self checkBoxDeleteFolders] setState:_shouldDeleteFoldersAfterCompress];
         [[self checkBoxCompressedCount] setState:_shouldDisplayBadgeCount];
         [[self checkBoxNotify] setState:_shouldNotify];
+        [[self textFieldIgnoreFiles] setStringValue:_filesToIgnore];
     } else {
+        [self setPreferencesKey:[[self textFieldIgnoreFiles] identifier] ToValue:[[self textFieldIgnoreFiles] stringValue] ];
         [[self drawer] close];
     }
 }
@@ -272,8 +275,11 @@
     if ([sender state] != NSOnState) {
         checkValue = @NO;
     }
-    
-    [[self preferences] setValue:checkValue forKey:[sender identifier]];
+    [self setPreferencesKey:[sender identifier] ToValue:checkValue];
+}
+
+- (void)setPreferencesKey:(NSString *)key ToValue:(id)value {
+    [[self preferences] setValue:value forKey:key];
     [self loadPreferences:[self.preferences copy]];
     [[self preferences] writeToFile:CZ_PLIST_PATH atomically:YES];
 }
@@ -653,10 +659,8 @@
 - (BOOL)isDropViewFront {
     if ([self applicationState] == CZ_APP_STATE_START) {
         return YES;
-    } else {
-        [[self scrollView] toggleHighlight];
     }
-    
+    [[self scrollView] toggleHighlight];
     return NO;
 }
 

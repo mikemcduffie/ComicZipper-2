@@ -9,7 +9,6 @@
         <customObject id="-2" userLabel="File's Owner" customClass="CZAppDelegate">
             <connections>
                 <outlet property="delegate" destination="Voe-Tx-rLC" id="GzC-gU-4Uq"/>
-                <outlet property="drawer" destination="SCH-WI-q6R" id="XZC-Ce-qZe"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
@@ -21,6 +20,7 @@
                 <outlet property="checkBoxNotify" destination="Oy9-S8-agL" id="f4U-ed-QGP"/>
                 <outlet property="drawer" destination="SCH-WI-q6R" id="w79-dP-EJs"/>
                 <outlet property="superView" destination="EiT-Mj-1SZ" id="pJa-RQ-qPY"/>
+                <outlet property="textFieldIgnoreFiles" destination="b8P-BL-vbO" id="oe6-tT-isK"/>
                 <outlet property="view" destination="cF3-Lk-3cX" id="cY4-Oi-Kt5"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
             </connections>
@@ -154,13 +154,13 @@
             <autoresizingMask key="autoresizingMask"/>
             <subviews>
                 <box autoresizesSubviews="NO" fixedFrame="YES" title="General" translatesAutoresizingMaskIntoConstraints="NO" id="8Qt-lk-5V8">
-                    <rect key="frame" x="17" y="137" width="236" height="113"/>
+                    <rect key="frame" x="17" y="57" width="236" height="193"/>
                     <view key="contentView">
-                        <rect key="frame" x="2" y="2" width="232" height="96"/>
+                        <rect key="frame" x="2" y="2" width="232" height="176"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button identifier="CZBadgeApp" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Iig-Lh-a7H">
-                                <rect key="frame" x="15" y="37" width="202" height="18"/>
+                                <rect key="frame" x="15" y="117" width="202" height="18"/>
                                 <buttonCell key="cell" type="check" title="Dock compressed count" bezelStyle="regularSquare" imagePosition="left" inset="2" id="dQJ-7V-ZQB">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="cellTitle"/>
@@ -170,7 +170,7 @@
                                 </connections>
                             </button>
                             <button identifier="CZNotify" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Oy9-S8-agL">
-                                <rect key="frame" x="15" y="11" width="202" height="18"/>
+                                <rect key="frame" x="15" y="91" width="202" height="18"/>
                                 <buttonCell key="cell" type="check" title="Notify when complete" bezelStyle="regularSquare" imagePosition="left" inset="2" id="MVF-Sf-Ldy">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="cellTitle"/>
@@ -180,7 +180,7 @@
                                 </connections>
                             </button>
                             <button identifier="CZDeleteFolderAfterCompress" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8Y4-uy-43G">
-                                <rect key="frame" x="15" y="62" width="202" height="18"/>
+                                <rect key="frame" x="15" y="142" width="202" height="18"/>
                                 <buttonCell key="cell" type="check" title="Delete folders when complete" bezelStyle="regularSquare" imagePosition="left" inset="2" id="1Uh-I1-rX1">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="cellTitle"/>
@@ -189,19 +189,35 @@
                                     <action selector="checkBoxClicked:" target="Voe-Tx-rLC" id="d4O-k8-jvz"/>
                                 </connections>
                             </button>
+                            <textField identifier="CZIgnoreFiles" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="b8P-BL-vbO">
+                                <rect key="frame" x="19" y="13" width="194" height="22"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString=".DS_Store, .svn, ..." drawsBackground="YES" id="8Uk-Bk-LlP">
+                                    <font key="font" metaFont="cellTitle"/>
+                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="d7E-Wh-qmC">
+                                <rect key="frame" x="17" y="42" width="198" height="32"/>
+                                <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Exclude specific files (seperate with a comma and a space):" id="Gqy-Mb-14z">
+                                    <font key="font" metaFont="cellTitle"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
                         </subviews>
                     </view>
                     <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                     <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </box>
-                <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="d1K-Ag-R9X">
-                    <rect key="frame" x="178" y="13" width="74" height="32"/>
-                    <buttonCell key="cell" type="push" title="Close" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="xJO-ks-hxy">
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="d1K-Ag-R9X">
+                    <rect key="frame" x="181" y="13" width="71" height="32"/>
+                    <buttonCell key="cell" type="push" title="Save" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="xJO-ks-hxy">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
                     <connections>
-                        <action selector="close:" target="SCH-WI-q6R" id="RX1-Go-xS6"/>
+                        <action selector="buttonPreferences:" target="Voe-Tx-rLC" id="gvN-JK-VcA"/>
                     </connections>
                 </button>
             </subviews>
@@ -209,6 +225,7 @@
                 <constraint firstAttribute="bottom" secondItem="d1K-Ag-R9X" secondAttribute="bottom" constant="20" id="Cgl-Ez-a1p"/>
                 <constraint firstAttribute="trailing" secondItem="d1K-Ag-R9X" secondAttribute="trailing" constant="24" id="yHz-b1-Rmh"/>
             </constraints>
+            <point key="canvasLocation" x="305" y="254"/>
         </customView>
         <drawer trailingOffset="15" id="SCH-WI-q6R">
             <size key="contentSize" width="100" height="100"/>

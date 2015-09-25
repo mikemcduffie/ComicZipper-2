@@ -26,6 +26,7 @@
 @property (nonatomic) long double fileSizeInBytes;
 @property (nonatomic, getter = isArchived) BOOL archived;
 @property (nonatomic, setter = shouldSkipRemoval:) BOOL shouldSkipRemoval;
+@property (nonatomic, copy) NSString *filesToIgnore;
 
 - (instancetype)initWithURL:(NSURL *)url;
 - (instancetype)initWithSelection:(FinderFolder *)folder;

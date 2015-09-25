@@ -18,6 +18,7 @@
 @property (weak) IBOutlet NSButton *checkBoxDeleteFolders;
 @property (weak) IBOutlet NSButton *checkBoxCompressedCount;
 @property (weak) IBOutlet NSButton *checkBoxNotify;
+@property (weak) IBOutlet NSTextField *textFieldIgnoreFiles;
 
 - (IBAction)buttonPreferences:(id)sender;
 - (IBAction)checkBoxClicked:(id)sender;

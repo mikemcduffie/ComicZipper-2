@@ -22,7 +22,6 @@ static NSString *const kCZLaunchPath = @"/bin/bash";
 @property (nonatomic, copy) NSString *commandLine;
 @property (nonatomic, readonly) NSArray *returnCodes;
 @property (nonatomic, setter = setRunning:) BOOL isRunning;
-
 @property (nonatomic, copy) NSString *folderName, *folderPath, *parentFolder, *archivePath;
 @property (nonatomic, copy) NSURL *fileURL;
 @property (nonatomic) double sizeCompressed;
@@ -222,16 +221,26 @@ static NSString *const kCZLaunchPath = @"/bin/bash";
     if ([fileManager fileExistsAtPath:[self archivePath]]) {
         self.archivePath = [NSString stringWithFormat:@"%@%@-1.cbz", [self parentFolder], newFileName];
     }
-    // Set the commandline for NSTask
-    self.commandLine = [NSString stringWithFormat:@"zip -jr \"%@\" \"%@\"", [self archivePath], [self folderPath]];
 }
 
 #pragma mark COMPRESSION METHODS
 
+- (void)setUpCommandline {
+    // Get the files to ignore
+    NSString *excludeString = @"--exclude";
+    NSArray *filesToExclude = [[self filesToIgnore] componentsSeparatedByString:@", "];
+    NSMutableString *ignoreParameter = [[NSMutableString alloc] init];
+    for (NSString *file in filesToExclude) {
+        if ([file length] > 0) {
+            [ignoreParameter appendFormat:@"%@=*%@* ", excludeString, file];
+        }
+    }
+    self.commandLine = [NSString stringWithFormat:@"zip -jr %@\"%@\" \"%@\"", ignoreParameter, [self archivePath], [self folderPath]];
+}
+
 // Starts the compression process. Invoked by AppDelegate.
 - (void)startCompression {
     // Initialize NSTask, NSPipe and NSFileHandle objects
-
     self.task = [[NSTask alloc] init];
     NSPipe *outputPipe = [[NSPipe alloc] init];
     NSPipe *errorPipe = [[NSPipe alloc] init];
@@ -239,38 +248,33 @@ static NSString *const kCZLaunchPath = @"/bin/bash";
     NSFileHandle *errorFileHandle = [errorPipe fileHandleForReading];
     
     // Prepare task
+    [self setUpCommandline];
+    [[self task] setLaunchPath:kCZLaunchPath];
+    [[self task] setArguments:@[ @"-c", [self commandLine] ]];
+    [[self task] setStandardOutput:outputPipe];
+    [[self task] setStandardError:errorPipe];
+    // Create an NSNotificationCenter object for
+    // monitoring the NSTask process
+    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter addObserver:self
+                           selector:@selector(receivedData:)
+                               name:NSFileHandleReadCompletionNotification
+                             object:outputFileHandle];
+    [notificationCenter addObserver:self
+                           selector:@selector(receivedError:)
+                               name:NSFileHandleReadCompletionNotification
+                             object:errorFileHandle];
+    [notificationCenter addObserver:self
+                           selector:@selector(taskTerminated:)
+                               name:NSTaskDidTerminateNotification
+                             object:self.task];
+    // Monitor process in the background and
+    // posts a notification when called.
+    [outputFileHandle readInBackgroundAndNotify];
+    [errorFileHandle readInBackgroundAndNotify];
 
-        [[self task] setLaunchPath:kCZLaunchPath];
-        [[self task] setArguments:@[ @"-c", [self commandLine] ]];
-        [[self task] setStandardOutput:outputPipe];
-        [[self task] setStandardError:errorPipe];
-        
-
-        
-        // Create an NSNotificationCenter object for
-        // monitoring the NSTask process
-        NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-        [notificationCenter addObserver:self
-                               selector:@selector(receivedData:)
-                                   name:NSFileHandleReadCompletionNotification
-                                 object:outputFileHandle];
-        [notificationCenter addObserver:self
-                               selector:@selector(receivedError:)
-                                   name:NSFileHandleReadCompletionNotification
-                                 object:errorFileHandle];
-        [notificationCenter addObserver:self
-                               selector:@selector(taskTerminated:)
-                                   name:NSTaskDidTerminateNotification
-                                 object:self.task];
-        // Monitor process in the background and
-        // posts a notification when called.
-        [outputFileHandle readInBackgroundAndNotify];
-        [errorFileHandle readInBackgroundAndNotify];
-
-
+    // Begin the compression
     dispatch_async(dispatch_get_main_queue(), ^{
-        // Begin the compression and tell the
-        // delegate that compression has begun.
         [[self task] launch];
         [[self task] waitUntilExit];
     });
@@ -279,7 +283,6 @@ static NSString *const kCZLaunchPath = @"/bin/bash";
 #pragma mark NOTIFICATIONS
 
 - (void)receivedData:(NSNotification *)notification {
-
     if (![self isRunning] && ![self isArchived]) {
         [[self delegate] compressionDidStart:self];
         [self setRunning:YES];

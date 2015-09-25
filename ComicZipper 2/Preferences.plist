@@ -6,6 +6,8 @@
 	<true/>
 	<key>CZDeleteFolderAfterCompress</key>
 	<false/>
+	<key>CZIgnoreFiles</key>
+	<string>.DS_Store, .svn</string>
 	<key>CZBadgeApp</key>
 	<true/>
 </dict>

@@ -9,9 +9,7 @@
 /* Begin PBXBuildFile section */
 		6A034AC219844E1B007DB70E /* ComicZipper 2 Help in Resources */ = {isa = PBXBuildFile; fileRef = 6A034AC119844E1B007DB70E /* ComicZipper 2 Help */; };
 		6A513BDF197D29C300324684 /* CZScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A513BDE197D29C300324684 /* CZScrollView.m */; };
-		6A833661197911A8001CFC98 /* CZPreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A833660197911A8001CFC98 /* CZPreferencesWindowController.m */; };
 		6A83366519791537001CFC98 /* Preferences.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6A83366419791537001CFC98 /* Preferences.plist */; };
-		6A9AD026197CF3DD00301BD0 /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A9AD025197CF3DD00301BD0 /* Preferences.xib */; };
 		6AAFEE3F197C3D7700D48A18 /* CZApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AAFEE3E197C3D7700D48A18 /* CZApplication.m */; };
 		6AF11410197B1E5B000008D4 /* CZTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AF1140F197B1E5B000008D4 /* CZTableView.m */; };
 		6AF7740719752E42004D47C2 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AF7740619752E42004D47C2 /* Cocoa.framework */; };
@@ -45,10 +43,7 @@
 		6A034AC119844E1B007DB70E /* ComicZipper 2 Help */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "ComicZipper 2 Help"; sourceTree = "<group>"; };
 		6A513BDD197D29C300324684 /* CZScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZScrollView.h; sourceTree = "<group>"; };
 		6A513BDE197D29C300324684 /* CZScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZScrollView.m; sourceTree = "<group>"; };
-		6A83365F197911A8001CFC98 /* CZPreferencesWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZPreferencesWindowController.h; sourceTree = "<group>"; };
-		6A833660197911A8001CFC98 /* CZPreferencesWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZPreferencesWindowController.m; sourceTree = "<group>"; };
 		6A83366419791537001CFC98 /* Preferences.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Preferences.plist; sourceTree = "<group>"; };
-		6A9AD025197CF3DD00301BD0 /* Preferences.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Preferences.xib; sourceTree = "<group>"; };
 		6AAFEE3D197C3D7700D48A18 /* CZApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZApplication.h; sourceTree = "<group>"; };
 		6AAFEE3E197C3D7700D48A18 /* CZApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZApplication.m; sourceTree = "<group>"; };
 		6ADB0A2F197AD650001CAC21 /* Finder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Finder.h; sourceTree = "<group>"; };
@@ -168,10 +163,7 @@
 				6AF814BD19FADE070029D7E1 /* CZCell.m */,
 				6AF7743E19753CF1004D47C2 /* CZArchiverItem.h */,
 				6AF7743F19753CF1004D47C2 /* CZArchiverItem.m */,
-				6A83365F197911A8001CFC98 /* CZPreferencesWindowController.h */,
-				6A833660197911A8001CFC98 /* CZPreferencesWindowController.m */,
 				6AF7741B19752E42004D47C2 /* Main.xib */,
-				6A9AD025197CF3DD00301BD0 /* Preferences.xib */,
 				6AF7741E19752E42004D47C2 /* Images.xcassets */,
 				6AF7744119758847004D47C2 /* CZIcon-tiff.tiff */,
 				6AF7740D19752E42004D47C2 /* Supporting Files */,
@@ -296,7 +288,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6A9AD026197CF3DD00301BD0 /* Preferences.xib in Resources */,
 				6A83366519791537001CFC98 /* Preferences.plist in Resources */,
 				6A034AC219844E1B007DB70E /* ComicZipper 2 Help in Resources */,
 				6AF7744219758847004D47C2 /* CZIcon-tiff.tiff in Resources */,
@@ -345,7 +336,6 @@
 				6AAFEE3F197C3D7700D48A18 /* CZApplication.m in Sources */,
 				6AF814BE19FADE070029D7E1 /* CZCell.m in Sources */,
 				6AF7741A19752E42004D47C2 /* CZAppDelegate.m in Sources */,
-				6A833661197911A8001CFC98 /* CZPreferencesWindowController.m in Sources */,
 				6AF7743D19752F64004D47C2 /* CZDropView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
