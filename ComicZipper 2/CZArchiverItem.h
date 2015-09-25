@@ -27,6 +27,7 @@
 @property (nonatomic, getter = isArchived) BOOL archived;
 @property (nonatomic, setter = shouldSkipRemoval:) BOOL shouldSkipRemoval;
 
+- (instancetype)initWithURL:(NSURL *)url;
 - (instancetype)initWithSelection:(FinderFolder *)folder;
 - (void)startCompression;
 - (void)removeDirectory;

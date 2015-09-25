@@ -134,8 +134,16 @@ static NSString *const kCZLaunchPath = @"/bin/bash";
     return self;
 }
 
-// If the app starts with a selection
-// then this here method is what will
+- (instancetype)initWithURL:(NSURL *)url {
+    self = [super init];
+    if (self) {
+        [self setUpPath:url];
+        [self setReturnCodes];
+    }
+    return self;
+}
+
+// If the app starts with a selection then this here method is what will
 // run and not the drop initializer.
 - (instancetype)initWithSelection:(FinderFolder *)folder {
     self = [super init];
@@ -143,7 +151,6 @@ static NSString *const kCZLaunchPath = @"/bin/bash";
         [self setUpPathsForFinderFolder:folder];
         [self setReturnCodes];
     }
-    
     return self;
 }
 

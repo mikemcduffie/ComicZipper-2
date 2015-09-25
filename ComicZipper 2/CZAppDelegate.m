@@ -5,17 +5,19 @@
 //  Created 15/07/14.
 //  Copyright (c) 2015 Ardalan Samimi. All rights reserved.
 //
-//  2.1.1 CHANGES: √ Ability to auto add folders on start from Finder selection.
-//  2.1.2 CHANGES: √ Window is now resizeable.
-//                 √ Added support for highlighting multple items in queue list with mouse/shift.
-//                 √ Added support for highlighting all items in queue list with CMD+A.
-//                 √ Changes made in preferences does not require app reboot. Reflects instantly.
-//                 √ Added: Notifications, contextual menu with options to remove or open items in Finder.
-//                 √ Bug fixes: The count is now correct. And hopefully the Zero KB bug is solved.
-//  2.1.4 CHANGES: √ Support for OS X 10.10.
-//  2.1.5 CHANGES: √ Changed file format from CBR to CBZ.
-//                 √ Fixed the alert sound invoked upon keystroke.
-//                 √ Fixed the bug where the app remains in a "compressing" state.
+//  2.1.1 CHANGES:  √ Ability to auto add folders on start from Finder selection.
+//  2.1.2 CHANGES:  √ Window is now resizeable.
+//                  √ Added support for highlighting multple items in queue list with mouse/shift.
+//                  √ Added support for highlighting all items in queue list with CMD+A.
+//                  √ Changes made in preferences does not require app reboot. Reflects instantly.
+//                  √ Added: Notifications, contextual menu with options to remove or open items in Finder.
+//                  √ Bug fixes: The count is now correct. And hopefully the Zero KB bug is solved.
+//  2.1.4 CHANGES:  √ Support for OS X 10.10.
+//  2.1.5 CHANGES:  √ Changed file format from CBR to CBZ.
+//                  √ Fixed the alert sound invoked upon keystroke.
+//                  √ Fixed the bug where the app remains in a "compressing" state.
+//  2.2.0 CHANGES:  √ Files can now be added by drag and drop on app icon.
+//                  √ Removed support for adding files by selection on launch.
 // TODO: Add help
 
 #import "CZAppDelegate.h"
@@ -112,6 +114,37 @@
 
 @implementation CZAppDelegate
 
+// Method for catching items dropped on the application icon
+- (void)application:(NSApplication *)sender openFiles:(nonnull NSArray<NSString *> *)filenames {
+
+    // Set up the folders array that will be added to the item list
+    NSMutableArray *folders = [NSMutableArray array];
+    for (NSString *folder in filenames) {
+        BOOL isDir;
+        // Determines if the dropped file is a directory
+        if ([[NSFileManager alloc] fileExistsAtPath:folder isDirectory:&isDir] && isDir) {
+            // Get the fileURL and create an Archiver Item.
+            NSURL *url = [NSURL fileURLWithPath:folder isDirectory:YES];
+            CZArchiverItem *item = [[CZArchiverItem alloc] initWithURL:url];
+
+            NSUInteger itemInArray = [[self archiveItems] indexOfObjectPassingTest:
+                                      ^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+                                          BOOL found = [[obj description] isEqualToString:[item description]];
+                                          return found;
+                                      }];
+            // Check if the dragged item is not
+            // already in the array archiveItems.
+            if (itemInArray == NSNotFound) {
+                [folders addObject:item];
+            }
+        }
+    }
+    // Add it to the drop view
+    if ([folders count] > 0) {
+        [self dropView:[self view] didReceiveFiles:folders];
+    }
+}
+
 #pragma mark INITIAL SETUP
 // Setup method; Specify notification
 // center delegate, get app preferences,
@@ -133,21 +166,25 @@
 }
 
 #pragma mark APPLICATION DELEGATE METHODS
-// Called during launch, will invoke
-// setup methods.
+// Called during launch, will invoke setup methods.
 - (void)applicationWillFinishLaunching:(NSNotification *)notification {
     [self initialSetup];
 }
 
-// Invoked after launch; Method
-// should check if the user has
-// set a selection. If so, load
-// the selected folders into the
-// table view.
+// Called after launch.
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-    if ([self hasSelection]) {
-        NSArray *folders = [NSArray arrayWithArray:[self getSelectionAsArray]];
-        [self dropView:[self view] didReceiveFiles:folders];
+    // Check if the user has set a selection and load the selected folders.
+    // NOTE: This collides with when user opens app with drag and drop, so
+    // for the time being, it is removed from the app.
+//    if ([self hasSelection]) {
+//        NSArray *folders = [NSArray arrayWithArray:[self getSelectionAsArray]];
+//        [self dropView:[self view] didReceiveFiles:folders];
+//        [[self view] setDelegate:self];
+//        [[self view] setDraggable:YES];
+//    } else {
+//        [self drawUIElements:CZ_APP_STATE_START];
+//    }
+    if ([[self archiveItems] count] > 0) {
         [[self view] setDelegate:self];
         [[self view] setDraggable:YES];
     } else {
