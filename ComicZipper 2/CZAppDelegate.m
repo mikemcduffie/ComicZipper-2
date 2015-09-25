@@ -19,12 +19,12 @@
 //  2.2.0 CHANGES:  √ Files can now be added by drag and drop on app icon.
 //                  √ Removed support for adding files by selection on launch.
 //  2.3.0 CHANGES:  √ File cleaning support added.
+//  2.3.1 CHANGES:  √ Fixed errors caused by references to old files.
 // TODO: Add help
 
 #import "CZAppDelegate.h"
 #import "CZDropView.h"
 #import "CZArchiverItem.h"
-#import "CZPreferencesWindowController.h"
 #import "Finder.h"
 #import "CZTableView.h"
 #import "CZScrollView.h"
@@ -49,8 +49,6 @@
 @property (weak) NSButton *buttonCompress;
 @property (weak) NSProgressIndicator *progressIndicator;
 @property (weak) NSTextField *label;
-
-@property (strong) CZPreferencesWindowController *preferencesWindowController;
 
 @property (nonatomic) NSMutableArray *archiveItems;
 @property (nonatomic) NSMutableDictionary *preferences;
