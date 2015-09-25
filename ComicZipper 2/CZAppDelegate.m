@@ -20,6 +20,8 @@
 //                  √ Removed support for adding files by selection on launch.
 //  2.3.0 CHANGES:  √ File cleaning support added.
 //  2.3.1 CHANGES:  √ Fixed errors caused by references to old files.
+//  2.3.2 CHANGES:  √ All compression processes are now run in the same thread, separate from the main thread, making it a little slower but more reliable and less prone to crash or app freezing.
+//                  √ The compress button is disabled while app is calculating the file sizes, fixing the Zero KB bug. This also fixes the bug that made the app crash or behave unexpected if the compress process is started before all the files have been added, loaded and calculated.
 // TODO: Add help
 
 #import "CZAppDelegate.h"
@@ -49,7 +51,6 @@
 @property (weak) NSButton *buttonCompress;
 @property (weak) NSProgressIndicator *progressIndicator;
 @property (weak) NSTextField *label;
-
 @property (nonatomic) NSMutableArray *archiveItems;
 @property (nonatomic) NSMutableDictionary *preferences;
 @property (nonatomic) long double totalSizeInBytes;
@@ -58,98 +59,309 @@
 @property (nonatomic, getter = applicationIsResigned) BOOL applicationResigned;
 @property (nonatomic, readonly) BOOL shouldDisplayBadgeCount, shouldDeleteFoldersAfterCompress, shouldNotify;
 @property (nonatomic, readonly) NSString *filesToIgnore;
-
 @property (nonatomic) FinderApplication *finder;
 @property (nonatomic) SBElementArray *selection;
 
+/*!
+ @brief Initial setup method.
+ @discussion Specifies a delegate for NSUserNotificationCenter, loads application preferences, sets the cache directory, initializes the archive items array and the Finder object.
+ */
 - (void)initialSetup;
 
+/*!
+ @brief Loads user's preferences.
+ @discussion Loads the user preferences from the .plist file.
+ @param preferences An NSDictionary object containing contents of .plist file.
+ */
+- (void)loadPreferences:(NSDictionary *)preferences;
+
+- (void)application:(NSApplication *)sender openFiles:(NSArray<NSString *> *)filenames;
+
 - (void)applicationWillFinishLaunching:(NSNotification *)notification;
+
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification;
+
 - (void)applicationDidBecomeActive:(NSNotification *)notification;
+
 - (void)applicationDidResignActive:(NSNotification *)notification;
+
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender;
+
 - (void)applicationWillTerminate:(NSNotification *)notification;
+
+/*!
+ @brief Adds badge to application icon.
+ @discussion Adds a alphanumerical badge to the application dock icon.
+ @param label The badge value.
+ */
 - (void)setApplicationBadgeLabel:(NSString *)label;
 
+/*!
+ @brief Invoked when compress button is pressed.
+ @discussion This method is invoked when the compress button is pressed, starting the compression process.
+ @param sender The invoking button.
+ */
 - (void)buttonCompress:(id)sender;
 
+/*!
+ @brief Generate the user interface
+ @discussion Generate the UI elements, depending on which state the app is in.
+ @param applicationState Takes three different constants: CZ_APP_STATE_START, CZ_APP_STATE_FILEDROP_FIRST, CZ_APP_STATE_FILEDROP.
+ */
 - (void)drawUIElements:(int)applicationState;
+
+/*!
+ @brief Create constraints for the UI elements.
+ @param firstItem The view for the left side of the constraint.
+ @param secondItem The view for the right side of the constraint
+ @param attribute The attribute of the view for the right and left side of the constraint.
+ @param constant The constant added to the multiplied attribute value on the right side of the constraint to yield the final modified attribute.
+ @return A constraint object relating the two provided views with the specified relation, attributes, multiplier, and constant.
+ */
 - (NSLayoutConstraint *)constraintWithItem:(id)firstItem toItem:(id)secondItem withAttribute:(NSLayoutAttribute)attribute andConstant:(float)constant;
+
+/*!
+ @brief Toggle progress indicator.
+ @discussion Toggle the progress indicator (spinner) displayed at the top of the application.
+ @param state A @a YES value will create the spinner and start the animation. @a NO will remove the indicator.
+ */
 - (void)showProgressIndicator:(BOOL)state;
+
+/*!
+ @brief Update status label.
+ @discussion Update the status label at top of the application, and toggle the progress indicator.
+ @param label Status label value.
+ @param progress @a YES will start the spinner.
+ */
 - (void)updateTopLabel:(NSString *)label andShowProgressIndicator:(BOOL)progress;
 
 - (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row;
+
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView;
+
 - (CGFloat)tableView:(NSTableView *)tableView heightOfRow:(NSInteger)row;
+
+/*!
+ @brief Create an NSTextField.
+ @discussion Returns an NSTextField object with specified frame.
+ @param frame The frame of the object.
+ @return A new instance of NSTextField.
+ */
 - (NSTextField *)createTextFieldWithFrame:(NSRect)frame;
-- (NSCell *)createCell;
 
+/*!
+ @brief Create a table cell.
+ @discussion Create a simple cell for the table view.
+ @return A simple CZCell (NSCell).
+ */
+- (CZCell *)createCell;
+
+/*!
+ @brief Add dragged files to the table view.
+ @discussion Delegate method for @b CZDropView when file(s) are dropped.
+ @param CZDropView The view that sent the message.
+ @param archiveItems An array containing the items dropped.
+ */
 - (void)dropView:(CZDropView *)dropView didReceiveFiles:(NSArray *)archiveItems;
-- (BOOL)dropView:(CZDropView *)dropView isItemInList:(NSString *)description;
-- (BOOL)isDropViewFront;
-- (void)tableView:(CZTableView *)tableView DidRegisterKeyUp:(int)keyCode;
-- (void)tableView:(CZTableView *)tableView DidRegisterKeyUp:(int)keyCode withCommand:(BOOL)commandState;
-- (void)openItemInFinder:(NSIndexSet *)indexSet;
-- (void)compressionDidStart:(CZArchiverItem *)archiver;
-- (void)compressionDidEnd:(CZArchiverItem *)archiver;
-- (void)compressionCouldNotFinish:(CZArchiverItem *)archiver errorCode:(NSString *)string;
-- (void)archiverDidRemoveDirectory:item;
 
-- (NSString *)stringFromByte:(double)fileSize;
-- (NSImage *)updateImageForItem:(CZArchiverItem *)archiver atRow:(NSInteger)row isCached:(BOOL)cached;
-- (void)controlApplicationBadge:(int)state;
+/*!
+ @brief Check if a item is already added to the list.
+ @discussion Asks the delegate if the dragged item already is added to the list.
+ @param CZDropView The view that sent the message.
+ @param description Name of the item.
+ @return @a YES, if the item is added.
+ */
+- (BOOL)dropView:(CZDropView *)dropView isItemInList:(NSString *)description;
+
+/*!
+ @brief Check if view is in focus.
+ */
+- (BOOL)isDropViewFront;
+
+/*!
+ @brief Informs the receiver that the user has released a key.
+ @discussion Delegate method for CZTableView (NSTableView).
+ @param CZTableView The table view sending the message.
+ @param keyCode The key code for the keyboard key released.
+ */
+- (void)tableView:(CZTableView *)tableView DidRegisterKeyUp:(int)keyCode;
+
+/*!
+ @brief Informs the receiver that the user has released a key.
+ @discussion Delegate method for CZTableView (NSTableView).
+ @param CZTableView The table view sending the message.
+ @param keyCode The key code for the keyboard key released.
+ @param commandState If the Command key is pressed.
+ */
+- (void)tableView:(CZTableView *)tableView DidRegisterKeyUp:(int)keyCode withCommand:(BOOL)commandState;
+
+/*!
+ @brief Show item in Finder.
+ @discussion Delegate method for CZTableView (NSTableView).
+ @param indexSet The row index of the selected item(s).
+ */
+- (void)openItemInFinder:(NSIndexSet *)indexSet;
+
+/*!
+ @brief Informs the receiver the compression process has started.
+ @discussion Invoked when a CZArchiverItem has begun compression process.
+ @param archiver The CZArchiverItem that sent the message.
+ */
+- (void)compressionDidStart:(CZArchiverItem *)archiver;
+
+/*!
+ @brief Informs the receiver the compression has stopped.
+ @discussion Invoked when compression of CZArchiverItem is finished.
+ @param archiver The CZArchiverItem that sent the message.
+ */
+- (void)compressionDidEnd:(CZArchiverItem *)archiver;
+
+/*!
+ @brief Informs the receiver an error occured while compressing.
+ @discussion Invoked when compression of CZArchiverItem has failed.
+ @param archiver The CZArchiverItem that sent the message.
+ @param string The error code.
+ */
+- (void)compressionCouldNotFinish:(CZArchiverItem *)archiver errorCode:(NSString *)string;
+
+/*!
+ @brief Informs the receiver a directory has been deleted.
+ @discussion Invoked when a CZArchiverItem has removed it's original directory.
+ @param archiver The CZArchiverItem that sent the message.
+ */
+- (void)archiverDidRemoveDirectory:(CZArchiverItem *)archiver;
+
+/*!
+ @brief Delete folders.
+ @discussion Invoked after compression process has finished, if the delete folders option is set.
+ */
 - (void)deleteFolders;
+
+/*!
+ @brief Invoked if the deleted folders after compression option is not set.
+ @discussion Guarantees that folders of already compressed items do not get deleted when a new batch of folders are loaded, and the to delete-option then is changed.
+ */
+- (void)skipDeletion;
+
+/*!
+ @brief Set the cache directory.
+ @discussion Runs upon app launch.
+ @see initialSetup
+ @param cacheDirectory The path to the cache directory.
+ */
 - (void)setCacheDirectory:(NSString *)cacheDirectory;
+
+/*!
+ @brief Empties the cache directory.
+ @discussion Invoked before application terminates.
+ @see initialSetup, setCacheDirectory
+ */
 - (void)clearCacheDirectory;
+
+/*!
+ @brief The selection in the frontmost Finder window.
+ @discussion Get the selected folders in the frontmost Finder window.
+ @return @a YES, if a selection is set.
+ */
 - (BOOL)hasSelection;
+
+/*!
+ @brief Removes all non-folders from selection.
+ @param selection The selection in the frontmost Finder window.
+ @return An SBElementArray object containing the selected folders.
+ */
 - (SBElementArray *)removeNonFoldersFromSelection:(SBElementArray *)selection;
+
+/*!
+ @brief Converts the selection to an array.
+ @discussion Create CZArchiverItem objects from the selected folders and adds to an array to be returned.
+ @return Array containing CZArchiverItems.
+ */
 - (NSArray *)getSelectionAsArray;
+
+/*!
+ @brief Converts file size from bytes.
+ @param fileSize The size of a file in bytes.
+ @return The size of a file converted to a human-readable value.
+ */
+- (NSString *)stringFromByte:(double)fileSize;
+
+/*!
+ @brief Fetch cover image for compressed items.
+ @discussion Fetches the folder image for the first image in the compressed folder.
+ @param archiver The compressed item.
+ @param row Row index of the item.
+ @param cached If image has already been cached.
+ @return The cover image.
+ */
+- (NSImage *)updateImageForItem:(CZArchiverItem *)archiver atRow:(NSInteger)row isCached:(BOOL)cached;
+
+/*!
+ @brief Control badge label.
+ @param state State of the application.
+ */
+- (void)controlApplicationBadge:(int)state;
+
+/*!
+ @brief Clean up after launch.
+ */
 - (void)cleanUpAfterLaunch;
+
+/*!
+ @brief Handles the key events.
+ @discussion Deletes items.
+ @param keyCode The key code.
+ @param commandState If the command key is pressed.
+ */
 - (void)handleKeyEvent:(int)keyCode commandPressed:(BOOL)commandState;
+
+/*!
+ @brief Calculates the total size of the items in the list.
+ @param array The items.
+ @return Size of the files in bytes.
+ */
+- (double)calculateSizeOfItemsInArray:(NSArray *)array;
+
+/*!
+ @brief Remove objects from the archiveItems array.
+ @discussion Recalculates the size of the remaining objects.
+ @see calculateSizeOfItemsInArray:.
+ @param array The items to remove.
+ */
+- (void)removeObjectsInArchiveItemsFromArray:(NSArray *)array;
+
+/*!
+ @brief Adds objects from the archiveItems array.
+ @discussion Recalculates the size of the objects.
+ @see calculateSizeOfItemsInArray:.
+ @param array The items to add.
+ */
+- (void)addObjectsToArchiveItemsFromArray:(NSArray *)array;
+
+/*!
+ @brief Update the number of items to compress.
+ */
 - (void)updateCount;
+
+/*!
+ @brief Update the status label after calculations.
+ @see updateTopLabel:andShowProgressIndicator:
+ */
+- (void)countReady;
+
+/*!
+ @brief Display a notification.
+ @discussion Displays a notification, if the user has enabled it and the app is out of focus.
+ @param text The label to display in the notification.
+ */
 - (void)displayNotification:(NSString *)text;
 
 @end
 
 @implementation CZAppDelegate
 
-// Method for catching items dropped on the application icon
-- (void)application:(NSApplication *)sender openFiles:(nonnull NSArray<NSString *> *)filenames {
-
-    // Set up the folders array that will be added to the item list
-    NSMutableArray *folders = [NSMutableArray array];
-    for (NSString *folder in filenames) {
-        BOOL isDir;
-        // Determines if the dropped file is a directory
-        if ([[NSFileManager alloc] fileExistsAtPath:folder isDirectory:&isDir] && isDir) {
-            // Get the fileURL and create an Archiver Item.
-            NSURL *url = [NSURL fileURLWithPath:folder isDirectory:YES];
-            CZArchiverItem *item = [[CZArchiverItem alloc] initWithURL:url];
-
-            NSUInteger itemInArray = [[self archiveItems] indexOfObjectPassingTest:
-                                      ^BOOL(id obj, NSUInteger idx, BOOL *stop) {
-                                          BOOL found = [[obj description] isEqualToString:[item description]];
-                                          return found;
-                                      }];
-            // Check if the dragged item is not
-            // already in the array archiveItems.
-            if (itemInArray == NSNotFound) {
-                [folders addObject:item];
-            }
-        }
-    }
-    // Add it to the drop view
-    if ([folders count] > 0) {
-        [self dropView:[self view] didReceiveFiles:folders];
-    }
-}
-
 #pragma mark INITIAL SETUP
-// Setup method; Specify notification
-// center delegate, get app preferences,
-// initialize archive items array and the
-// Finder object and set the cache directory.
+
 - (void)initialSetup {
     [[NSUserNotificationCenter defaultUserNotificationCenter] setDelegate:self];
     self.archiveItems = [[NSMutableArray alloc] init];
@@ -167,24 +379,42 @@
 }
 
 #pragma mark APPLICATION DELEGATE METHODS
-// Called during launch, will invoke setup methods.
+
+- (void)application:(NSApplication *)sender openFiles:(nonnull NSArray<NSString *> *)filenames {
+    // Catch items dropped on the application dock icon.
+    // Set up the folders array that will be added to the item list
+    NSMutableArray *folders = [NSMutableArray array];
+    for (NSString *folder in filenames) {
+        BOOL isDir;
+        // Check if the dropped file is a directory
+        if ([[NSFileManager alloc] fileExistsAtPath:folder isDirectory:&isDir] && isDir) {
+            // Get the fileURL and create an Archiver Item.
+            NSURL *url = [NSURL fileURLWithPath:folder isDirectory:YES];
+            CZArchiverItem *item = [[CZArchiverItem alloc] initWithURL:url];
+            // Check if the dragged item is already in the archiveItems array.
+            NSUInteger itemInArray = [[self archiveItems] indexOfObjectPassingTest:
+                                      ^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+                                          BOOL found = [[obj description] isEqualToString:[item description]];
+                                          return found;
+                                      }];
+            if (itemInArray == NSNotFound) {
+                [folders addObject:item];
+            }
+        }
+    }
+    // Add it to the drop view
+    if ([folders count] > 0) {
+        [self dropView:[self view] didReceiveFiles:folders];
+    }
+}
+
 - (void)applicationWillFinishLaunching:(NSNotification *)notification {
+    // Run initial setup upon launch
     [self initialSetup];
 }
 
-// Called after launch.
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-    // Check if the user has set a selection and load the selected folders.
-    // NOTE: This collides with when user opens app with drag and drop, so
-    // for the time being, it is removed from the app.
-//    if ([self hasSelection]) {
-//        NSArray *folders = [NSArray arrayWithArray:[self getSelectionAsArray]];
-//        [self dropView:[self view] didReceiveFiles:folders];
-//        [[self view] setDelegate:self];
-//        [[self view] setDraggable:YES];
-//    } else {
-//        [self drawUIElements:CZ_APP_STATE_START];
-//    }
+    // Check after launch if there any items where already loaded (dragged onto the dock icon)
     if ([[self archiveItems] count] > 0) {
         [[self view] setDelegate:self];
         [[self view] setDraggable:YES];
@@ -195,15 +425,13 @@
     [self cleanUpAfterLaunch];
 }
 
-// Invoked when application resigns (loses focus).
 - (void)applicationDidResignActive:(NSNotification *)notification {
+    // Application loses focus.
     [self setApplicationResigned:YES];
 }
 
-// Invoked when application becomes active
-// again (is in front). Resets the badge
-// if displayed.
 - (void)applicationDidBecomeActive:(NSNotification *)notification {
+    // Application is active again (in front), reset the badge if displayed.
     [self setApplicationResigned:NO];
     if ([self shouldDisplayBadgeCount]) {
         [self controlApplicationBadge:CZ_APP_STATE_BADGE_RESET];
@@ -214,9 +442,8 @@
     return YES;
 }
 
-// Called during termination;
-// clear cache directory.
 - (void)applicationWillTerminate:(NSNotification *)notification {
+    // Called during termination. Clear cache directory.
     [self clearCacheDirectory];
 }
 
@@ -226,27 +453,20 @@
 
 #pragma mark BUTTON METHODS
 
-// Invoked when the compress button
-// is pressed, starting the process.
 - (void)buttonCompress:(id)sender {
-    // Update label to let user know
-    // compression is in progress.
+    // Update label to let user know compression is in progress.
     [self updateTopLabel:@"Compressing" andShowProgressIndicator:YES];
-    // Create NSOperationQueue for the
-    // compression process to run in.
-    NSOperationQueue *myQueue = [[NSOperationQueue alloc] init];
-    myQueue.name = @"Archive queue";
-    [myQueue addOperationWithBlock:^{
+    // Run the compression in another thread
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
         for (CZArchiverItem *item in [self archiveItems]) {
-            // Do not compress already
-            // archived items.
+            // Do not compress already archived items.
             if (![item isArchived]) {
-                [item setFilesToIgnore:self.filesToIgnore];
+                [item setFilesToIgnore:[self filesToIgnore]];
                 [item setDelegate:self];
                 [item startCompression];
             }
         }
-    }];
+    });
     // Disable button while compressing.
     [sender setEnabled:NO];
 }
@@ -402,6 +622,7 @@
         [self.buttonCompress setButtonType:NSMomentaryPushInButton];
         [self.buttonCompress setTarget:self];
         [self.buttonCompress setAction:@selector(buttonCompress:)];
+        [self.buttonCompress setEnabled:NO];
         
         [[self view] addSubview:self.buttonCompress];
 
@@ -452,7 +673,6 @@
     }
 }
 
-// Create constraints for UI Elements
 - (NSLayoutConstraint *)constraintWithItem:(id)firstItem toItem:(id)secondItem withAttribute:(NSLayoutAttribute)attribute andConstant:(float)constant {
     NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:firstItem
                                                                   attribute:attribute
@@ -465,12 +685,9 @@
     return constraint;
 }
 
-// Toggle progress indicator at the top.
 - (void)showProgressIndicator:(BOOL)state {
     if (state) {
-        // If YES, create indicator with
-        // specified frame, and start
-        // animate indicator.
+        // Start the animation.
         CGSize viewSize = self.view.frame.size;
         NSProgressIndicator *progressIndicatorSpinning = [[NSProgressIndicator alloc] initWithFrame:NSMakeRect(viewSize.width/3-5, viewSize.height-27, 16, 16)];
         self.progressIndicator = progressIndicatorSpinning;
@@ -478,9 +695,7 @@
         [[self progressIndicator] setControlSize:NSSmallControlSize];
         [[self progressIndicator] startAnimation:self];
         [[self view] addSubview:[self progressIndicator]];
-        
-        // Add constraints to indicator
-        // for autolayout.
+        // Add constraints to indicator for autolayout.
         [[self progressIndicator] setTranslatesAutoresizingMaskIntoConstraints:NO];
         NSLayoutConstraint *progressIndicatorConstraintTop = [self constraintWithItem:[self superView]
                                                                                toItem:[self progressIndicator]
@@ -492,13 +707,12 @@
                                                                         andConstant:65];
         [[self superView] addConstraints:@[ progressIndicatorConstraintTop, progressIndicatorConstraintX ]];
     } else {
-        // If NO, remove the indicator and set property to nil.
+        // Remove the indicator and set property to nil.
         [[self progressIndicator] removeFromSuperview];
         self.progressIndicator = nil;
     }
 }
 
-// Update the top label and toggle progress indicator.
 - (void)updateTopLabel:(NSString *)label andShowProgressIndicator:(BOOL)progress {
     [[[self view] viewWithTag:101] setStringValue:label];
     [self showProgressIndicator:progress];
@@ -506,9 +720,8 @@
 
 #pragma mark USER INTERFACE METHODS: TABLEVIEW
 
-// Populate the table view with
-// items in array archiveItems.
 - (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
+    // Populate the table view with items in array archiveItems.
     NSTableCellView *cellView = [[NSTableView alloc] makeViewWithIdentifier:@"cellView" owner:self];
     if (cellView == nil) {
         cellView = [[NSTableCellView alloc] initWithFrame:NSMakeRect(0, 0, tableView.frame.size.width, 35)];
@@ -518,33 +731,26 @@
     CZArchiverItem *item = [[self archiveItems] objectAtIndex:row];
     
     if ([[tableColumn identifier] isEqualToString:@"leftColumn"]) {
-        // Get the name of the item that will occupy the cell and
-        // the size of the item in bytes and convert it to a readable
-        // readable number to be displayed in the subtitle cell.
+        // Get the name of the item that will occupy the cell and the size of the item in bytes and
+        // convert it to a readable number to be displayed in the subtitle cell.
         NSString *leftCellText = [item description];
         double fileSize = [item fileSizeInBytes];
-        
         // The cells that will display the name...
         NSCell *leftCell = [self createCell];
         [leftCell setStringValue:leftCellText];
         [leftCell setFont:[NSFont fontWithName:@"Lucida Grande Bold" size:13.0]];
-
         // ...and the file size + other information
         NSCell *detailCell = [self createCell];
         [detailCell setStringValue:[self stringFromByte:fileSize]];
         [detailCell setFont:[NSFont fontWithName:@"Lucida Grande" size:9.5]];
-        
         // The textfield that will hold the main cell
         NSTextField *leftTextField = [self createTextFieldWithFrame:NSMakeRect(45, 15, [tableColumn width], CZ_ROW_HEIGHT/2)];
         [leftTextField setToolTip:leftCellText];
         [leftTextField setCell:leftCell];
-
         // The textfield that will hold the info cell
         NSTextField *leftDetailTextField = [self createTextFieldWithFrame:NSMakeRect(45, 0, [tableColumn width], CZ_ROW_HEIGHT/2-3)];
         [leftDetailTextField setCell:detailCell];
-
-        // Add a folder-image to the far right,
-        // if the item is not already compressed.
+        // Add a folder-image to the far right, if the item is not already compressed.
         NSImageView *imageView = [[NSImageView alloc] initWithFrame:NSMakeRect(0, 0, 50, CZ_ROW_HEIGHT)];
         [imageView setTag:row+200];
         if (![item isArchived]) {
@@ -552,24 +758,23 @@
         } else {
             [imageView setImage:[self updateImageForItem:item atRow:row isCached:YES]];
         }
-        
         [cellView addSubview:leftDetailTextField];
         [cellView addSubview:leftTextField];
         [cellView addSubview:imageView];
     } else {
-        // Add status indicator at far left for
-        // displaying the compression status of
-        // the current item.
+        // Add status indicator at far left for displaying the compression status of the current item.
         NSImageView *imageView = [[NSImageView alloc] initWithFrame:NSMakeRect(0, 0, 35, 35)];
         if ([[[self archiveItems] objectAtIndex:row] isArchived]) {
             [imageView setImage:[NSImage imageNamed:@"NSStatusAvailable"]];
         } else {
             [imageView setImage:[NSImage imageNamed:@"NSStatusNone"]];
         }
-
         [imageView setTag:row+300];
         [cellView addSubview:imageView];
         [self updateCount];
+        if ([self numberOfItemsToCompress] == row + 1) {
+            [self countReady];
+        }
     }
 
     return cellView;
@@ -579,14 +784,11 @@
     return [[self archiveItems] count];
 }
 
-// Sets the height of the row;
-// CZ_ROW_HEIGHT.
 - (CGFloat)tableView:(NSTableView *)tableView heightOfRow:(NSInteger)row {
+    // Sets the height of the row to CZ_ROW_HEIGHT.
     return CZ_ROW_HEIGHT;
 }
 
-// Returns a textField with
-// specified frame.
 - (NSTextField *)createTextFieldWithFrame:(NSRect)frame {
     NSTextField *textField = [[NSTextField alloc] initWithFrame:frame];
     [textField setBordered:NO];
@@ -594,12 +796,9 @@
     [textField setEditable:NO];
     [textField setAllowsEditingTextAttributes:NO];
     [textField setSelectable:NO];
-
     return textField;
 }
 
-// Returns a simple cell for
-// use in the table view.
 - (CZCell *)createCell {
     CZCell *cell = [[CZCell alloc] init];
     [cell setSelectable:NO];
@@ -613,40 +812,34 @@
 
 - (void)dropView:(CZDropView *)dropView didReceiveFiles:(NSArray *)archiveItems {
     int state = CZ_APP_STATE_START;
-    // Check if compressor already has a items
-    // in the list, or if it is the first filedrop.
+    // Check if compressor already has a items in the list, or if it is the first filedrop.
     if ([[self archiveItems] count] > 0) {
-        // Set the label to "Loading..." and show
-        // the progress indicator spinning.
+        // Show indication that items are loading
         [self updateTopLabel:@"Loading..." andShowProgressIndicator:YES];
-        // Remove progress indicator and reenable
-        // the compression button.
+        // Remove progress indicator and reenable the compress button.
         [self showProgressIndicator:NO];
         [[self buttonCompress] setEnabled:YES];
         state = CZ_APP_STATE_FILEDROP;
     } else {
-        // The first filedrop
+        // First filedrop event
         state = CZ_APP_STATE_FILEDROP_FIRST;
     }
-    
+    // Add the items to the archiveItems array
     [self addObjectsToArchiveItemsFromArray:archiveItems];
-    // If there are items in the array then
-    // call drawUIElements: to create and/or
+    // If there are items in the array then call drawUIElements: to create and/or
     // populate the table view.
     if ([[self archiveItems] count] > 0) {
         [self drawUIElements:state];
     }
 }
-// Invoked when folder is dragged on to view,
-// checks if the list already has that item.
+
 - (BOOL)dropView:(CZDropView *)dropView isItemInList:(NSString *)description {
+    // Check if the dragged item is not already in the array archiveItems.
     NSUInteger itemInArray = [[self archiveItems] indexOfObjectPassingTest:
                               ^BOOL(id obj, NSUInteger idx, BOOL *stop) {
                                   BOOL found = [[obj description] isEqualToString:description];
                                   return found;
                               }];
-    // Check if the dragged item is not
-    // already in the array archiveItems.
     if (itemInArray == NSNotFound) {
         return NO;
     }
@@ -662,8 +855,6 @@
     return NO;
 }
 
-// Invoked when tableview
-// registers keyup event.
 - (void)tableView:(CZTableView *)tableView DidRegisterKeyUp:(int)keyCode {
     [self handleKeyEvent:keyCode commandPressed:NO];
 }
@@ -675,36 +866,22 @@
 - (void)openItemInFinder:(NSIndexSet *)indexSet {
     NSArray *array = [[[self archiveItems] objectsAtIndexes:indexSet] valueForKey:@"fileURL"];
     [[NSWorkspace sharedWorkspace] activateFileViewerSelectingURLs:array];
-
 }
 
-// Invoked when the compression has started
-// by each of the items, setting the status
-// image at right to yellow, indicating that
-// the process has started.
 - (void)compressionDidStart:(CZArchiverItem *)archiver {
-    // It is not allowed to drag more items
-    // to the queue when process is running,
+    // It is not allowed to drag more items to the queue when process is running,
     // so turn of that function.
     if ([[self view] isDraggable]) {
         [[self view] setDraggable:NO];
     }
-    // Run the items compression methods
-    // and let user know process is under way.
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
-    dispatch_async(queue, ^{
-        NSInteger row = [[self archiveItems] indexOfObject:archiver];
-        NSImageView *imageView = [[self view] viewWithTag:row+300];
-        [imageView setImage:[NSImage imageNamed:@"NSStatusPartiallyAvailable"]];
-    });
+    // Run the items compression methods and let user know process is under way.
+    NSInteger row = [[self archiveItems] indexOfObject:archiver];
+    NSImageView *imageView = [[self view] viewWithTag:row+300];
+    [imageView setImage:[NSImage imageNamed:@"NSStatusPartiallyAvailable"]];
 }
 
-// Invoked when process ended, setting status image
-// to green, and the changing folder image to the
-// cover image from the archive.
 - (void)compressionDidEnd:(CZArchiverItem *)archiver {
-    // Get the row where the item is and fetch the
-    // image view to the right.
+    // Get the row where the item is and fetch the image view to the right.
     NSInteger row = [[self archiveItems] indexOfObject:archiver];
     NSImageView *imageView = [[self view] viewWithTag:row+300];
     // Make sure it's status has not already changed;
@@ -722,9 +899,7 @@
         imageView = [[self view] viewWithTag:row+200];
         [imageView setImage:[self updateImageForItem:archiver atRow:row isCached:NO]];
     }
-    // If all items in queue have been compressed,
-    // then the process is finished. Notify user.
-    // BUG FIX: Changed [[self archiveItems] count]) to self.numberOfItemsCompress
+    // If all items in queue have been compressed, then the process is finished. Notify user.
     if ([self numberOfItemsCompressed] == self.numberOfItemsToCompress) {
         // Should the folders be deleted after compression?
         if ([self shouldDeleteFoldersAfterCompress]) {
@@ -735,11 +910,9 @@
         // Remove progress indicator and reenable drag function again.
         [self updateTopLabel:[NSString stringWithFormat:@"%i files compressed!", self.numberOfItemsCompressed] andShowProgressIndicator:NO];
         [[self view] setDraggable:YES];
-        
         // Reset count
         self.totalSizeInBytes = 0.0;
         self.numberOfItemsCompressed = 0;
-        
         // Notify user if app is in background
         if ([self applicationIsResigned] && [self shouldNotify]) {
             [self displayNotification:@"Compression process completed!"];
@@ -747,7 +920,6 @@
     }
 }
 
-// Invoked when the compressor encountered an error.
 - (void)compressionCouldNotFinish:(CZArchiverItem *)archiver errorCode:(NSString *)string {
     NSInteger row = [[self archiveItems] indexOfObject:archiver]+1;
     NSImageView *imageView = [[self view] viewWithTag:row];
@@ -755,15 +927,11 @@
     // ERROR HANDLING?
 }
 
-// Invoked if archiver is set to delete folders
-// after the compression process and has done so.
-- (void)archiverDidRemoveDirectory:item {
+- (void)archiverDidRemoveDirectory:(CZArchiverItem *)archiver {
 }
 
 #pragma mark FOLDER DELETION METHODS
 
-// Invoked if the delete folders after
-// compression option is set.
 - (void)deleteFolders {
     for (int i=0; i<[[self archiveItems] count]; i++) {
         if ([[[self archiveItems] objectAtIndex:i] isArchived] &&
@@ -772,10 +940,7 @@
         }
     }
 }
-// Invoked if the deleted folders after compression option is not set.
-// This guarantees that folders of already compressed items do not get
-// deleted when a new batch of folders are loaded, and the to delete-option
-// then is changed.
+
 - (void)skipDeletion {
     for (id item in [self archiveItems]) {
         if (![item shouldSkipRemoval]) {
@@ -786,12 +951,9 @@
 
 #pragma mark CACHE DIRECTORY METHODS
 
-// Sets the cache directory
-// while app is loading.
 - (void)setCacheDirectory:(NSString *)cacheDirectory {
     NSString *directory = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
     _cacheDirectory = [NSString stringWithFormat:@"%@/%@", directory, cacheDirectory];
-    
     if (![[NSFileManager defaultManager] fileExistsAtPath:[self cacheDirectory]]) {
         [[NSFileManager defaultManager] createDirectoryAtPath:[self cacheDirectory]
                                   withIntermediateDirectories:NO
@@ -800,8 +962,6 @@
     }
 }
 
-// Deletes the cache directory
-// before app terminates.
 - (void)clearCacheDirectory {
     if ([[NSFileManager defaultManager] fileExistsAtPath:[self cacheDirectory]]) {
         [[NSFileManager defaultManager] removeItemAtPath:[self cacheDirectory] error:nil];
@@ -809,62 +969,46 @@
 }
 
 #pragma mark FINDER METHODS
-// Invoked after launch; check
-// if there is a selection set.
+
 - (BOOL)hasSelection {
     self.selection = [self removeNonFoldersFromSelection:[[[self finder] selection] get]];
     int selectionCount = (unsigned)(long)[[self selection] count];
     if (selectionCount) {
         return YES;
     }
-    
     return NO;
 }
 
-// Check so that the selection only contains
-// folders. Remove non-folders if necessary.
 - (SBElementArray *)removeNonFoldersFromSelection:(SBElementArray *)selection {
     NSMutableArray *nonFolderArray = [NSMutableArray array];
-    
     for (FinderFolder *folder in selection) {
         if (![[folder kind] isEqualToString:@"Folder"]) {
             [nonFolderArray addObject:folder];
         }
     }
-    
     [selection removeObjectsInArray:nonFolderArray];
-    
     return selection;
 }
 
-// Create CZArchiverItem objects
-// from the selected folders, return
-// as array.
 - (NSArray *)getSelectionAsArray {
     NSMutableArray *folders = [NSMutableArray array];
-    
     for (FinderFolder *folder in [self selection]) {
         CZArchiverItem *item = [[CZArchiverItem alloc] initWithSelection:folder];
         [folders addObject:item];
     }
-    
     return [folders copy];
 }
 
 #pragma mark MISC METHODS
-// Convert the file size from bytes to proper format.
+
 - (NSString *)stringFromByte:(double)fileSize {
     NSString *size = [NSByteCountFormatter stringFromByteCount:fileSize
                                                     countStyle:NSByteCountFormatterCountStyleFile];
     return size;
 }
 
-// Invoked for compressed items in the list, fetching
-// the cover image from the archive to be displayed.
 - (NSImage *)updateImageForItem:(CZArchiverItem *)archiver atRow:(NSInteger)row isCached:(BOOL)cached {
-    // Fetch the contents of the folder
-    // and search for the first image (which
-    // usually is the cover image).
+    // Fetch the contents of the folder and search for the first image (which usually is the cover image).
     NSData *data;
     NSString *cachePath = [NSString stringWithFormat:@"%@/%@", [self cacheDirectory], [archiver description]];
     if (!cached) {
@@ -874,26 +1018,22 @@
                                 BOOL found = ([obj hasSuffix:@"jpg"] || [obj hasSuffix:@"jpeg"] || [obj hasSuffix:@"gif"] || [obj hasSuffix:@"png"]);
                                 return found;
                             }];
-        // Create an NSURL object from the path
-        // and create the image to be sent back.
+        // Create an NSURL object from the path and create the image to be sent back.
         NSString *path = [NSString stringWithFormat:@"%@/%@", [archiver path], [contentsArray objectAtIndex:index]];
         data = [NSData dataWithContentsOfFile:path];
         [data writeToFile:cachePath options:NSDataWritingAtomic error:nil];
     } else {
         data = [NSData dataWithContentsOfFile:cachePath];
     }
-    
     return [[NSImage alloc] initWithData:data];
 }
 
-// Controls the badge label
 - (void)controlApplicationBadge:(int)state {
     NSString *badgeLabel = nil;
     if (state == CZ_APP_STATE_BADGE_INCREMENT) {
         // Increment the badge count
         self.badgeCount++;
-        // If the application is not in front
-        // badge the dock icon.
+        // If the application is not in front badge the dock icon.
         if ([self applicationIsResigned]) {
             badgeLabel = [NSString stringWithFormat:@"%i", [self badgeCount]];
         }
@@ -905,28 +1045,22 @@
     [self setApplicationBadgeLabel:badgeLabel];
 }
 
-// Do some clean up after
-// launch.
 - (void)cleanUpAfterLaunch {
     self.finder = nil;
     self.selection = nil;
 }
 
 - (void)handleKeyEvent:(int)keyCode commandPressed:(BOOL)commandState {
-    // If key is backspace then
-    // delete selected objects.
+    // If key is backspace then delete selected objects.
     if (keyCode == CZ_KEY_DELETE) {
         NSIndexSet *rows = [[self tableView] selectedRowIndexes];
-        // Check so that there are
-        // rows in selection.
+        // Check that there are rows in selection.
         if ([rows count]) {
-            // Remove the object(s) and
-            // reload table view.
+            // Remove the object(s) and reload table view.
             NSArray *array = [[self archiveItems] objectsAtIndexes:rows];
             [self removeObjectsInArchiveItemsFromArray:array];
             [[self tableView] reloadData];
-            // Should set the selection if there
-            // are anymore objects in queue.
+            // Should set the selection if there are anymore objects in queue.
             if ([[self archiveItems] count]) {
                 NSIndexSet *indexSet;
                 NSUInteger firstSelectedRow = [rows firstIndex];
@@ -945,8 +1079,7 @@
                 // Sets selection
                 [[self tableView] selectRowIndexes:indexSet byExtendingSelection:NO];
             } else {
-                // If there are not any more objects
-                // in queue, then redraw window.
+                // If there are not any more objects in queue, then redraw window.
                 [[self buttonCompress] removeFromSuperview];
                 [[self tableView] removeFromSuperview];
                 [[self scrollView] removeFromSuperview];
@@ -966,7 +1099,6 @@
 
 - (double)calculateSizeOfItemsInArray:(NSArray *)array {
     long double size = 0.0;
-    
     for (CZArchiverItem *item in array) {
         if (![item isArchived]) {
             size += [item fileSizeInBytes];
@@ -987,15 +1119,17 @@
 }
 
 - (void)updateCount {
-    NSString *label = @"";
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isArchived == NO"];
     self.numberOfItemsToCompress = (int)[[[self archiveItems] filteredArrayUsingPredicate:predicate] count];
-    
+}
+
+- (void)countReady {
+    NSString *label = @"";
     if ([self numberOfItemsToCompress]) {
         label = [NSString stringWithFormat:@"%i file(s) to compress (%@).", [self numberOfItemsToCompress], [self stringFromByte:self.totalSizeInBytes]];
     }
-    
     [self updateTopLabel:label andShowProgressIndicator:NO];
+    [[self buttonCompress] setEnabled:YES];
 }
 
 - (void)displayNotification:(NSString *)text {
@@ -1003,7 +1137,6 @@
     [notification setTitle:self.window.title];
     [notification setInformativeText:text];
     [notification setSoundName:NSUserNotificationDefaultSoundName];
-    
     [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:notification];
 }
 

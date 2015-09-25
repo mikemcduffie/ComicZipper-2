@@ -77,7 +77,7 @@ static NSString *const kCZLaunchPath = @"/bin/bash";
         if ([self deleteCount] < 6) {
             self.deleteCount++;
             dispatch_async(dispatch_get_main_queue(), ^{
-                NSTimer *rerunTimer = [NSTimer scheduledTimerWithTimeInterval:5.0
+                NSTimer *rerunTimer = [NSTimer scheduledTimerWithTimeInterval:2.0
                                                                        target:self
                                                                      selector:@selector(removeDirectory)
                                                                      userInfo:nil
@@ -174,19 +174,14 @@ static NSString *const kCZLaunchPath = @"/bin/bash";
     // its contents. Done in another thread, but maybe not really
     // necessary to do so.
     NSFileManager *fileManager = [[NSFileManager alloc] init];
-//    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
-//    dispatch_async(queue, ^{
-        NSError *error = nil;
-        NSArray *contentsOfDirectory = [fileManager contentsOfDirectoryAtPath:self.folderPath error:&error];
-
-        NSDictionary *fileAttributes;
-        for (NSString* item in contentsOfDirectory) {
-            NSString *fullItemPath = [NSString stringWithFormat:@"%@/%@", self.folderPath, item];
-            fileAttributes = [fileManager attributesOfItemAtPath:fullItemPath error:&error];
-            self.fileSizeInBytes = self.fileSizeInBytes + [[fileAttributes valueForKeyPath:NSFileSize] intValue];
-        }
-//    });
-
+    NSError *error = nil;
+    NSArray *contentsOfDirectory = [fileManager contentsOfDirectoryAtPath:self.folderPath error:&error];
+    NSDictionary *fileAttributes;
+    for (NSString* item in contentsOfDirectory) {
+        NSString *fullItemPath = [NSString stringWithFormat:@"%@/%@", self.folderPath, item];
+        fileAttributes = [fileManager attributesOfItemAtPath:fullItemPath error:&error];
+        self.fileSizeInBytes = self.fileSizeInBytes + [[fileAttributes valueForKeyPath:NSFileSize] intValue];
+    }
     // Check if the foldername has been set, otherwise
     // get it by substringing the full path string.
     if (self.folderName == nil) {
@@ -274,17 +269,17 @@ static NSString *const kCZLaunchPath = @"/bin/bash";
     [errorFileHandle readInBackgroundAndNotify];
 
     // Begin the compression
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [[self task] launch];
-        [[self task] waitUntilExit];
-    });
+    [[self task] launch];
+    [[self task] waitUntilExit];
 }
 
 #pragma mark NOTIFICATIONS
 
 - (void)receivedData:(NSNotification *)notification {
     if (![self isRunning] && ![self isArchived]) {
-        [[self delegate] compressionDidStart:self];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[self delegate] compressionDidStart:self];
+        });
         [self setRunning:YES];
     }
     
@@ -293,7 +288,6 @@ static NSString *const kCZLaunchPath = @"/bin/bash";
 
 - (void)receivedError:(NSNotification *)notification {
     NSData *data = [[notification userInfo] objectForKey:NSFileHandleNotificationDataItem];
-
     if (!data) {
         [[self delegate] compressionCouldNotFinish:self errorCode:@"stopping compression..."];
     }
@@ -304,17 +298,19 @@ static NSString *const kCZLaunchPath = @"/bin/bash";
 // Should be called after the task is done,
 // but check the task status just to be sure.
 - (void)taskTerminated:(NSNotification *)notification {
-    if (![[self task] isRunning]) {
-        if ([[self task] terminationStatus] == CZ_ZIP_RETURN_CODE_OK) {
-            [[self task] terminate];
-            [self setArchived:YES];
-            [self setRunning:NO];
-            [[self delegate] compressionDidEnd:self];
-        } else {
-            [[self delegate] compressionCouldNotFinish:self errorCode:[[self returnCodes] objectAtIndex:[[self task] terminationStatus]]];
-            [[self task] terminate];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (![[self task] isRunning]) {
+            if ([[self task] terminationStatus] == CZ_ZIP_RETURN_CODE_OK) {
+                [[self task] terminate];
+                [self setArchived:YES];
+                [self setRunning:NO];
+                [[self delegate] compressionDidEnd:self];
+            } else {
+                [[self task] terminate];
+                [[self delegate] compressionCouldNotFinish:self errorCode:[[self returnCodes] objectAtIndex:[[self task] terminationStatus]]];
+            }
         }
-    }
+    });
 }
 
 // Sets up the return codes

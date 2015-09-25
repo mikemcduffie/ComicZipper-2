@@ -23,7 +23,4 @@
 - (IBAction)buttonPreferences:(id)sender;
 - (IBAction)checkBoxClicked:(id)sender;
 
-- (void)loadPreferences:(NSDictionary *)preferences;
-
-
 @end
