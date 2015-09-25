@@ -3,7 +3,7 @@
 //  ComicZipper 2
 //
 //  Created 19/07/14.
-//  Copyright (c) 2014 Pock Co. All rights reserved.
+//  Copyright (c) 2015 Ardalan Samimi. All rights reserved.
 //
 
 #import "CZTableView.h"
@@ -12,7 +12,7 @@
 @interface CZTableView ()
 
 @property (nonatomic) BOOL commandKeyState;
-@property (nonatomic) NSMenu *menu;
+//@property (nonatomic) NSMenu *menu;
 @property (nonatomic) NSInteger *row;
 
 @end

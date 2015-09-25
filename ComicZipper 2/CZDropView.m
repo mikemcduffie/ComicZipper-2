@@ -3,7 +3,7 @@
 //  ComicZipper 2
 //
 //  Created 15/07/14.
-//  Copyright (c) 2014 Pock Co. All rights reserved.
+//  Copyright (c) 2015 Ardalan Samimi. All rights reserved.
 //
 
 #import "CZDropView.h"
@@ -29,6 +29,15 @@
     }
 
     return self;
+}
+
+// Fixes the keystroke "error beep"
+- (BOOL)performKeyEquivalent:(NSEvent *)theEvent {
+    // Allows only CMD+; and up and down arrows.
+    if ([theEvent modifierFlags] & NSCommandKeyMask || [theEvent keyCode] == 126 || [theEvent keyCode] == 125) {
+        return NO;
+    }
+    return YES;
 }
 
 #pragma mark HIGHLIGHTING METHODS

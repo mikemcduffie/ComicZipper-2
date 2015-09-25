@@ -3,19 +3,20 @@
 //  ComicZipper 2
 //
 //  Created 15/07/14.
-//  Copyright (c) 2014 Pock Co. All rights reserved.
+//  Copyright (c) 2015 Ardalan Samimi. All rights reserved.
 //
-//  2.1.1 ADDED SUPPORT: √ Ability to auto add folders on start from Finder selection.
-//  2.1.2 ADDED SUPPORT: √ Window is now resizeable.
-//                       √ Added support for highlighting multple items in queue list with mouse/shift.
-//                       √ Added support for highlighting all items in queue list with CMD+A.
-//                       √ Changes made in preferences does not require app reboot. Reflects instantly.
-//                       √ Added: Notifications, contextual menu with options to remove or open items in Finder.
-//                       √ Bug fixes: The count is now correct. And hopefully the Zero KB bug is solved.
-//  2.1.4 ADDED SUPPORT: √ Support for OS X 10.10.
-//
+//  2.1.1 CHANGES: √ Ability to auto add folders on start from Finder selection.
+//  2.1.2 CHANGES: √ Window is now resizeable.
+//                 √ Added support for highlighting multple items in queue list with mouse/shift.
+//                 √ Added support for highlighting all items in queue list with CMD+A.
+//                 √ Changes made in preferences does not require app reboot. Reflects instantly.
+//                 √ Added: Notifications, contextual menu with options to remove or open items in Finder.
+//                 √ Bug fixes: The count is now correct. And hopefully the Zero KB bug is solved.
+//  2.1.4 CHANGES: √ Support for OS X 10.10.
+//  2.1.5 CHANGES: √ Changed file format from CBR to CBZ.
+//                 √ Fixed the alert sound invoked upon keystroke.
+//                 √ Fixed the bug where the app remains in a "compressing" state.
 // TODO: Add help
-// BUG: When changing to delete folder preference, the compressing status never changes.
 
 #import "CZAppDelegate.h"
 #import "CZDropView.h"
@@ -279,6 +280,7 @@
         [[self view] setDraggable:YES];
         
         self.totalSizeInBytes = 0.0;
+        self.numberOfItemsCompressed = 0;
     } else if (applicationState == CZ_APP_STATE_FILEDROP_FIRST) {
         // Runs when folders been dropped on the Drop View the
         // first time; Removes the label and adding a scrollview
@@ -670,37 +672,34 @@
     // Important because the archiver sometimes sends
     // this messages twice.
     if (![[imageView image] isEqualTo:[NSImage imageNamed:@"NSStatusAvailable"]]) {
-        // Change the status to done (green light),
-        // and increment count of number of items
-        // compressed.
+        // Change the status to done (green light), and increment count of number of items compressed.
         [imageView setImage:[NSImage imageNamed:@"NSStatusAvailable"]];
         self.numberOfItemsCompressed++;
         // Increment badge count.
         if ([self shouldDisplayBadgeCount] && [self applicationIsResigned]) {
             [self controlApplicationBadge:CZ_APP_STATE_BADGE_INCREMENT];
         }
-        // Fetch the image view to the left and
-        // set the image to cover from the archive.
+        // Fetch the image view to the left and set the image to cover from the archive.
         imageView = [[self view] viewWithTag:row+200];
         [imageView setImage:[self updateImageForItem:archiver atRow:row isCached:NO]];
     }
-    // If all items in queue has been compressed,
+    // If all items in queue have been compressed,
     // then the process is finished. Notify user.
-    if ([self numberOfItemsCompressed] == [[self archiveItems] count]) {
-        // Should the folders be deleted
-        // after compression?
+    // BUG FIX: Changed [[self archiveItems] count]) to self.numberOfItemsCompress
+    if ([self numberOfItemsCompressed] == self.numberOfItemsToCompress) {
+        // Should the folders be deleted after compression?
         if ([self shouldDeleteFoldersAfterCompress]) {
             [self deleteFolders];
         } else {
             [self skipDeletion];
         }
-        // Remove progress indicator and reenable
-        // drag function again.
+        // Remove progress indicator and reenable drag function again.
         [self updateTopLabel:[NSString stringWithFormat:@"%i files compressed!", self.numberOfItemsCompressed] andShowProgressIndicator:NO];
         [[self view] setDraggable:YES];
         
         // Reset count
         self.totalSizeInBytes = 0.0;
+        self.numberOfItemsCompressed = 0;
         
         // Notify user if app is in background
         if ([self applicationIsResigned] && [self shouldNotify]) {
@@ -714,7 +713,6 @@
     NSInteger row = [[self archiveItems] indexOfObject:archiver]+1;
     NSImageView *imageView = [[self view] viewWithTag:row];
     [imageView setImage:[NSImage imageNamed:@"NSStatusUnavailable"]];
-    NSLog(@"Error: %@", string);
     // ERROR HANDLING?
 }
 
@@ -935,7 +933,6 @@
             size += [item fileSizeInBytes];
         }
     }
-    
     return size;
 }
 

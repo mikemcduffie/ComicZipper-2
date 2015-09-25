@@ -3,7 +3,7 @@
 //  ComicZipper 2
 //
 //  Created by Ardalan Samimi on 24/10/14.
-//  Copyright (c) 2014 Pock Co. All rights reserved.
+//  Copyright (c) 2015 Ardalan Samimi. All rights reserved.
 //
 
 #import "CZCell.h"

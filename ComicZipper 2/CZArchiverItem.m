@@ -3,7 +3,7 @@
 //  ComicZipper 2
 //
 //  Created 15/07/14.
-//  Copyright (c) 2014 Pock Co. All rights reserved.
+//  Copyright (c) 2015 Ardalan Samimi. All rights reserved.
 //
 
 #import "CZArchiverItem.h"
@@ -211,9 +211,9 @@ static NSString *const kCZLaunchPath = @"/bin/bash";
                                                                           range:range
                                                                    withTemplate:kCZRegExTemplate];
     // Check that the filename is not already taken
-    self.archivePath = [NSString stringWithFormat:@"%@%@.cbr", [self parentFolder], newFileName];
+    self.archivePath = [NSString stringWithFormat:@"%@%@.cbz", [self parentFolder], newFileName];
     if ([fileManager fileExistsAtPath:[self archivePath]]) {
-        self.archivePath = [NSString stringWithFormat:@"%@%@-1.cbr", [self parentFolder], newFileName];
+        self.archivePath = [NSString stringWithFormat:@"%@%@-1.cbz", [self parentFolder], newFileName];
     }
     // Set the commandline for NSTask
     self.commandLine = [NSString stringWithFormat:@"zip -jr \"%@\" \"%@\"", [self archivePath], [self folderPath]];
@@ -224,6 +224,7 @@ static NSString *const kCZLaunchPath = @"/bin/bash";
 // Starts the compression process. Invoked by AppDelegate.
 - (void)startCompression {
     // Initialize NSTask, NSPipe and NSFileHandle objects
+
     self.task = [[NSTask alloc] init];
     NSPipe *outputPipe = [[NSPipe alloc] init];
     NSPipe *errorPipe = [[NSPipe alloc] init];
@@ -231,36 +232,41 @@ static NSString *const kCZLaunchPath = @"/bin/bash";
     NSFileHandle *errorFileHandle = [errorPipe fileHandleForReading];
     
     // Prepare task
-    [[self task] setLaunchPath:kCZLaunchPath];
-    [[self task] setArguments:@[ @"-c", [self commandLine] ]];
-    [[self task] setStandardOutput:outputPipe];
-    [[self task] setStandardError:errorPipe];
-    
-    // Begin the compression and tell the
-    // delegate that compression has begun.
-    [[self task] launch];
-    
-    // Create an NSNotificationCenter object for
-    // monitoring the NSTask process
-    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-    [notificationCenter addObserver:self
-                           selector:@selector(receivedData:)
-                               name:NSFileHandleReadCompletionNotification
-                             object:outputFileHandle];
-    [notificationCenter addObserver:self
-                           selector:@selector(receivedError:)
-                               name:NSFileHandleReadCompletionNotification
-                             object:errorFileHandle];
-    [notificationCenter addObserver:self
-                           selector:@selector(taskTerminated:)
-                               name:NSTaskDidTerminateNotification
-                             object:self.task];
-    // Monitor process in the background and
-    // posts a notification when called.
-    [outputFileHandle readInBackgroundAndNotify];
-    [errorFileHandle readInBackgroundAndNotify];
-    
-    [[self task] waitUntilExit];
+
+        [[self task] setLaunchPath:kCZLaunchPath];
+        [[self task] setArguments:@[ @"-c", [self commandLine] ]];
+        [[self task] setStandardOutput:outputPipe];
+        [[self task] setStandardError:errorPipe];
+        
+
+        
+        // Create an NSNotificationCenter object for
+        // monitoring the NSTask process
+        NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+        [notificationCenter addObserver:self
+                               selector:@selector(receivedData:)
+                                   name:NSFileHandleReadCompletionNotification
+                                 object:outputFileHandle];
+        [notificationCenter addObserver:self
+                               selector:@selector(receivedError:)
+                                   name:NSFileHandleReadCompletionNotification
+                                 object:errorFileHandle];
+        [notificationCenter addObserver:self
+                               selector:@selector(taskTerminated:)
+                                   name:NSTaskDidTerminateNotification
+                                 object:self.task];
+        // Monitor process in the background and
+        // posts a notification when called.
+        [outputFileHandle readInBackgroundAndNotify];
+        [errorFileHandle readInBackgroundAndNotify];
+
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // Begin the compression and tell the
+        // delegate that compression has begun.
+        [[self task] launch];
+        [[self task] waitUntilExit];
+    });
 }
 
 #pragma mark NOTIFICATIONS

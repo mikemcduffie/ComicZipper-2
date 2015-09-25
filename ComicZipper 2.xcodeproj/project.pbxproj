@@ -257,8 +257,8 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = CZ;
-				LastUpgradeCheck = 0510;
-				ORGANIZATIONNAME = "Pock Co";
+				LastUpgradeCheck = 0700;
+				ORGANIZATIONNAME = Saturn;
 				TargetAttributes = {
 					6AF7740219752E42004D47C2 = {
 						SystemCapabilities = {
@@ -421,6 +421,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -483,6 +484,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ComicZipper 2/ComicZipper 2-Prefix.pch";
 				INFOPLIST_FILE = "ComicZipper 2/ComicZipper 2-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.pockco.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -497,6 +499,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ComicZipper 2/ComicZipper 2-Prefix.pch";
 				INFOPLIST_FILE = "ComicZipper 2/ComicZipper 2-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.pockco.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -518,6 +521,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "ComicZipper 2Tests/ComicZipper 2Tests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.pockco.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
@@ -536,6 +540,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ComicZipper 2/ComicZipper 2-Prefix.pch";
 				INFOPLIST_FILE = "ComicZipper 2Tests/ComicZipper 2Tests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.pockco.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
