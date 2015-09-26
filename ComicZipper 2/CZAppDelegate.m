@@ -22,7 +22,7 @@
 //  2.3.1 CHANGES:  √ Fixed errors caused by references to old files.
 //  2.3.2 CHANGES:  √ All compression processes are now run in the same thread, separate from the main thread, making it a little slower but more reliable and less prone to crash or app freezing.
 //                  √ The compress button is disabled while app is calculating the file sizes, fixing the Zero KB bug. This also fixes the bug that made the app crash or behave unexpected if the compress process is started before all the files have been added, loaded and calculated.
-// TODO: Add help
+//  2.3.3 CHANGES:  √ Removed generic annotation, that only XCode 7 supports.
 
 #import "CZAppDelegate.h"
 #import "CZDropView.h"
@@ -75,7 +75,7 @@
  */
 - (void)loadPreferences:(NSDictionary *)preferences;
 
-- (void)application:(NSApplication *)sender openFiles:(NSArray<NSString *> *)filenames;
+- (void)application:(NSApplication *)sender openFiles:(NSArray *)filenames;
 
 - (void)applicationWillFinishLaunching:(NSNotification *)notification;
 
@@ -380,7 +380,7 @@
 
 #pragma mark APPLICATION DELEGATE METHODS
 
-- (void)application:(NSApplication *)sender openFiles:(nonnull NSArray<NSString *> *)filenames {
+- (void)application:(NSApplication *)sender openFiles:(nonnull NSArray *)filenames {
     // Catch items dropped on the application dock icon.
     // Set up the folders array that will be added to the item list
     NSMutableArray *folders = [NSMutableArray array];
