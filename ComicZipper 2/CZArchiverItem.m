@@ -222,15 +222,18 @@ static NSString *const kCZLaunchPath = @"/bin/bash";
 
 - (void)setUpCommandline {
     // Get the files to ignore
-    NSString *excludeString = @"--exclude";
+    NSString *excludeString = @"-x";
     NSArray *filesToExclude = [[self filesToIgnore] componentsSeparatedByString:@", "];
     NSMutableString *ignoreParameter = [[NSMutableString alloc] init];
     for (NSString *file in filesToExclude) {
         if ([file length] > 0) {
-            [ignoreParameter appendFormat:@"%@=*%@* ", excludeString, file];
+            if ([ignoreParameter isEqualToString:@""]) {
+                [ignoreParameter appendString:excludeString];
+            }
+            [ignoreParameter appendFormat:@" \\*%@", file];
         }
     }
-    self.commandLine = [NSString stringWithFormat:@"zip -jr %@\"%@\" \"%@\"", ignoreParameter, [self archivePath], [self folderPath]];
+    self.commandLine = [NSString stringWithFormat:@"zip -jr \"%@\" \"%@\" %@", [self archivePath], [self folderPath], ignoreParameter];
 }
 
 // Starts the compression process. Invoked by AppDelegate.
@@ -289,7 +292,7 @@ static NSString *const kCZLaunchPath = @"/bin/bash";
 - (void)receivedError:(NSNotification *)notification {
     NSData *data = [[notification userInfo] objectForKey:NSFileHandleNotificationDataItem];
     if (!data) {
-        [[self delegate] compressionCouldNotFinish:self errorCode:@"stopping compression..."];
+        [[self delegate] compressionCouldNotFinish:self errorMessage:@"stopping compression..."];
     }
     
     [[notification object] readInBackgroundAndNotify];
@@ -307,7 +310,7 @@ static NSString *const kCZLaunchPath = @"/bin/bash";
                 [[self delegate] compressionDidEnd:self];
             } else {
                 [[self task] terminate];
-                [[self delegate] compressionCouldNotFinish:self errorCode:[[self returnCodes] objectAtIndex:[[self task] terminationStatus]]];
+                [[self delegate] compressionCouldNotFinish:self errorMessage:[[self returnCodes] objectAtIndex:[[self task] terminationStatus]]];
             }
         }
     });

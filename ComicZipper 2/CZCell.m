@@ -10,6 +10,8 @@
 
 @implementation CZCell
 
+@synthesize tag = _tag;
+
 - (instancetype)init {
     self = [super init];
     return self;
@@ -17,6 +19,14 @@
 
 - (BOOL)_isToolbarMode {
     return NO;
+}
+
+- (void)setTag:(NSInteger)tag {
+    _tag = tag;
+}
+
+- (NSInteger)tag {
+    return _tag;
 }
 
 @end

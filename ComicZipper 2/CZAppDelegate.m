@@ -23,6 +23,10 @@
 //  2.3.2 CHANGES:  √ All compression processes are now run in the same thread, separate from the main thread, making it a little slower but more reliable and less prone to crash or app freezing.
 //                  √ The compress button is disabled while app is calculating the file sizes, fixing the Zero KB bug. This also fixes the bug that made the app crash or behave unexpected if the compress process is started before all the files have been added, loaded and calculated.
 //  2.3.3 CHANGES:  √ Removed generic annotation, that only XCode 7 supports.
+//  2.3.4 CHANGES:  √ File exclusion is now more reliable.
+//                  √ Added error handling when compression fails (should fix issues with infinite progress spinners).
+//                  √ Folders already processed can now be re-added to the list.
+//                  √ Added sound notification when process is done also for when the app is in focus (and the option is set).
 
 #import "CZAppDelegate.h"
 #import "CZDropView.h"
@@ -54,7 +58,7 @@
 @property (nonatomic) NSMutableArray *archiveItems;
 @property (nonatomic) NSMutableDictionary *preferences;
 @property (nonatomic) long double totalSizeInBytes;
-@property (nonatomic) int numberOfItemsCompressed, numberOfItemsToCompress, badgeCount, applicationState;
+@property (nonatomic) int numberOfItemsCompressed, numberOfItemsFailed, numberOfItemsToCompress, badgeCount, applicationState;
 @property (nonatomic) NSString *cacheDirectory;
 @property (nonatomic, getter = applicationIsResigned) BOOL applicationResigned;
 @property (nonatomic, readonly) BOOL shouldDisplayBadgeCount, shouldDeleteFoldersAfterCompress, shouldNotify;
@@ -222,7 +226,7 @@
  @param archiver The CZArchiverItem that sent the message.
  @param string The error code.
  */
-- (void)compressionCouldNotFinish:(CZArchiverItem *)archiver errorCode:(NSString *)string;
+- (void)compressionCouldNotFinish:(CZArchiverItem *)archiver errorMessage:(NSString *)string;
 
 /*!
  @brief Informs the receiver a directory has been deleted.
@@ -278,6 +282,18 @@
  @return Array containing CZArchiverItems.
  */
 - (NSArray *)getSelectionAsArray;
+
+/*!
+ @brief Checks if all items have been processed.
+ @return @a YES if the process is finished.
+ */
+- (BOOL)hasProcessFinished;
+
+/*!
+ @brief Post compression operation.
+ @discussion Invoked after all the items have been processed.
+ */
+- (void)processFinished;
 
 /*!
  @brief Converts file size from bytes.
@@ -743,6 +759,7 @@
         NSCell *detailCell = [self createCell];
         [detailCell setStringValue:[self stringFromByte:fileSize]];
         [detailCell setFont:[NSFont fontWithName:@"Lucida Grande" size:9.5]];
+        
         // The textfield that will hold the main cell
         NSTextField *leftTextField = [self createTextFieldWithFrame:NSMakeRect(45, 15, [tableColumn width], CZ_ROW_HEIGHT/2)];
         [leftTextField setToolTip:leftCellText];
@@ -750,6 +767,7 @@
         // The textfield that will hold the info cell
         NSTextField *leftDetailTextField = [self createTextFieldWithFrame:NSMakeRect(45, 0, [tableColumn width], CZ_ROW_HEIGHT/2-3)];
         [leftDetailTextField setCell:detailCell];
+        [leftDetailTextField setTag:row+400];
         // Add a folder-image to the far right, if the item is not already compressed.
         NSImageView *imageView = [[NSImageView alloc] initWithFrame:NSMakeRect(0, 0, 50, CZ_ROW_HEIGHT)];
         [imageView setTag:row+200];
@@ -834,11 +852,16 @@
 }
 
 - (BOOL)dropView:(CZDropView *)dropView isItemInList:(NSString *)description {
-    // Check if the dragged item is not already in the array archiveItems.
+    // Check if the dragged item is not already in the list (archiveItems)
     NSUInteger itemInArray = [[self archiveItems] indexOfObjectPassingTest:
                               ^BOOL(id obj, NSUInteger idx, BOOL *stop) {
-                                  BOOL found = [[obj description] isEqualToString:description];
-                                  return found;
+                                  // Already archived items can be added again
+                                  if ([obj isArchived]) {
+                                      return 0;
+                                  } else {
+                                      BOOL found = [[obj description] isEqualToString:description];
+                                      return found;
+                                  }
                               }];
     if (itemInArray == NSNotFound) {
         return NO;
@@ -884,9 +907,7 @@
     // Get the row where the item is and fetch the image view to the right.
     NSInteger row = [[self archiveItems] indexOfObject:archiver];
     NSImageView *imageView = [[self view] viewWithTag:row+300];
-    // Make sure it's status has not already changed;
-    // Important because the archiver sometimes sends
-    // this messages twice.
+    // Make sure it's status has not already changed. Important because the archiver sometimes sends this messages twice.
     if (![[imageView image] isEqualTo:[NSImage imageNamed:@"NSStatusAvailable"]]) {
         // Change the status to done (green light), and increment count of number of items compressed.
         [imageView setImage:[NSImage imageNamed:@"NSStatusAvailable"]];
@@ -899,32 +920,26 @@
         imageView = [[self view] viewWithTag:row+200];
         [imageView setImage:[self updateImageForItem:archiver atRow:row isCached:NO]];
     }
-    // If all items in queue have been compressed, then the process is finished. Notify user.
-    if ([self numberOfItemsCompressed] == self.numberOfItemsToCompress) {
-        // Should the folders be deleted after compression?
-        if ([self shouldDeleteFoldersAfterCompress]) {
-            [self deleteFolders];
-        } else {
-            [self skipDeletion];
-        }
-        // Remove progress indicator and reenable drag function again.
-        [self updateTopLabel:[NSString stringWithFormat:@"%i files compressed!", self.numberOfItemsCompressed] andShowProgressIndicator:NO];
-        [[self view] setDraggable:YES];
-        // Reset count
-        self.totalSizeInBytes = 0.0;
-        self.numberOfItemsCompressed = 0;
-        // Notify user if app is in background
-        if ([self applicationIsResigned] && [self shouldNotify]) {
-            [self displayNotification:@"Compression process completed!"];
-        }
+    // If the compression is finished...
+    if ([self hasProcessFinished]) {
+        [self processFinished];
     }
 }
 
-- (void)compressionCouldNotFinish:(CZArchiverItem *)archiver errorCode:(NSString *)string {
-    NSInteger row = [[self archiveItems] indexOfObject:archiver]+1;
-    NSImageView *imageView = [[self view] viewWithTag:row];
+- (void)compressionCouldNotFinish:(CZArchiverItem *)archiver errorMessage:(NSString *)errorMessage {
+    // Notify the user an error has occured by changing the status light
+    NSInteger row = [[self archiveItems] indexOfObject:archiver];
+    NSImageView *imageView = [[self view] viewWithTag:row+300];
     [imageView setImage:[NSImage imageNamed:@"NSStatusUnavailable"]];
-    // ERROR HANDLING?
+    // and printing out the error message below the item
+    NSCell *detailCell = [[[self view] viewWithTag:row+400] cell];
+    [detailCell setStringValue:[NSString stringWithFormat:@"An error occured: %@", errorMessage]];
+    // Increment number of failed items
+    self.numberOfItemsFailed++;
+    // If the compression is finished...
+    if ([self hasProcessFinished]) {
+        [self processFinished];
+    }
 }
 
 - (void)archiverDidRemoveDirectory:(CZArchiverItem *)archiver {
@@ -1000,6 +1015,38 @@
 }
 
 #pragma mark MISC METHODS
+
+- (BOOL)hasProcessFinished {
+    if ([self numberOfItemsCompressed] == ([self numberOfItemsToCompress] - [self numberOfItemsFailed])) {
+        return YES;
+    }
+    return NO;
+}
+
+- (void)processFinished {
+    // Should the folders be deleted after compression?
+    if ([self shouldDeleteFoldersAfterCompress]) {
+        [self deleteFolders];
+    } else {
+        [self skipDeletion];
+    }
+    // Remove progress indicator and reenable drag function again.
+    [self updateTopLabel:[NSString stringWithFormat:@"%i files compressed!", self.numberOfItemsCompressed] andShowProgressIndicator:NO];
+    [[self view] setDraggable:YES];
+    // Reset count
+    self.totalSizeInBytes = 0.0;
+    self.numberOfItemsCompressed = 0;
+    // If user has selected to be notified
+    if ([self shouldNotify]) {
+        if ([self applicationIsResigned]) {
+            // Then show the notification if app is out of focus
+            [self displayNotification:@"Compression process completed!"];
+        } else {
+            // Otherwhise, just play the sound
+            [[NSSound soundNamed:@"Glass"] play];
+        }
+    }
+}
 
 - (NSString *)stringFromByte:(double)fileSize {
     NSString *size = [NSByteCountFormatter stringFromByteCount:fileSize
@@ -1136,7 +1183,8 @@
     NSUserNotification *notification = [[NSUserNotification alloc] init];
     [notification setTitle:self.window.title];
     [notification setInformativeText:text];
-    [notification setSoundName:NSUserNotificationDefaultSoundName];
+//    [notification setSoundName:NSUserNotificationDefaultSoundName];
+    [notification setSoundName:@"Glass"];
     [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:notification];
 }
 

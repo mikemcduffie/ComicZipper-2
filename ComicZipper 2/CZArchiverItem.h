@@ -13,7 +13,7 @@
 @required
 - (void)compressionDidStart:(CZArchiverItem *)archiver;
 - (void)compressionDidEnd:(CZArchiverItem *)archiver;
-- (void)compressionCouldNotFinish:(CZArchiverItem *)archiver errorCode:(NSString *)string;
+- (void)compressionCouldNotFinish:(CZArchiverItem *)archiver errorMessage:(NSString *)string;
 
 @optional
 - (void)archiverDidRemoveDirectory:(CZArchiverItem *)archiver;
