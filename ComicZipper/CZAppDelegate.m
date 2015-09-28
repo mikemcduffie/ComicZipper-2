@@ -7,6 +7,7 @@
 //
 
 #import "CZAppDelegate.h"
+#import "CZTableView.h"
 #import "CZDropView.h"
 #import "CZDropItem.h"
 
@@ -20,9 +21,11 @@
 #define CZ_COLUMN_RATIO 1.1
 #define CZ_ROW_HEIGHT 40
 
-@interface CZAppDelegate () <CZDropViewDelegate>
+@interface CZAppDelegate () <CZDropViewDelegate, NSTableViewDelegate, NSTableViewDataSource>
 
 @property (weak) CZDropView *dropView;
+@property (weak) NSScrollView *scrollView;
+@property (weak) NSTableView *tableView;
 @property (nonatomic) NSMutableArray *archiveItems;
 @property (nonatomic) int applicationState;
 
@@ -40,7 +43,7 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     [self drawDropView];
-    [self drawUIElements:CZ_APP_STATE_START];
+    [self drawUIElements:CZ_APP_STATE_FILEDROP_FIRST];
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
@@ -55,11 +58,28 @@
 - (void)drawUIElements:(int)applicationState {
     [self setApplicationState:applicationState];
     if (applicationState == CZ_APP_STATE_START) {
-        [self drawDropViewLabel];
+        [self drawLabelForDropView];
     } else if (applicationState == CZ_APP_STATE_FILEDROP_FIRST) {
         // Remove the DropView label before proceeding to create the table view
         [[[self dropView] viewWithTag:101] removeFromSuperview];
-        [self drawTableView];
+        NSTableView *tableView = [self drawTableView];
+        NSScrollView *scrollView = [self drawScrollView];
+//        [scrollView setDocumentView:tableView];
+//        [[self superView] addSubview:scrollView];
+//        [self setScrollView:scrollView];
+//        [self setTableView:tableView];
+        NSRect textFieldBounds = NSMakeRect(18, self.superView.frame.size.height-40, self.superView.frame.size.width, self.superView.frame.size.height);
+        NSTextField *textField = [self createTextFieldWithFrame:textFieldBounds];
+        [textField setFont:[NSFont fontWithName:@"Lucida Grande" size:22.0]];
+        [textField setTextColor:[NSColor whiteColor]];
+        [textField setTag:101];
+        [textField setStringValue:@"1 of 8 items compressed"];
+        [textField setAlignment:NSCenterTextAlignment];
+        [[self superView] addSubview:textField];
+
+
+
+
     }
 }
 
@@ -110,7 +130,7 @@
     [self constraintItem:[self superView] toItem:[self dropView] withAttribute:NSLayoutAttributeHeight];
 }
 
-- (void)drawDropViewLabel {
+- (void)drawLabelForDropView {
     // Draw up a label to be displayed in the middle of the drop view.
     CGSize viewSize = self.dropView.frame.size;
     NSTextField *textField = [self createTextFieldWithFrame:NSMakeRect(0, viewSize.height/2-16, viewSize.width, 32)];
@@ -128,8 +148,22 @@
 
 #pragma mark USER INTERFACE METHODS – APP STATE: FIRST DROP
 
-- (void)drawTableView {
-    //
+- (NSTableView *)drawTableView {
+    NSRect frame = [[self superView] frame];
+    NSTableView *tableView = [[NSTableView alloc] initWithFrame:frame];
+    [tableView setHeaderView:nil];
+    return tableView;
+}
+
+- (NSScrollView *)drawScrollView {
+    NSRect bounds = [[self superView] bounds];
+    NSScrollView *scrollView = [[NSScrollView alloc] initWithFrame:bounds];
+    [scrollView setBorderType:NSBezelBorder];
+    [scrollView setDrawsBackground:NO];
+    [scrollView setHasHorizontalScroller:YES];
+    [scrollView setHasVerticalScroller:NO];
+    [scrollView setHorizontalScrollElasticity:NSScrollElasticityNone];
+    return scrollView;
 }
 
 #pragma mark CZDropView Delegate Methods
@@ -143,7 +177,7 @@
                                 ^BOOL(id obj, NSUInteger idx, BOOL *stop) {
                                     // As per request, archived objects can be added again to the list (without removing the already processed item from the list).
                                     if ([obj isArchived]) {
-                                        return NSNotFound;
+                                        return NO;
                                     }
                                     // TODO: Match by path, instead of description of the object. Two objects with same name (from different folders) can be problematic.
                                     BOOL found = [[obj description] isEqualToString:description];

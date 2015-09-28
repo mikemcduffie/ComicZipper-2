@@ -10,12 +10,12 @@
 		6A6CB02D1BB8119800D39E5D /* CZAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A6CB02C1BB8119800D39E5D /* CZAppDelegate.m */; };
 		6A6CB02F1BB8119800D39E5D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A6CB02E1BB8119800D39E5D /* main.m */; };
 		6A6CB0311BB8119800D39E5D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6A6CB0301BB8119800D39E5D /* Images.xcassets */; };
-		6A6CB0341BB8119800D39E5D /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A6CB0321BB8119800D39E5D /* MainMenu.xib */; };
 		6A6CB0401BB8119800D39E5D /* ComicZipperTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A6CB03F1BB8119800D39E5D /* ComicZipperTests.m */; };
 		6A6CB04B1BB813AC00D39E5D /* CZDropView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A6CB04A1BB813AC00D39E5D /* CZDropView.m */; };
 		6A6CB05F1BB834A200D39E5D /* CZDropItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A6CB05E1BB834A200D39E5D /* CZDropItem.m */; };
 		6A6CB0621BB867EB00D39E5D /* CZArchiveItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A6CB0611BB867EB00D39E5D /* CZArchiveItem.m */; };
 		6A6CB0651BB891E300D39E5D /* CZTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A6CB0641BB891E300D39E5D /* CZTableView.m */; };
+		6AE67EB31BB9E0BE00D22A28 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6AE67EB21BB9E0BE00D22A28 /* MainMenu.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,7 +35,6 @@
 		6A6CB02C1BB8119800D39E5D /* CZAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CZAppDelegate.m; sourceTree = "<group>"; };
 		6A6CB02E1BB8119800D39E5D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		6A6CB0301BB8119800D39E5D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		6A6CB0331BB8119800D39E5D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		6A6CB0391BB8119800D39E5D /* ComicZipperTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ComicZipperTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A6CB03E1BB8119800D39E5D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6A6CB03F1BB8119800D39E5D /* ComicZipperTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ComicZipperTests.m; sourceTree = "<group>"; };
@@ -47,6 +46,7 @@
 		6A6CB0611BB867EB00D39E5D /* CZArchiveItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZArchiveItem.m; sourceTree = "<group>"; };
 		6A6CB0631BB891E300D39E5D /* CZTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZTableView.h; sourceTree = "<group>"; };
 		6A6CB0641BB891E300D39E5D /* CZTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZTableView.m; sourceTree = "<group>"; };
+		6AE67EB21BB9E0BE00D22A28 /* MainMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,7 +99,7 @@
 				6A6CB0631BB891E300D39E5D /* CZTableView.h */,
 				6A6CB0641BB891E300D39E5D /* CZTableView.m */,
 				6A6CB0301BB8119800D39E5D /* Images.xcassets */,
-				6A6CB0321BB8119800D39E5D /* MainMenu.xib */,
+				6AE67EB21BB9E0BE00D22A28 /* MainMenu.xib */,
 				6A6CB0291BB8119800D39E5D /* Supporting Files */,
 			);
 			path = ComicZipper;
@@ -212,7 +212,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6A6CB0311BB8119800D39E5D /* Images.xcassets in Resources */,
-				6A6CB0341BB8119800D39E5D /* MainMenu.xib in Resources */,
+				6AE67EB31BB9E0BE00D22A28 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -256,17 +256,6 @@
 			targetProxy = 6A6CB03A1BB8119800D39E5D /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		6A6CB0321BB8119800D39E5D /* MainMenu.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				6A6CB0331BB8119800D39E5D /* Base */,
-			);
-			name = MainMenu.xib;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		6A6CB0411BB8119800D39E5D /* Debug */ = {
