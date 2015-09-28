@@ -7,14 +7,14 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>1B5E3B43-38B3-4847-A948-3592A7BAD916</string>
 	<key>IDESourceControlProjectName</key>
-	<string>project</string>
+	<string>ComicZipper 2</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>1C3AE572469B715B404A9E72A1D91EDE584BC442</key>
 		<string>https://github.com/pkrll/ComicZipper-2.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>ComicZipper 2.xcodeproj/project.xcworkspace</string>
+	<string>ComicZipper 2.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>1C3AE572469B715B404A9E72A1D91EDE584BC442</key>

@@ -47,7 +47,12 @@ static NSString *const kCZLaunchPath = @"/bin/bash";
 }
 
 - (NSString *)path {
-    return [self folderPath];
+    if ([self isArchived]) {
+        return [self archivePath];
+    } else {
+        return [self folderPath];
+    }
+
 }
 
 - (NSURL *)fileURL {
@@ -213,8 +218,10 @@ static NSString *const kCZLaunchPath = @"/bin/bash";
                                                                    withTemplate:kCZRegExTemplate];
     // Check that the filename is not already taken
     self.archivePath = [NSString stringWithFormat:@"%@%@.cbz", [self parentFolder], newFileName];
-    if ([fileManager fileExistsAtPath:[self archivePath]]) {
-        self.archivePath = [NSString stringWithFormat:@"%@%@-1.cbz", [self parentFolder], newFileName];
+    // Make sure the file name is not already taken.
+    int i = 1;
+    while ([fileManager fileExistsAtPath:[self archivePath]]) {
+        self.archivePath = [NSString stringWithFormat:@"%@%@-%d.cbz", [self parentFolder], newFileName, i++];
     }
 }
 
