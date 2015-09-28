@@ -1,0 +1,440 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		6A6CB02D1BB8119800D39E5D /* CZAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A6CB02C1BB8119800D39E5D /* CZAppDelegate.m */; };
+		6A6CB02F1BB8119800D39E5D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A6CB02E1BB8119800D39E5D /* main.m */; };
+		6A6CB0311BB8119800D39E5D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6A6CB0301BB8119800D39E5D /* Images.xcassets */; };
+		6A6CB0341BB8119800D39E5D /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A6CB0321BB8119800D39E5D /* MainMenu.xib */; };
+		6A6CB0401BB8119800D39E5D /* ComicZipperTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A6CB03F1BB8119800D39E5D /* ComicZipperTests.m */; };
+		6A6CB04B1BB813AC00D39E5D /* CZDropView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A6CB04A1BB813AC00D39E5D /* CZDropView.m */; };
+		6A6CB05F1BB834A200D39E5D /* CZDropItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A6CB05E1BB834A200D39E5D /* CZDropItem.m */; };
+		6A6CB0621BB867EB00D39E5D /* CZArchiveItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A6CB0611BB867EB00D39E5D /* CZArchiveItem.m */; };
+		6A6CB0651BB891E300D39E5D /* CZTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A6CB0641BB891E300D39E5D /* CZTableView.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		6A6CB03A1BB8119800D39E5D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6A6CB01E1BB8119800D39E5D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6A6CB0251BB8119800D39E5D;
+			remoteInfo = ComicZipper;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		6A6CB0261BB8119800D39E5D /* ComicZipper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ComicZipper.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6A6CB02A1BB8119800D39E5D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6A6CB02B1BB8119800D39E5D /* CZAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CZAppDelegate.h; sourceTree = "<group>"; };
+		6A6CB02C1BB8119800D39E5D /* CZAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CZAppDelegate.m; sourceTree = "<group>"; };
+		6A6CB02E1BB8119800D39E5D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		6A6CB0301BB8119800D39E5D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		6A6CB0331BB8119800D39E5D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		6A6CB0391BB8119800D39E5D /* ComicZipperTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ComicZipperTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		6A6CB03E1BB8119800D39E5D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6A6CB03F1BB8119800D39E5D /* ComicZipperTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ComicZipperTests.m; sourceTree = "<group>"; };
+		6A6CB0491BB813AC00D39E5D /* CZDropView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZDropView.h; sourceTree = "<group>"; };
+		6A6CB04A1BB813AC00D39E5D /* CZDropView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZDropView.m; sourceTree = "<group>"; };
+		6A6CB05D1BB834A200D39E5D /* CZDropItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZDropItem.h; sourceTree = "<group>"; };
+		6A6CB05E1BB834A200D39E5D /* CZDropItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZDropItem.m; sourceTree = "<group>"; };
+		6A6CB0601BB867EB00D39E5D /* CZArchiveItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZArchiveItem.h; sourceTree = "<group>"; };
+		6A6CB0611BB867EB00D39E5D /* CZArchiveItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZArchiveItem.m; sourceTree = "<group>"; };
+		6A6CB0631BB891E300D39E5D /* CZTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZTableView.h; sourceTree = "<group>"; };
+		6A6CB0641BB891E300D39E5D /* CZTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZTableView.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		6A6CB0231BB8119800D39E5D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6A6CB0361BB8119800D39E5D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		6A6CB01D1BB8119800D39E5D = {
+			isa = PBXGroup;
+			children = (
+				6A6CB0281BB8119800D39E5D /* ComicZipper */,
+				6A6CB03C1BB8119800D39E5D /* ComicZipperTests */,
+				6A6CB0271BB8119800D39E5D /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		6A6CB0271BB8119800D39E5D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6A6CB0261BB8119800D39E5D /* ComicZipper.app */,
+				6A6CB0391BB8119800D39E5D /* ComicZipperTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		6A6CB0281BB8119800D39E5D /* ComicZipper */ = {
+			isa = PBXGroup;
+			children = (
+				6A6CB02B1BB8119800D39E5D /* CZAppDelegate.h */,
+				6A6CB02C1BB8119800D39E5D /* CZAppDelegate.m */,
+				6A6CB0491BB813AC00D39E5D /* CZDropView.h */,
+				6A6CB04A1BB813AC00D39E5D /* CZDropView.m */,
+				6A6CB05D1BB834A200D39E5D /* CZDropItem.h */,
+				6A6CB05E1BB834A200D39E5D /* CZDropItem.m */,
+				6A6CB0601BB867EB00D39E5D /* CZArchiveItem.h */,
+				6A6CB0611BB867EB00D39E5D /* CZArchiveItem.m */,
+				6A6CB0631BB891E300D39E5D /* CZTableView.h */,
+				6A6CB0641BB891E300D39E5D /* CZTableView.m */,
+				6A6CB0301BB8119800D39E5D /* Images.xcassets */,
+				6A6CB0321BB8119800D39E5D /* MainMenu.xib */,
+				6A6CB0291BB8119800D39E5D /* Supporting Files */,
+			);
+			path = ComicZipper;
+			sourceTree = "<group>";
+		};
+		6A6CB0291BB8119800D39E5D /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				6A6CB02A1BB8119800D39E5D /* Info.plist */,
+				6A6CB02E1BB8119800D39E5D /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		6A6CB03C1BB8119800D39E5D /* ComicZipperTests */ = {
+			isa = PBXGroup;
+			children = (
+				6A6CB03F1BB8119800D39E5D /* ComicZipperTests.m */,
+				6A6CB03D1BB8119800D39E5D /* Supporting Files */,
+			);
+			path = ComicZipperTests;
+			sourceTree = "<group>";
+		};
+		6A6CB03D1BB8119800D39E5D /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				6A6CB03E1BB8119800D39E5D /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		6A6CB0251BB8119800D39E5D /* ComicZipper */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6A6CB0431BB8119800D39E5D /* Build configuration list for PBXNativeTarget "ComicZipper" */;
+			buildPhases = (
+				6A6CB0221BB8119800D39E5D /* Sources */,
+				6A6CB0231BB8119800D39E5D /* Frameworks */,
+				6A6CB0241BB8119800D39E5D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ComicZipper;
+			productName = ComicZipper;
+			productReference = 6A6CB0261BB8119800D39E5D /* ComicZipper.app */;
+			productType = "com.apple.product-type.application";
+		};
+		6A6CB0381BB8119800D39E5D /* ComicZipperTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6A6CB0461BB8119800D39E5D /* Build configuration list for PBXNativeTarget "ComicZipperTests" */;
+			buildPhases = (
+				6A6CB0351BB8119800D39E5D /* Sources */,
+				6A6CB0361BB8119800D39E5D /* Frameworks */,
+				6A6CB0371BB8119800D39E5D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6A6CB03B1BB8119800D39E5D /* PBXTargetDependency */,
+			);
+			name = ComicZipperTests;
+			productName = ComicZipperTests;
+			productReference = 6A6CB0391BB8119800D39E5D /* ComicZipperTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		6A6CB01E1BB8119800D39E5D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0640;
+				ORGANIZATIONNAME = "Ardalan Samimi";
+				TargetAttributes = {
+					6A6CB0251BB8119800D39E5D = {
+						CreatedOnToolsVersion = 6.4;
+					};
+					6A6CB0381BB8119800D39E5D = {
+						CreatedOnToolsVersion = 6.4;
+						TestTargetID = 6A6CB0251BB8119800D39E5D;
+					};
+				};
+			};
+			buildConfigurationList = 6A6CB0211BB8119800D39E5D /* Build configuration list for PBXProject "ComicZipper" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 6A6CB01D1BB8119800D39E5D;
+			productRefGroup = 6A6CB0271BB8119800D39E5D /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				6A6CB0251BB8119800D39E5D /* ComicZipper */,
+				6A6CB0381BB8119800D39E5D /* ComicZipperTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		6A6CB0241BB8119800D39E5D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6A6CB0311BB8119800D39E5D /* Images.xcassets in Resources */,
+				6A6CB0341BB8119800D39E5D /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6A6CB0371BB8119800D39E5D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		6A6CB0221BB8119800D39E5D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6A6CB02F1BB8119800D39E5D /* main.m in Sources */,
+				6A6CB02D1BB8119800D39E5D /* CZAppDelegate.m in Sources */,
+				6A6CB0651BB891E300D39E5D /* CZTableView.m in Sources */,
+				6A6CB04B1BB813AC00D39E5D /* CZDropView.m in Sources */,
+				6A6CB0621BB867EB00D39E5D /* CZArchiveItem.m in Sources */,
+				6A6CB05F1BB834A200D39E5D /* CZDropItem.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6A6CB0351BB8119800D39E5D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6A6CB0401BB8119800D39E5D /* ComicZipperTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		6A6CB03B1BB8119800D39E5D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6A6CB0251BB8119800D39E5D /* ComicZipper */;
+			targetProxy = 6A6CB03A1BB8119800D39E5D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		6A6CB0321BB8119800D39E5D /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6A6CB0331BB8119800D39E5D /* Base */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		6A6CB0411BB8119800D39E5D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		6A6CB0421BB8119800D39E5D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		6A6CB0441BB8119800D39E5D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = ComicZipper/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		6A6CB0451BB8119800D39E5D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = ComicZipper/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		6A6CB0471BB8119800D39E5D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = ComicZipperTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ComicZipper.app/Contents/MacOS/ComicZipper";
+			};
+			name = Debug;
+		};
+		6A6CB0481BB8119800D39E5D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = ComicZipperTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ComicZipper.app/Contents/MacOS/ComicZipper";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		6A6CB0211BB8119800D39E5D /* Build configuration list for PBXProject "ComicZipper" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6A6CB0411BB8119800D39E5D /* Debug */,
+				6A6CB0421BB8119800D39E5D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6A6CB0431BB8119800D39E5D /* Build configuration list for PBXNativeTarget "ComicZipper" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6A6CB0441BB8119800D39E5D /* Debug */,
+				6A6CB0451BB8119800D39E5D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		6A6CB0461BB8119800D39E5D /* Build configuration list for PBXNativeTarget "ComicZipperTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6A6CB0471BB8119800D39E5D /* Debug */,
+				6A6CB0481BB8119800D39E5D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 6A6CB01E1BB8119800D39E5D /* Project object */;
+}
