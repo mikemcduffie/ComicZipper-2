@@ -20,6 +20,6 @@
 
 @interface CZTableView : NSTableView
 
-@property (assign) id delegate;
+@property (assign) id czDelegate;
 
 @end

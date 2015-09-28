@@ -11,19 +11,22 @@
 
 @interface CZDropView () <NSDraggingDestination>
 
-@property (nonatomic, getter=isHighlighted) BOOL highlight;
+@property (nonatomic, getter=isViewHighlighted) BOOL viewHighlight;
 @property (nonatomic) NSInteger numberOfValidItemsForDrop;
 @property (nonatomic) NSMutableArray *droppedItems;
-
-/*!
- *  @brief Initial setup method
- *  @description Sets the needed configurations on init, for example registering the data types the view can accept in a drag operation.
- */
-- (void)initialSetup;
 
 @end
 
 @implementation CZDropView
+
+/*!
+ *  @brief Initial setup method.
+ */
+- (void)initialSetup {
+    [self registerForDraggedTypes:[NSArray arrayWithObjects:NSFilenamesPboardType, nil]];
+    _dragMode = YES;
+    _droppedItems = [[NSMutableArray alloc] init];
+}
 
 - (id)initWithFrame:(NSRect)frame {
     self = [super initWithFrame:frame];
@@ -39,52 +42,99 @@
 
 - (void)drawRect:(NSRect)dirtyRect {
     [super drawRect:dirtyRect];
+    // Highlight the drop view area
+    if ([self isViewHighlighted]) {
+        [NSBezierPath setDefaultLineWidth:5.0];
+        [[NSColor keyboardFocusIndicatorColor] set];
+        [NSBezierPath fillRect:dirtyRect];
+    }
 }
 
-- (void)initialSetup {
-    [self registerForDraggedTypes:[NSArray arrayWithObjects:NSFilenamesPboardType, nil]];
-    [self setDragMode:YES];
+/*!
+ *  @brief The setter method of highlight property will redraw the view.
+ *  @discussion During the drawRect: method, the view will be redrawn with an overlay.
+ *  @param highlight Boolean value of the property. Set YES to turn on highlight.
+ */
+- (void)setViewHighlight:(BOOL)highlight {
+    _viewHighlight = highlight;
+    [self setNeedsDisplay:YES];
 }
 
-- (BOOL)isDirectory:(NSString *)path {
-    BOOL isDirectory = NO;
-    if ([[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&isDirectory] && isDirectory)
-        return YES;
-    return NO;
-}
-
+/*!
+ *  @brief Invoked when the dragged image enters destination bounds or frame; delegate returns dragging operation to perform.
+ *  @param sender The object sending the message; use it to get details about the dragging operation.
+ *  @return One (and only one) of the dragging operation constants described in NSDragOperation in the NSDraggingInfo reference.
+ *
+ */
 - (NSDragOperation)draggingEntered:(id<NSDraggingInfo>)sender {
-    // Abort drag operation if the view should not be in drop mode.
-    if (![self inDragMode])
+    // Abort drag operation if the view should not be in drop mode (in compression mode no objects should be added).
+    if (![self inDragMode]) {
         return NSDragOperationNone;
-    // Reset the count for the badge to display the right number of valid items that can be dropped.
+    }
+    
+    if (![self isViewHighlighted]) {
+        [self setViewHighlight:YES];
+    }
+    // Reset the count before enumeration, so the badge displays the correct number of valid items.
     [self setNumberOfValidItemsForDrop:0];
-
-    // Enumerate through the dragged items, checking against the CZDropItem class.
+    // Enumerate through the dragged items, checking against the CZDropItem class that will make sure that the dragged items are, in fact, a folder.
     NSArray *classArray = [NSArray arrayWithObjects:[CZDropItem class], nil];
     [sender enumerateDraggingItemsWithOptions:NSDraggingItemEnumerationClearNonenumeratedImages
                                       forView:self
                                       classes:classArray
-                                searchOptions:nil
+                                searchOptions:@{} // nil gives a warning, so send an empty dictionary instead.
                                    usingBlock:^(NSDraggingItem *draggingItem, NSInteger idx, BOOL *stop) {
-                                       
-                                       [self setNumberOfValidItemsForDrop:[self numberOfValidItemsForDrop]+1];
+                                       // Folders already added to the list should not be added or reloaded.
+                                       if (![[self delegate] dropView:self isItemInList:[[draggingItem item] description]]) {
+                                           [[self droppedItems] addObject:[draggingItem item]];
+                                           [self setNumberOfValidItemsForDrop:[self numberOfValidItemsForDrop]+1];
+                                       }
     }];
-    
-    
-//    NSPasteboard *pasteBoard = [sender draggingPasteboard];
-//    // Check if the dropped item is a directory and if they are already in the list.
-//    if ([[pasteBoard types] containsObject:NSFilenamesPboardType]) {
-//        NSArray *files = [pasteBoard propertyListForType:NSFilenamesPboardType];
-//        for (NSString *file in files) {
-//            if ([self isDirectory:file] && [[self delegate] dropView:self isItemInList:[file description]]) {
-//                [self setNumberOfValidItemsForDrop:[self numberOfValidItemsForDrop] + 1];
-//            }
-//        }
-//    }
+    // inform the sender of the number of valid items to drop, so that the drop manager can update the badge count.
     [sender setNumberOfValidItemsForDrop:[self numberOfValidItemsForDrop]];
-    return NSDragOperationCopy;
+    
+    if ([self numberOfValidItemsForDrop]) {
+        return NSDragOperationCopy;
+    }
+    
+    return NSDragOperationNone;
 }
 
+- (BOOL)prepareForDragOperation:(id<NSDraggingInfo>)sender {
+    [sender setAnimatesToDestination:NO];
+    return YES;
+}
+
+- (BOOL)performDragOperation:(id<NSDraggingInfo>)sender {
+    if ([self isViewHighlighted]) {
+        [self setViewHighlight:NO];
+    }
+    // The drop view delegate will take over the items, making it safe for deallocating the droppedItems array later in the cleanUp: method.
+    if ([self droppedItems]) {
+        [[self delegate] dropView:self didReceiveFiles:[self droppedItems]];
+    }
+    
+    return YES;
+}
+
+- (void)concludeDragOperation:(id<NSDraggingInfo>)sender {
+    [self cleanUp];
+}
+
+- (void)draggingExited:(id<NSDraggingInfo>)sender {
+    if ([self isViewHighlighted]) {
+        [self setViewHighlight:NO];
+    }
+}
+
+/*!
+ *  @brief Cleans up after the drag operation.
+ *  @discussion Invoked once drag operation has finished, releasing any unecessary objects.
+ */
+- (void)cleanUp {
+    if ([self droppedItems]) {
+        [self setDroppedItems:nil];
+    }
+}
 
 @end

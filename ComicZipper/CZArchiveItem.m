@@ -129,4 +129,8 @@ static NSString *const kCZFileExtension = @"cbz";
     return [self folderName];
 }
 
+- (void)dealloc {
+    NSLog(@"Dealloc: %@", self);
+}
+
 @end

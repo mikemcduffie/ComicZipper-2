@@ -1,3 +1,4 @@
-
-ComicZipper.xcodeproj/project.xcworkspace/xcuserdata/ardalansamimi.xcuserdatad/UserInterfaceState.xcuserstate
+*.xcuserstate
+project.xcworkspace/
+xcuserdata/
 .DS_Store

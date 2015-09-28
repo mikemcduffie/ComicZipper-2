@@ -175,7 +175,7 @@
 		6A6CB01E1BB8119800D39E5D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0640;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Ardalan Samimi";
 				TargetAttributes = {
 					6A6CB0251BB8119800D39E5D = {
@@ -290,6 +290,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -355,6 +356,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = ComicZipper/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.SaturnFive.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -366,6 +368,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = ComicZipper/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.SaturnFive.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -385,6 +388,7 @@
 				);
 				INFOPLIST_FILE = ComicZipperTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.SaturnFive.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ComicZipper.app/Contents/MacOS/ComicZipper";
 			};
@@ -401,6 +405,7 @@
 				);
 				INFOPLIST_FILE = ComicZipperTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.SaturnFive.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ComicZipper.app/Contents/MacOS/ComicZipper";
 			};
@@ -425,6 +430,7 @@
 				6A6CB0451BB8119800D39E5D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		6A6CB0461BB8119800D39E5D /* Build configuration list for PBXNativeTarget "ComicZipperTests" */ = {
 			isa = XCConfigurationList;
@@ -433,6 +439,7 @@
 				6A6CB0481BB8119800D39E5D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

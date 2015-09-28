@@ -13,13 +13,15 @@
 @property (nonatomic) BOOL commandKeyState;
 @property (nonatomic) NSInteger *row;
 
+// Should declare methods??
+
 @end
 
 @implementation CZTableView
 
 - (instancetype)initWithFrame:(NSRect)frame {
     self = [super initWithFrame:frame];
-
+    // Set up the contextual menu for the table view
     if (self) {
         [self setMenu:[[NSMenu alloc] initWithTitle:@"Contextual Menu"]];
         [[self menu] insertItemWithTitle:@"Show in Finder"
@@ -40,9 +42,36 @@
 }
 
 - (void)menuItemOpenFinder {
-//    [[self delegate] openItemFinder:[self selectedRowIndexes]];
+//    [[self czDelegate] openItemFinder:[self selectedRowIndexes]];
 }
 
+- (void)menuItemRemove {
+    // [[self czDelegate] tableView:self didRegisterKeyUp:51 withCommand:NO];
+}
 
+- (void)flagsChanged:(NSEvent *)theEvent {
+    if ([theEvent modifierFlags] & NSCommandKeyMask) {
+        [self setCommandKeyState:![self commandKeyState]];
+    }
+}
+
+- (void)keyUp:(NSEvent *)theEvent {
+    [[self czDelegate] tableView:self DidRegisterKeyUp:[theEvent keyCode] withCommand:[self commandKeyState]];
+}
+
+- (NSMenu *)menuForEvent:(NSEvent *)event {
+    NSPoint point = [self convertPoint:[event locationInWindow] fromView:nil];
+    NSInteger row = [self rowAtPoint:point];
+    //
+    if (row > -1 && row < [self numberOfRows]) {
+        if ([[self selectedRowIndexes] containsIndex:row] == NO) {
+            [self selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
+        }
+        
+        return [self menu];
+    }
+    
+    return nil;
+}
 
 @end

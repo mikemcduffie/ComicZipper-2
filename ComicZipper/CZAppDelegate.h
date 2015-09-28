@@ -15,7 +15,6 @@
 @property (assign) IBOutlet NSWindow *window;
 @property (weak) IBOutlet NSView *drawer;
 @property (weak) IBOutlet NSView *superView;
-@property (weak) IBOutlet CZDropView *dropView;
 
 @end
 
