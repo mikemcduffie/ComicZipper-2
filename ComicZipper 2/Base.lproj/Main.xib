@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
         <development version="6300" identifier="xcode"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="8191"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="CZAppDelegate">
@@ -131,7 +131,7 @@
         <window title="ComicZipper 2" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" releasedWhenClosed="NO" animationBehavior="default" id="QvC-M9-y7g">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" texturedBackground="YES"/>
             <rect key="contentRect" x="525" y="268" width="402" height="322"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
             <value key="minSize" type="size" width="401" height="322"/>
             <view key="contentView" id="EiT-Mj-1SZ">
                 <rect key="frame" x="0.0" y="0.0" width="402" height="322"/>
@@ -225,7 +225,7 @@
                 <constraint firstAttribute="bottom" secondItem="d1K-Ag-R9X" secondAttribute="bottom" constant="20" id="Cgl-Ez-a1p"/>
                 <constraint firstAttribute="trailing" secondItem="d1K-Ag-R9X" secondAttribute="trailing" constant="24" id="yHz-b1-Rmh"/>
             </constraints>
-            <point key="canvasLocation" x="305" y="254"/>
+            <point key="canvasLocation" x="314" y="737"/>
         </customView>
         <drawer trailingOffset="15" id="SCH-WI-q6R">
             <size key="contentSize" width="100" height="100"/>

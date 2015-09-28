@@ -21,12 +21,4 @@
     return NO;
 }
 
-- (void)setTag:(NSInteger)tag {
-    _tag = tag;
-}
-
-- (NSInteger)tag {
-    return _tag;
-}
-
 @end

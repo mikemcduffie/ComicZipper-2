@@ -10,6 +10,4 @@
 
 @interface CZCell : NSCell
 
-@property NSInteger tag;
-
 @end

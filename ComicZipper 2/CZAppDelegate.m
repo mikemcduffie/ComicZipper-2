@@ -774,7 +774,10 @@
         if (![item isArchived]) {
             [imageView setImage:[NSImage imageNamed:@"NSFolder"]];
         } else {
-            [imageView setImage:[self updateImageForItem:item atRow:row isCached:YES]];
+            NSImage *image = [self updateImageForItem:item atRow:row isCached:YES];
+            if (image) {
+                [imageView setImage:image];
+            }
         }
         [cellView addSubview:leftDetailTextField];
         [cellView addSubview:leftTextField];
@@ -918,7 +921,12 @@
         }
         // Fetch the image view to the left and set the image to cover from the archive.
         imageView = [[self view] viewWithTag:row+200];
-        [imageView setImage:[self updateImageForItem:archiver atRow:row isCached:NO]];
+        NSImage *image = [self updateImageForItem:archiver atRow:row isCached:NO];
+        if (image)
+            [imageView setImage:image];
+        // and printing out the name of the archive
+        NSCell *detailCell = [[[self view] viewWithTag:row+400] cell];
+        [detailCell setStringValue:[NSString stringWithFormat:@"Archived as: %@",  archiver.path]];
     }
     // If the compression is finished...
     if ([self hasProcessFinished]) {
@@ -1055,23 +1063,42 @@
 }
 
 - (NSImage *)updateImageForItem:(CZArchiverItem *)archiver atRow:(NSInteger)row isCached:(BOOL)cached {
-    // Fetch the contents of the folder and search for the first image (which usually is the cover image).
+    // Retrieves the left side image to use for processed items (replacing the folder image).
     NSData *data;
     NSString *cachePath = [NSString stringWithFormat:@"%@/%@", [self cacheDirectory], [archiver description]];
-    if (!cached) {
-        NSArray *contentsArray = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[archiver path] error:nil];
-        NSUInteger index = [contentsArray indexOfObjectPassingTest:
-                            ^(id obj, NSUInteger idx, BOOL *stop) {
-                                BOOL found = ([obj hasSuffix:@"jpg"] || [obj hasSuffix:@"jpeg"] || [obj hasSuffix:@"gif"] || [obj hasSuffix:@"png"]);
-                                return found;
-                            }];
-        // Create an NSURL object from the path and create the image to be sent back.
-        NSString *path = [NSString stringWithFormat:@"%@/%@", [archiver path], [contentsArray objectAtIndex:index]];
-        data = [NSData dataWithContentsOfFile:path];
-        [data writeToFile:cachePath options:NSDataWritingAtomic error:nil];
-    } else {
+    if (cached) {
+        // If caller indicates the image is cached, look in the cache directory first.
         data = [NSData dataWithContentsOfFile:cachePath];
+        if (data) {
+            return [[NSImage alloc] initWithData:data];
+        }
     }
+
+    // Do a deep enumeration of the directory to find the first image.
+    NSDirectoryEnumerator *directoryEnumerator = [[NSFileManager defaultManager] enumeratorAtURL:[NSURL fileURLWithPath:[archiver path]
+                                                                                                            isDirectory:YES]
+                                                                      includingPropertiesForKeys:nil
+                                                                                         options:NSDirectoryEnumerationSkipsHiddenFiles
+                                                                                    errorHandler:nil];
+    // Iterate only until the file has been found.
+    NSString *imagePath;
+    for (NSURL *file in directoryEnumerator) {
+        if ([[file pathExtension] isEqualToString:@"jpg"] ||
+            [[file pathExtension] isEqualToString:@"gif"] ||
+            [[file pathExtension] isEqualToString:@"png"] ||
+            [[file pathExtension] isEqualToString:@"jpeg"]) {
+            imagePath = [file path];
+            break;
+        }
+    }
+    // Make sure that an image was found
+    if (!imagePath) {
+        return nil;
+    }
+    // Retrieve the image and write to the cache directory
+    data = [NSData dataWithContentsOfFile:imagePath];
+    [data writeToFile:cachePath options:NSDataWritingAtomic error:nil];
+
     return [[NSImage alloc] initWithData:data];
 }
 
