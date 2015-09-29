@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6A5988C61BBB1B4D00932A08 /* CZScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A5988C51BBB1B4D00932A08 /* CZScrollView.m */; settings = {ASSET_TAGS = (); }; };
+		6A5988C91BBB2A1A00932A08 /* CZComicZipper.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A5988C81BBB2A1A00932A08 /* CZComicZipper.m */; settings = {ASSET_TAGS = (); }; };
+		6A5988CC1BBB2C9E00932A08 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A5988CB1BBB2C9E00932A08 /* Constants.m */; settings = {ASSET_TAGS = (); }; };
 		6A6CB02D1BB8119800D39E5D /* CZAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A6CB02C1BB8119800D39E5D /* CZAppDelegate.m */; };
 		6A6CB02F1BB8119800D39E5D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A6CB02E1BB8119800D39E5D /* main.m */; };
 		6A6CB0311BB8119800D39E5D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6A6CB0301BB8119800D39E5D /* Images.xcassets */; };
@@ -29,6 +32,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6A5988C41BBB1B4D00932A08 /* CZScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZScrollView.h; sourceTree = "<group>"; };
+		6A5988C51BBB1B4D00932A08 /* CZScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZScrollView.m; sourceTree = "<group>"; };
+		6A5988C71BBB2A1A00932A08 /* CZComicZipper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZComicZipper.h; sourceTree = "<group>"; };
+		6A5988C81BBB2A1A00932A08 /* CZComicZipper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZComicZipper.m; sourceTree = "<group>"; };
+		6A5988CA1BBB2BD300932A08 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		6A5988CB1BBB2C9E00932A08 /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
+		6A5988CD1BBB383000932A08 /* CZPrefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CZPrefix.pch; sourceTree = "<group>"; };
 		6A6CB0261BB8119800D39E5D /* ComicZipper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ComicZipper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A6CB02A1BB8119800D39E5D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6A6CB02B1BB8119800D39E5D /* CZAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CZAppDelegate.h; sourceTree = "<group>"; };
@@ -88,8 +98,12 @@
 		6A6CB0281BB8119800D39E5D /* ComicZipper */ = {
 			isa = PBXGroup;
 			children = (
+				6A5988CA1BBB2BD300932A08 /* Constants.h */,
+				6A5988CB1BBB2C9E00932A08 /* Constants.m */,
 				6A6CB02B1BB8119800D39E5D /* CZAppDelegate.h */,
 				6A6CB02C1BB8119800D39E5D /* CZAppDelegate.m */,
+				6A5988C71BBB2A1A00932A08 /* CZComicZipper.h */,
+				6A5988C81BBB2A1A00932A08 /* CZComicZipper.m */,
 				6A6CB0491BB813AC00D39E5D /* CZDropView.h */,
 				6A6CB04A1BB813AC00D39E5D /* CZDropView.m */,
 				6A6CB05D1BB834A200D39E5D /* CZDropItem.h */,
@@ -98,6 +112,8 @@
 				6A6CB0611BB867EB00D39E5D /* CZArchiveItem.m */,
 				6A6CB0631BB891E300D39E5D /* CZTableView.h */,
 				6A6CB0641BB891E300D39E5D /* CZTableView.m */,
+				6A5988C41BBB1B4D00932A08 /* CZScrollView.h */,
+				6A5988C51BBB1B4D00932A08 /* CZScrollView.m */,
 				6A6CB0301BB8119800D39E5D /* Images.xcassets */,
 				6AE67EB21BB9E0BE00D22A28 /* MainMenu.xib */,
 				6A6CB0291BB8119800D39E5D /* Supporting Files */,
@@ -110,6 +126,7 @@
 			children = (
 				6A6CB02A1BB8119800D39E5D /* Info.plist */,
 				6A6CB02E1BB8119800D39E5D /* main.m */,
+				6A5988CD1BBB383000932A08 /* CZPrefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -230,12 +247,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6A5988C61BBB1B4D00932A08 /* CZScrollView.m in Sources */,
 				6A6CB02F1BB8119800D39E5D /* main.m in Sources */,
 				6A6CB02D1BB8119800D39E5D /* CZAppDelegate.m in Sources */,
 				6A6CB0651BB891E300D39E5D /* CZTableView.m in Sources */,
+				6A5988C91BBB2A1A00932A08 /* CZComicZipper.m in Sources */,
 				6A6CB04B1BB813AC00D39E5D /* CZDropView.m in Sources */,
 				6A6CB0621BB867EB00D39E5D /* CZArchiveItem.m in Sources */,
 				6A6CB05F1BB834A200D39E5D /* CZDropItem.m in Sources */,
+				6A5988CC1BBB2C9E00932A08 /* Constants.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -284,6 +304,8 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = ComicZipper/CZPrefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -326,6 +348,8 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = ComicZipper/CZPrefix.pch;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
