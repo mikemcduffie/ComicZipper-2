@@ -10,8 +10,10 @@
 
 @implementation Constants
 
-int const kAppStateFirstLaunched;
-int const kAppStateFirstFileDrop;
-int const kAppStateFileDrop;
+int const kAppStateNoItemDropped = 1;
+int const kAppStateFirstItemDrop = 2;
+int const kAppStatePopulatedList = 3;
+
+NSString *const kAppName = @"ComicZipper";
 
 @end

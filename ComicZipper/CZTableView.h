@@ -6,12 +6,11 @@
 //  Copyright (c) 2015 Ardalan Samimi. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
-
 @class CZTableView;
 
 @protocol CZTableViewDelegate <NSTableViewDelegate>
 
+@optional
 - (void)tableView:(CZTableView *)tableView didRegisterKeyUp:(int)keyCode;
 - (void)tableView:(CZTableView *)tableView DidRegisterKeyUp:(int)keyCode withCommand:(BOOL)commandState;
 - (void)openItemInFinder:(NSIndexSet *)rows;

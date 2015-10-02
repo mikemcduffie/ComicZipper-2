@@ -6,8 +6,6 @@
 //  Copyright (c) 2015 Ardalan Samimi. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
-
 @class CZDropView;
 
 @protocol CZDropViewDelegate <NSObject>

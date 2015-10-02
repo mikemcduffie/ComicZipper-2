@@ -6,10 +6,14 @@
 //  Copyright © 2015 Ardalan Samimi. All rights reserved.
 //
 
+#import <Cocoa/Cocoa.h>
+
 @interface Constants : NSObject
 
-extern int const kAppStateFirstLaunched;
-extern int const kAppStateFirstFileDrop;
-extern int const kAppStateFileDrop;
+extern int const kAppStateNoItemDropped;
+extern int const kAppStateFirstItemDrop;
+extern int const kAppStatePopulatedList;
+
+extern NSString *const kAppName;
 
 @end

@@ -6,30 +6,21 @@
 //  Copyright (c) 2015 Ardalan Samimi. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
-
 @class CZArchiveItem;
-
-@protocol CZArchiveItemDelegate
-
-@required
-- (void)compressionDidStart:(CZArchiveItem *)archiveItem;
-- (void)compressionDidFinish:(CZArchiveItem *)archiveItem;
-- (void)compressionFailed:(CZArchiveItem *)archiver errorCode:(int)errorCode errorMessage:(NSString *)errorMessage;
-
-@end
 
 @interface CZArchiveItem : NSObject
 
 @property (weak) id delegate;
-@property (nonatomic, readonly) unsigned long long fileSizeInBytes;
-@property (nonatomic, readonly, getter = isArchived) BOOL archived;
+@property (nonatomic) double progress;
+@property (nonatomic, getter = isRunning) BOOL running;
+@property (nonatomic, getter = isArchived) BOOL archived;
 @property (nonatomic, setter = shouldSkipRemoval:) BOOL shouldSkipRemoval;
 
 + (instancetype)initWithURL:(NSURL *)url;
 - (instancetype)initWithURL:(NSURL *)url;
-- (void)startCompression;
-- (void)removeDirectory;
-- (NSString *)path;
+
+- (NSString *)folderPath;
+- (NSString *)archivePath;
+- (NSString *)fileSize;
 
 @end

@@ -6,8 +6,6 @@
 //  Copyright © 2015 Ardalan Samimi. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
-
 @interface CZScrollView : NSScrollView
 
 - (void)toggleHighlight;

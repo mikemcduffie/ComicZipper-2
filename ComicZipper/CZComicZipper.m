@@ -6,97 +6,142 @@
 //  Copyright © 2015 Ardalan Samimi. All rights reserved.
 //
 
-#import "Constants.h"
 #import "CZComicZipper.h"
-#import "CZAppDelegate.h"
-#import "CZDropView.h"
+#import "CZDropItem.h"
+#import <ZipUtilities/ZipUtilities.h>
 
-@interface CZComicZipper () <CZDropViewDelegate>
+@interface CZComicZipper () <NOZCompressDelegate>
 
-@property (weak) NSView *superView;
-@property (weak) CZDropView *dropView;
-@property (nonatomic, readonly) int applicationState;
-@property (nonatomic, readonly) NSRect frameSize;
+@property (nonatomic) NSMutableArray *archiveItems;
+@property (nonatomic) NSOperationQueue *operations;
 
 @end
 
 @implementation CZComicZipper
 
-/*!
- *  @brief Initializes the class before it receives its first message.
- *  @discussion Convenience method for the initWithState: instance method.
- *  @param applicationState The application state.
- *  @return An initialized Comic Zipper object, or nil if the object could not be initialized.
- */
-+ (instancetype)initWithState:(int)applicationState {
-    return [[self alloc] initWithState:applicationState];
-}
+#pragma mark ARCHIVE ITEMS COLLECTION METHODS
 
-/*!
- *  @brief Initializes and returns a Comic Zipper object in a given state.
- *  @discussion The application state can be one of three constants: kAppStateFirstLaunched, kAppStateFirstFileDrop or kAppStateFileDrop.
- *  @param applicationState The application state.
- *  @return An initialized Comic Zipper object, or nil if the object could not be initialized.
- */
-- (instancetype)initWithState:(int)applicationState {
-    self = [super init];
-    
-    if (self) {
-        _applicationState = applicationState;
-        _superView = [kCZAppDelegate superView];
+- (NSMutableArray *)archiveItems {
+    if (!_archiveItems) {
+        _archiveItems = [[NSMutableArray alloc] init];
     }
-    
-    return self;
+
+    return _archiveItems;
 }
 
 /*!
- *  @brief Creates the user interface elements.
- *  @discussion The specific user interface elements created depend on the state of the application.
+ *  @brief Check if an item is already present in the ComicZipper item list.
+ *  @return A boolean value.
  */
-- (void)drawUIElements {
-    // Initialize the drop view if it already isn't initialized
-    if (![self dropView]) {
-        [self addDropView];
+- (BOOL)isItemInList:(NSString *)description {
+    NSUInteger indexOfItem = [[self archiveItems] indexOfObjectPassingTest:
+                              ^BOOL(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                                  // User should be able to add already archived items as the processed item in the list after the archive operation does not represent the folder anymore.
+                                  if ([obj isArchived]) {
+                                      *stop = YES;
+                                      return NO;
+                                  }
+                                  BOOL found = [[obj description] isEqualToString:description];
+                                  return found;
+                              }];
+    if (indexOfItem == NSNotFound) {
+        return NO;
     }
-    if ([self applicationStateIs:kAppStateFirstLaunched]) {
-        
-    } else if ([self applicationStateIs:kAppStateFirstFileDrop]) {
-        
-    } else {
-    }
-}
-
-- (BOOL)applicationStateIs:(int)applicationState {
-    return ([self applicationState] == applicationState);
-}
-
-#pragma marks UI METHODS
-
-- (void)addDropView {
-    CZDropView *dropView = [[CZDropView alloc] initWithFrame:[[self superView] frame]];
-    [self setDropView:dropView];
-    [[self dropView] setDelegate:self];
-    [[self dropView] setDragMode:YES];
-    [[self dropView] setAutoresizesSubviews:YES];
-    [[self dropView] setFocusRingType:NSFocusRingTypeExterior];
-    [[self dropView] setDragMode:YES];
-    [[self dropView] setDelegate:self];
-    [[self superView] addSubview:[self dropView]];
-    [[self dropView] setTranslatesAutoresizingMaskIntoConstraints:NO];
-}
-
-#pragma marks
-
-- (void)dropView:(CZDropView *)dropView didReceiveFiles:(NSArray *)items {
-    
-}
-
-- (BOOL)dropView:(CZDropView *)dropView isItemInList:(NSString *)description {
     return YES;
 }
+/*!
+ *  @brief Add an item to the ComicZipper item list.
+ *  @param item A CZDropItem object.
+ */
+- (void)addItem:(CZDropItem *)item {
+    [[self archiveItems] addObject:item];
+}
+/*!
+ *  @brief Add several items to the ComicZipper item list.
+ *  @param items An array containing multiple CZDropItem objects.
+ */
+- (void)addItems:(NSArray *)items {
+    [[self archiveItems] addObjectsFromArray:[items copy]];
+}
+/*!
+ *  @brief Returns the number of items in list.
+ */
+- (NSInteger)count {
+    return [[self archiveItems] count];
+}
+/*!
+ *  @brief Retrieve an item at a specific position in the list.
+ *  @param index Index of object in list.
+ *  @return An instance of CZDropItem.
+ */
+- (CZDropItem *)itemWithIndex:(NSInteger)index {
+    return [[self archiveItems] objectAtIndex:index];
+}
 
-- (BOOL)isDropViewFront {
-    return YES;
+#pragma mark COMPRESSION METHODS
+
+- (NSOperation *)compressItem:(CZDropItem *)item {
+    NSString *targetPath = [item archivePath];
+    NSString *sourcePath = [item folderPath];
+    NSString *processTag = [NSString stringWithFormat:@"%lu", [[self archiveItems] indexOfObject:item]];
+    // Create the request and add the folder to it.
+    NOZCompressRequest *compRequest = [[NOZCompressRequest alloc] initWithDestinationPath:targetPath];
+    [compRequest addEntriesInDirectory:sourcePath
+             compressionSelectionBlock:NULL];
+    // Create the operation that will perform the request.
+    NOZCompressOperation *operation = [[NOZCompressOperation alloc] initWithRequest:compRequest
+                                                                           delegate:self];
+    [operation setName:processTag];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [item setRunning:YES];
+        [[self delegate] ComicZipper:self
+                 didStartItemAtIndex:[processTag integerValue]];
+    });
+    return operation;
+}
+
+- (void)startCompression {
+        for (CZDropItem *item in [self archiveItems]) {
+            // Do not compress already archived items.
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
+            if (![item isArchived]) {
+                [[self operations] addOperation:[self compressItem:item]];
+            }
+    });
+        }
+}
+
+- (void)compressOperation:(NOZCompressOperation *)operation didCompleteWithResult:(NOZCompressResult *)result {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSUInteger index = [[operation name] integerValue];
+        CZDropItem *item = [[self archiveItems] objectAtIndex:index];
+        [item setRunning:NO];
+        [item setArchived:YES];
+        [[self delegate] ComicZipper:self
+                didFinishItemAtIndex:index];
+    });
+}
+
+- (void)compressOperation:(NOZCompressOperation *)operation didUpdateProgress:(float)progress {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSUInteger index = [[operation name] integerValue];
+        if ([[[self archiveItems] objectAtIndex:index] isRunning]) {
+            [[self delegate] ComicZipper:self
+                       didUpdateProgress:progress*100
+                           ofItemAtIndex:index];            
+        }
+    });
+}
+
+#pragma mark PRIVATE METHODS
+
+- (NSOperationQueue *)operations {
+    if (!_operations) {
+        _operations = [[NSOperationQueue alloc] init];
+        [[self operations] setMaxConcurrentOperationCount:1];
+    }
+    
+    return _operations;
 }
 
 @end

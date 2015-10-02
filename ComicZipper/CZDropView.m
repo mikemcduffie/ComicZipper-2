@@ -71,7 +71,6 @@
     if (![self inDragMode]) {
         return NSDragOperationNone;
     }
-    
     if (![self isViewHighlighted]) {
         [self setViewHighlight:YES];
     }
@@ -85,7 +84,12 @@
                                 searchOptions:@{} // nil gives a warning, so send an empty dictionary instead.
                                    usingBlock:^(NSDraggingItem *draggingItem, NSInteger idx, BOOL *stop) {
                                        // Folders already added to the list should not be added or reloaded.
-                                       if (![[self delegate] dropView:self isItemInList:[[draggingItem item] description]]) {
+                                       if (![[self delegate] dropView:self
+                                                         isItemInList:[[draggingItem item] description]]) {
+                                           if (![self droppedItems]) {
+                                               NSMutableArray *droppedItems = [[NSMutableArray alloc] init];
+                                               [self setDroppedItems:droppedItems];
+                                           }
                                            [[self droppedItems] addObject:[draggingItem item]];
                                            [self setNumberOfValidItemsForDrop:[self numberOfValidItemsForDrop]+1];
                                        }
@@ -111,7 +115,8 @@
     }
     // The drop view delegate will take over the items, making it safe for deallocating the droppedItems array later in the cleanUp: method.
     if ([self droppedItems]) {
-        [[self delegate] dropView:self didReceiveFiles:[self droppedItems]];
+        [[self delegate] dropView:self
+                  didReceiveFiles:[self droppedItems]];
     }
     
     return YES;
@@ -125,6 +130,8 @@
     if ([self isViewHighlighted]) {
         [self setViewHighlight:NO];
     }
+    // Cleanup must be done on draggingExited: so as to empty the array. Otherwise the objects will pile up and in the array and all will be added later on.
+    [self cleanUp];
 }
 
 /*!

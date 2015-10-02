@@ -6,10 +6,29 @@
 //  Copyright © 2015 Ardalan Samimi. All rights reserved.
 //
 
+@class CZDropItem, CZComicZipper;
+
+@protocol CZComicZipperDelegate <NSObject>
+
+@required
+- (void)ComicZipper:(CZComicZipper *)comicZipper didStartItemAtIndex:(NSUInteger)index;
+- (void)ComicZipper:(CZComicZipper *)comicZipper didFinishItemAtIndex:(NSUInteger)index;
+- (void)ComicZipper:(CZComicZipper *)comicZipper didUpdateProgress:(float)progress ofItemAtIndex:(NSUInteger)index;
+
+@end
+
 @interface CZComicZipper : NSObject
 
-+ (instancetype)initWithState:(int)applicationState;
-- (instancetype)initWithState:(int)applicationState;
-- (void)drawUIElements;
+@property (weak) id delegate;
+
+- (BOOL)isItemInList:(NSString *)description;
+
+- (void)addItem:(CZDropItem *)item;
+- (void)addItems:(NSArray *)items;
+
+- (NSInteger)count;
+//- (NSDictionary *)itemWithIndex:(NSInteger)index;
+- (CZDropItem *)itemWithIndex:(NSInteger)index;
+- (void)startCompression;
 
 @end

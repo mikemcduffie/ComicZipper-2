@@ -8,30 +8,34 @@
 
 #import "CZArchiveItem.h"
 
-/*!
- *  @description Regular expression pattern used for ...
- */
-static NSString *const kCZRegExPattern = @"\\s([0-9]+$)";
-static NSString *const kCZRegExTemplate = @" #$1";
-static NSString *const kCZFileExtension = @"cbz";
-
 @interface CZArchiveItem ()
 
-@property (nonatomic) NSTask *task;
 @property (nonatomic, copy) NSURL *fileURL;
 @property (nonatomic, copy) NSString *filesToIgnore;
 @property (nonatomic, copy) NSString *parentFolder;
 @property (nonatomic, copy) NSString *folderName;
 @property (nonatomic, copy) NSString *folderPath;
 @property (nonatomic, copy) NSString *archivePath;
-@property (nonatomic, copy) NSString *commandLine;
 @property (nonatomic, copy) NSArray *validExtensions;
 @property (nonatomic) int deleteCount;
-@property (nonatomic, setter = setRunning:, getter = isRunning) BOOL running;
+@property (nonatomic, readonly) unsigned long long fileSizeInBytes;
 
 @end
 
 @implementation CZArchiveItem
+
+/*!
+ *  @description Regular expression pattern for issue numbering.
+ */
+static NSString *const kCZRegExPattern = @"\\s([0-9]+$)";
+/*!
+ *  @description Regular expression pattern for issue numbering.
+ */
+static NSString *const kCZRegExTemplate = @" #$1";
+/*!
+ *  @description The file extension of the archive.
+ */
+static NSString *const kCZFileExtension = @"cbz";
 
 + (instancetype)initWithURL:(NSURL *)url {
     return [[super alloc] initWithURL:url];
@@ -48,7 +52,6 @@ static NSString *const kCZFileExtension = @"cbz";
         _archivePath = [self getArchivePath];
         _validExtensions = @[@"jpg", @"jpeg", @"png", @"gif"];
         _fileSizeInBytes = [self calculateFileSize];
-        NSLog(@"%@", _archivePath);
     }
     
     return self;
@@ -59,9 +62,11 @@ static NSString *const kCZFileExtension = @"cbz";
     // Make sure a folder name has been set, for safety issues.
     if (folderName == nil) {
         // Substring full path to get folder name
-        NSRange lastSlashCaracter = [[url path] rangeOfString:@"/" options:NSBackwardsSearch];
+        NSRange lastSlashCaracter = [[url path] rangeOfString:@"/"
+                                                      options:NSBackwardsSearch];
         NSRange rangeOfFolderPath = NSMakeRange(0, lastSlashCaracter.location+1);
-        folderName = [[url path] stringByReplacingCharactersInRange:rangeOfFolderPath withString:@""];
+        folderName = [[url path] stringByReplacingCharactersInRange:rangeOfFolderPath
+                                                         withString:@""];
     }
     
     return folderName;
@@ -99,19 +104,13 @@ static NSString *const kCZFileExtension = @"cbz";
     unsigned long long fileSizeInBytes = 0;
     NSDirectoryEnumerator *directoryEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:_folderPath];
     for (NSURL *file in directoryEnumerator) {
+        // Only add files with valid extensions to the filesize count.
         if ([_validExtensions containsObject:[file pathExtension]]) {
             fileSizeInBytes += [[[directoryEnumerator fileAttributes] objectForKey:NSFileSize] longLongValue];
         }
     }
+
     return fileSizeInBytes;
-}
-
-- (void)removeDirectory {
-    
-}
-
-- (void)startCompression {
-    
 }
 
 - (NSURL *)fileURL {
@@ -121,16 +120,34 @@ static NSString *const kCZFileExtension = @"cbz";
     return _fileURL;
 }
 
-- (NSString *)path {
-    return [self folderPath];
+- (NSString *)folderPath {
+    return _folderPath;
+}
+
+- (NSString *)archivePath {
+    return _archivePath;
 }
 
 - (NSString *)description {
     return [self folderName];
 }
 
+- (NSString *)fileSize {
+    return [self stringFromByte:[self fileSizeInBytes]];
+}
+
 - (void)dealloc {
     NSLog(@"Dealloc: %@", self);
+}
+
+/*!
+ *  @brief Translate filesize in string to a humanreadable string.
+ *  @param fileSize The filesize in bytes.
+ */
+- (NSString *)stringFromByte:(double)fileSize {
+    NSString *size = [NSByteCountFormatter stringFromByteCount:fileSize
+                                                    countStyle:NSByteCountFormatterCountStyleFile];
+    return size;
 }
 
 @end

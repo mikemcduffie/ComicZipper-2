@@ -1,24 +1,7 @@
-//
-//  CZPrefix.pch
-//  ComicZipper
-//
-//  Created by Ardalan Samimi on 29/09/15.
-//  Copyright © 2015 Ardalan Samimi. All rights reserved.
-//
-
-#ifndef CZPrefix_pch
-#define CZPrefix_pch
-
 // Include any system framework and library headers here that should be included in all compilation units.
 // You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
-
-#import <Cocoa/Cocoa.h>
-#import "CZAppDelegate.h"
-
-/*!
- *  @brief Represents the Application Delegate.
- *  @discussion Use this constant to access the application delegate.
- */
+#ifndef CZPrefix_pch
+#define CZPrefix_pch
 #define kCZAppDelegate ((CZAppDelegate *)[[NSApplication sharedApplication] delegate])
-
-#endif /* CZPrefix_pch */
+#import "Constants.h"
+#endif
