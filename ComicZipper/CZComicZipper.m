@@ -78,6 +78,10 @@
     return [[self archiveItems] objectAtIndex:index];
 }
 
+- (void)removeItemsWithIndexes:(NSIndexSet *)indexes {
+    [[self archiveItems] removeObjectsAtIndexes:indexes];
+}
+
 #pragma mark COMPRESSION METHODS
 
 - (NSOperation *)compressItem:(CZDropItem *)item {
@@ -101,14 +105,14 @@
 }
 
 - (void)startCompression {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
         for (CZDropItem *item in [self archiveItems]) {
             // Do not compress already archived items.
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
             if (![item isArchived]) {
                 [[self operations] addOperation:[self compressItem:item]];
             }
-    });
         }
+    });
 }
 
 - (void)compressOperation:(NOZCompressOperation *)operation didCompleteWithResult:(NOZCompressResult *)result {
@@ -127,7 +131,7 @@
         NSUInteger index = [[operation name] integerValue];
         if ([[[self archiveItems] objectAtIndex:index] isRunning]) {
             [[self delegate] ComicZipper:self
-                       didUpdateProgress:progress*100
+                       didUpdateProgress:progress
                            ofItemAtIndex:index];            
         }
     });

@@ -13,11 +13,17 @@
 @property (nonatomic) BOOL commandKeyState;
 @property (nonatomic) NSInteger *row;
 
-// Should declare methods??
-
 @end
 
 @implementation CZTableView
+
+- (void)setDelegate:(id<CZTableViewDelegate>)delegate {
+    [super setDelegate:delegate];
+}
+
+- (id)delegate {
+    return [super delegate];
+}
 
 - (instancetype)initWithFrame:(NSRect)frame {
     self = [super initWithFrame:frame];
@@ -37,16 +43,15 @@
     return self;
 }
 
-- (void)drawRect:(NSRect)dirtyRect {
-    [super drawRect:dirtyRect];
-}
-
 - (void)menuItemOpenFinder {
-//    [[self czDelegate] openItemFinder:[self selectedRowIndexes]];
+    [[self delegate] openItemInFinder:[self selectedRowIndexes]];
 }
 
 - (void)menuItemRemove {
-    // [[self czDelegate] tableView:self didRegisterKeyUp:51 withCommand:NO];
+    [[self delegate] tableView:self
+              DidRegisterKeyUp:kDeleteKey
+                  atRowIndexes:[self selectedRowIndexes]
+                   withCommand:NO];
 }
 
 - (void)flagsChanged:(NSEvent *)theEvent {
@@ -56,7 +61,10 @@
 }
 
 - (void)keyUp:(NSEvent *)theEvent {
-    [[self czDelegate] tableView:self DidRegisterKeyUp:[theEvent keyCode] withCommand:[self commandKeyState]];
+    [[self delegate] tableView:self
+              DidRegisterKeyUp:[theEvent keyCode]
+                  atRowIndexes:[self selectedRowIndexes]
+                   withCommand:[self commandKeyState]];
 }
 
 - (NSMenu *)menuForEvent:(NSEvent *)event {
@@ -65,7 +73,8 @@
     //
     if (row > -1 && row < [self numberOfRows]) {
         if ([[self selectedRowIndexes] containsIndex:row] == NO) {
-            [self selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
+            [self selectRowIndexes:[NSIndexSet indexSetWithIndex:row]
+              byExtendingSelection:NO];
         }
         
         return [self menu];

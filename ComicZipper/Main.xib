@@ -14,18 +14,18 @@
         <window allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" animationBehavior="default" id="F0z-JX-Cv5">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" texturedBackground="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="454" y="248" width="487" height="322"/>
+            <rect key="contentRect" x="123" y="248" width="449" height="372"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
             <value key="minSize" type="size" width="400" height="322"/>
             <view key="contentView" id="se5-gp-TjO">
-                <rect key="frame" x="0.0" y="0.0" width="487" height="322"/>
+                <rect key="frame" x="0.0" y="0.0" width="449" height="372"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <animations/>
             </view>
             <connections>
                 <outlet property="delegate" destination="-2" id="0bl-1N-AYu"/>
             </connections>
-            <point key="canvasLocation" x="-31.5" y="189"/>
+            <point key="canvasLocation" x="-114.5" y="260"/>
         </window>
     </objects>
 </document>

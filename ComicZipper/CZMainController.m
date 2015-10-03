@@ -12,7 +12,7 @@
 #import "CZTableView.h"
 #import "CZDropView.h"
 #import "CZDropItem.h"
-#import "CZProgressIndicator.h"
+#import "CZTableCellView.h"
 
 @interface CZMainController () <CZComicZipperDelegate, CZDropViewDelegate, CZTableViewDelegate, NSTableViewDataSource>
 
@@ -24,19 +24,9 @@
 
 @end
 
+int const kDropViewLabel = 101;
+
 @implementation CZMainController
-
-float const kTableColumnRatio = 1.1;
-float const kTableColumnHeight = 40.0;
-float const kColumnNormalHeight = kTableColumnHeight/2;
-float const kColumnDetailheight = kTableColumnHeight/2-3;
-
-int const kDropViewLabel = 100;
-int const kItemNameLabel = 200;
-int const kItemSizeLabel = 300;
-int const kItemImageLabel = 400;
-int const kIndicatorLabel = 500;
-int const kProgressIndicator = 600;
 
 - (instancetype)initWithWindowNibName:(NSString *)windowNibName
                           ComicZipper:(CZComicZipper *)comicZipper
@@ -75,6 +65,15 @@ int const kProgressIndicator = 600;
     }
 }
 
+- (void)handleKeyEvent:(int)keyCode
+          atRowIndexes:(NSIndexSet *)indexes
+           withCommand:(BOOL)state {
+    if (keyCode == kDeleteKey) {
+        [[self comicZipper] removeItemsWithIndexes:indexes];
+        [[self tableView] reloadData];
+    }
+}
+
 #pragma mark DELEGATE METHODS
 
 - (void)dropView:(CZDropView *)dropView didReceiveFiles:(NSArray *)items {
@@ -98,6 +97,13 @@ int const kProgressIndicator = 600;
     return YES;
 }
 
+- (void)tableView:(CZTableView *)tableView
+ DidRegisterKeyUp:(int)keyCode
+     atRowIndexes:(NSIndexSet *)indexes
+      withCommand:(BOOL)commandState {
+    [self handleKeyEvent:keyCode atRowIndexes:indexes withCommand:commandState];
+}
+
 - (CGFloat)tableView:(NSTableView *)tableView heightOfRow:(NSInteger)row {
     return kTableColumnHeight;
 }
@@ -109,92 +115,73 @@ int const kProgressIndicator = 600;
 - (NSView *)tableView:(CZTableView *)tableView
    viewForTableColumn:(nullable NSTableColumn *)column
                   row:(NSInteger)row {
-    NSTableCellView *cellView = [tableView makeViewWithIdentifier:@"FolderView" owner:self];
-    // Create a cell view if no one exists
-    if (cellView == nil) {
-        cellView = [[NSTableCellView alloc] initWithFrame:NSMakeRect(0, 0, tableView.frame.size.width, 32)];
-        [cellView setIdentifier:@"FolderView"];
-    }
-    // Retrieve the current item being displayed.
+    CZTableCellView *cellView = [tableView makeViewWithIdentifier:@"FolderView" owner:self];
     CZDropItem *item = [[self comicZipper] itemWithIndex:row];
+    float width = [column width];
     if ([[column identifier] isEqualToString:@"ColumnLeft"]) {
-        NSTextField *itemName = [self createTextFieldWithFrame: NSMakeRect(50, 15, [column width], kColumnNormalHeight)
-                                                   stringValue:[item description]
-                                                      fontName:@"Lucida Grande Bold"
-                                                      fontSize:13.0];
-        NSTextField *itemSize = [self createTextFieldWithFrame:NSMakeRect(50, 0, [column width], kColumnDetailheight)
-                                                    stringValue:[item archivePath]
-                                                        fontName:@"Lucida Grande"
-                                                        fontSize:9.5];
-        CZProgressIndicator *progress = [CZProgressIndicator initWithFrame:NSMakeRect(50, 0, [column width], kColumnDetailheight)
-                                                                        andProgress:[item progress]];
-        [itemName setTag:kItemNameLabel+row];
-        [itemSize setTag:kItemSizeLabel+row];
-        [progress setTag:kProgressIndicator+row];
-        [itemSize setAutoresizingMask:NSViewWidthSizable];
-        [itemName setAutoresizingMask:NSViewWidthSizable];
-        [progress setAutoresizingMask:NSViewWidthSizable];
-        // The image box to the left of the column
-        NSImageView *imageView = [[NSImageView alloc] initWithFrame:NSMakeRect(0, 0, 50, kTableColumnHeight)];
-        [imageView setImage:[NSImage imageNamed:@"NSFolder"]];
-        [imageView setTag:kItemImageLabel+row];
-        [cellView addSubview:itemName];
-        [cellView addSubview:itemSize];
-        [cellView addSubview:progress];
-        [cellView addSubview:imageView];
-        [cellView setNeedsLayout:YES];
-    } else {
-        NSImageView *imageView = [[NSImageView alloc] initWithFrame:NSMakeRect(0, 0, 30, kTableColumnHeight)];
-        if ([item isArchived]) {
-            [imageView setImage:[NSImage imageNamed:@"NSStatusAvailable"]];
-            [imageView setTag:kIndicatorLabel+row];
-        } else if ([item isRunning]) {
-            [imageView setImage:[NSImage imageNamed:@"NSStatusPartiallyAvailable"]];
-            [imageView setTag:kIndicatorLabel+row];
+        if (cellView == nil) {
+            cellView = [[CZTableCellView alloc] initWithFrame:NSMakeRect(0, 0, width, 32)];
+            [cellView setIdentifier:@"FolderView"];
         } else {
-            [imageView setImage:[NSImage imageNamed:@"NSStatusNone"]];
-            [imageView setTag:kIndicatorLabel+row];
+            [cellView setWidth:width];
         }
-        [cellView addSubview:imageView];
+        [cellView setTitleText:[item description]];
+        [cellView setImage:[NSImage imageNamed:@"NSFolder"]];
+        if ([item isArchived]) {
+            [cellView setDetailText:[item archivePath]];
+        } else {
+            [cellView setDetailText:[item fileSize]];
+            [cellView setProgress:1.0];
+        }
+    } else {
+        if (cellView == nil) {
+            cellView = [[CZTableCellView alloc] initWithFrame:NSMakeRect(0, 0, width, 32)];
+            [cellView setIdentifier:@"FolderView"];
+        } else {
+            [cellView setWidth:width];
+        }
+        if ([item isArchived]) {
+            [cellView setImage:[NSImage imageNamed:@"NSStatusAvailable"]];
+        } else if ([item isRunning]) {
+            [cellView setImage:[NSImage imageNamed:@"NSStatusPartiallyAvailable"]];
+        } else {
+            [cellView setImage:[NSImage imageNamed:@"NSStatusNone"]];
+        }
     }
 
     return cellView;
 }
 
-
 - (void)ComicZipper:(CZComicZipper *)comicZipper
 didStartItemAtIndex:(NSUInteger)index {
-    NSImageView *imageView = [[self dropView] viewWithTag:kIndicatorLabel+index];
-    [imageView setImage:[NSImage imageNamed:@"NSStatusPartiallyAvailable"]];
-    NSTextField *textField = [[self dropView] viewWithTag:kItemSizeLabel+index];
-    [textField setHidden:YES];
-    CZProgressIndicator *progressIndicator = [[self dropView] viewWithTag:kProgressIndicator+index];
-    [progressIndicator setDisplayedWhenStopped:YES];
+    // For performance issues reload only the specific row that needs updating.
+    NSIndexSet *rowIndexes = [[NSIndexSet alloc] initWithIndex:index];
+    NSIndexSet *colIndexes = [[NSIndexSet alloc] initWithIndexesInRange:NSMakeRange(0,2)];
+    [[self tableView] reloadDataForRowIndexes:rowIndexes
+                                columnIndexes:colIndexes];
 }
 
 - (void)ComicZipper:(CZComicZipper *)comicZipper
   didUpdateProgress:(float)progress
       ofItemAtIndex:(NSUInteger)index {
-    CZProgressIndicator *progressIndicator = [[self dropView] viewWithTag:kProgressIndicator+index];
-    [progressIndicator setDoubleValue:progress];
+    CZTableCellView *cellView = [[self tableView] viewAtColumn:0 row:index makeIfNecessary:YES];
+    [cellView setProgress:progress];
 }
 
 - (void)ComicZipper:(CZComicZipper *)comicZipper
 didFinishItemAtIndex:(NSUInteger)index {
-    [[[self dropView] viewWithTag:kProgressIndicator+index] removeFromSuperview];
-    NSImageView *imageView = [[self dropView] viewWithTag:kIndicatorLabel+index];
-    [imageView setImage:[NSImage imageNamed:@"NSStatusAvailable"]];
-    NSTextField *textField = [[self dropView] viewWithTag:kItemSizeLabel+index];
-    NSString *string = [[[self comicZipper] itemWithIndex:index] archivePath];
-    [textField setStringValue:string];
-    [textField setHidden:NO];
+    // For performance issues reload only the specific row that needs updating.
+    NSIndexSet *rowIndexes = [[NSIndexSet alloc] initWithIndex:index];
+    NSIndexSet *colIndexes = [[NSIndexSet alloc] initWithIndexesInRange:NSMakeRange(0,2)];
+    [[self tableView] reloadDataForRowIndexes:rowIndexes
+                                columnIndexes:colIndexes];
 }
 
 
 #pragma mark USER INTERFACE METHODS
 
 - (void)addDropView {
-    CZDropView *dropView = [[CZDropView alloc] init];
+    CZDropView *dropView = [[CZDropView alloc] initWithFrame:[[[self window] contentView] frame]];
     [dropView setDelegate:self];
     [dropView setDragMode:YES];
     [dropView setAutoresizesSubviews:YES];
@@ -319,6 +306,7 @@ didFinishItemAtIndex:(NSUInteger)index {
 #pragma mark USER INTERACTION METHODS
 
 - (void)compressButton:(id)sender {
+    [sender setEnabled:NO];
     [[self comicZipper] startCompression];
 }
 

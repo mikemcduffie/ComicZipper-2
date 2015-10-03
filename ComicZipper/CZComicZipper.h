@@ -27,8 +27,8 @@
 - (void)addItems:(NSArray *)items;
 
 - (NSInteger)count;
-//- (NSDictionary *)itemWithIndex:(NSInteger)index;
 - (CZDropItem *)itemWithIndex:(NSInteger)index;
+- (void)removeItemsWithIndexes:(NSIndexSet *)indexes;
 - (void)startCompression;
 
 @end
