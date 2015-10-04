@@ -52,6 +52,8 @@ static NSString *const kCZFileExtension = @"cbz";
         _archivePath = [self getArchivePath];
         _validExtensions = @[@"jpg", @"jpeg", @"png", @"gif"];
         _fileSizeInBytes = [self calculateFileSize];
+        _running = NO;
+        _archived = NO;
     }
     
     return self;
@@ -105,7 +107,7 @@ static NSString *const kCZFileExtension = @"cbz";
     NSDirectoryEnumerator *directoryEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:_folderPath];
     for (NSURL *file in directoryEnumerator) {
         // Only add files with valid extensions to the filesize count.
-        if ([_validExtensions containsObject:[file pathExtension]]) {
+        if ([_validExtensions containsObject:[[file pathExtension] lowercaseString]]) {
             fileSizeInBytes += [[[directoryEnumerator fileAttributes] objectForKey:NSFileSize] longLongValue];
         }
     }

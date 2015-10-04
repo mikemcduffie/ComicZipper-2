@@ -21,14 +21,13 @@
 
 @property (weak) id delegate;
 
-- (BOOL)isItemInList:(NSString *)description;
-
-- (void)addItem:(CZDropItem *)item;
-- (void)addItems:(NSArray *)items;
-
 - (NSInteger)count;
+- (NSInteger)countAll;
+- (void)addItems:(NSArray *)items;
+- (void)addItem:(CZDropItem *)item;
+- (BOOL)isItemInList:(NSString *)description;
 - (CZDropItem *)itemWithIndex:(NSInteger)index;
 - (void)removeItemsWithIndexes:(NSIndexSet *)indexes;
-- (void)startCompression;
+- (void)readyToCompress;
 
 @end

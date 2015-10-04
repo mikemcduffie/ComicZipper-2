@@ -7,22 +7,21 @@
 //
 
 #import "CZTableCellView.h"
+#import "CZTextField.h"
 
 @interface CZTableCellView ()
 
 @property (nonatomic, strong) NSImageView *imageIconView;
 @property (nonatomic, strong) NSTextField *textFieldTitle;
-@property (nonatomic, retain) NSTextField *textFieldDetail;
+@property (nonatomic, strong) NSTextField *textFieldDetail;
 @property (nonatomic, strong) NSProgressIndicator *progressIndicator;
 @property (nonatomic, readonly) float width;
+
 @end
 
 @implementation CZTableCellView
 
-- (void)dealloc {
-    // Remove any constraint on deallocation to prevent conflicts when tableview create new views.
-    [[self superview] removeConstraints:[self constraints]];
-}
+@synthesize width = _width;
 
 - (instancetype)initWithFrame:(NSRect)frameRect {
     self = [super initWithFrame:frameRect];
@@ -32,6 +31,14 @@
     }
     
     return self;
+}
+
+- (float)width {
+    // Make sure the object widths are always up to date. Otherwise, a cell already in place will have the original width even after window has resized.
+    if (_width < self.frame.size.width) {
+        _width = self.frame.size.width;
+    }
+    return _width;
 }
 
 - (void)setWidth:(float)width {
@@ -58,9 +65,10 @@
 
 - (NSTextField *)textFieldTitle {
     if (!_textFieldTitle) {
-        _textFieldTitle = [self createTextFieldWithFrame: NSMakeRect(50, 15, [self width]-50, kColumnNormalHeight)
-                                                fontName:@"Lucida Grande Bold"
-                                                fontSize:13.0];
+        _textFieldTitle = [CZTextField initWithFrame:NSMakeRect(0, 15, [self width], kColumnNormalHeight)
+                                         stringValue:@""
+                                            fontName:@"Lucida Grande Bold"
+                                            fontSize:13.0];
         [self addSubview:_textFieldTitle];
     }
     
@@ -69,10 +77,11 @@
 
 - (NSTextField *)textFieldDetail {
     if (!_textFieldDetail) {
-        [self removeProgressIndicatorFromSuperview];
-        _textFieldDetail = [self createTextFieldWithFrame:NSMakeRect(50, 0, [self width]-50, kColumnDetailheight)
-                                                fontName:@"Lucida Grande"
-                                                fontSize:9.5];
+        [self removeFromSuperview:&_progressIndicator];
+        _textFieldDetail = [CZTextField initWithFrame:NSMakeRect(0, 0, [self width], kColumnDetailheight)
+                                          stringValue:@""
+                                             fontName:@"Lucida Grande"
+                                             fontSize:9.5];
         [self addSubview:_textFieldDetail];
     }
     
@@ -90,15 +99,15 @@
 
 - (NSProgressIndicator *)progressIndicator {
     if (!_progressIndicator) {
-        [self removeTextFieldDetailFromSuperview];
-        NSProgressIndicator *progressIndicator = [[NSProgressIndicator alloc] initWithFrame:NSMakeRect(50, 0, [self width]-50, kColumnDetailheight)];
+        [self removeFromSuperview:&_textFieldDetail];
+        NSRect frame = NSMakeRect(0, 0, [self width], kColumnDetailheight);
+        NSProgressIndicator *progressIndicator = [[NSProgressIndicator alloc] initWithFrame:frame];
         [progressIndicator setStyle:NSProgressIndicatorBarStyle];
         [progressIndicator setMinValue:0.0];
         [progressIndicator setMaxValue:1.0];
         [progressIndicator setDoubleValue:0.0];
         [progressIndicator setIndeterminate:NO];
         [progressIndicator setDisplayedWhenStopped:YES];
-        [progressIndicator setAutoresizesSubviews:YES];
         [progressIndicator setAutoresizingMask:NSViewWidthSizable];
         _progressIndicator = progressIndicator;
         [self addSubview:_progressIndicator];
@@ -107,34 +116,11 @@
     return _progressIndicator;
 }
 
-- (NSTextField *)createTextFieldWithFrame:(NSRect)frame
-                                 fontName:(NSString *)fontName
-                                 fontSize:(float)fontSize {
-    NSTextField *textField = [[NSTextField alloc] initWithFrame:frame];
-    [textField setBordered:NO];
-    [textField setEditable:NO];
-    [textField setSelectable:NO];
-    [textField setDrawsBackground:NO];
-    [textField setAllowsEditingTextAttributes:NO];
-    [[textField cell] setTruncatesLastVisibleLine:YES];
-    [[textField cell] setLineBreakMode:NSLineBreakByTruncatingMiddle];
-    [textField setFont:[NSFont fontWithName:fontName size:fontSize]];
-    [textField setAutoresizesSubviews:YES];
-    [textField setAutoresizingMask:NSViewWidthSizable];
-    return textField;
-}
-
-- (void)removeTextFieldDetailFromSuperview {
-    if (_textFieldDetail) {
-        [[self textFieldDetail] removeFromSuperview];
-        [self setTextFieldDetail:nil];
-    }
-}
-
-- (void)removeProgressIndicatorFromSuperview {
-    if (_progressIndicator) {
-        [[self progressIndicator] removeFromSuperview];
-        [self setProgressIndicator:nil];
+- (void)removeFromSuperview:(id __strong *)view {
+    // Need the strong storage qualifier __strong for pass by reference to work.
+    if (*view) {
+        [*view removeFromSuperview];
+        *view = nil;
     }
 }
 

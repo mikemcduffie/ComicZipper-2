@@ -64,9 +64,16 @@
     [[self archiveItems] addObjectsFromArray:[items copy]];
 }
 /*!
- *  @brief Returns the number of items in list.
+ *  @rbief Returns the number of items not archived in list.
  */
 - (NSInteger)count {
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isArchived == NO"];
+    return [[[self archiveItems] filteredArrayUsingPredicate:predicate] count];
+}
+/*!
+ *  @brief Returns the total number of items in list.
+ */
+- (NSInteger)countAll {
     return [[self archiveItems] count];
 }
 /*!
@@ -104,15 +111,13 @@
     return operation;
 }
 
-- (void)startCompression {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
-        for (CZDropItem *item in [self archiveItems]) {
-            // Do not compress already archived items.
-            if (![item isArchived]) {
-                [[self operations] addOperation:[self compressItem:item]];
-            }
+- (void)readyToCompress {
+    for (CZDropItem *item in [self archiveItems]) {
+        // Do not compress already archived items.
+        if (![item isArchived]) {
+            [[self operations] addOperation:[self compressItem:item]];
         }
-    });
+    }
 }
 
 - (void)compressOperation:(NOZCompressOperation *)operation didCompleteWithResult:(NOZCompressResult *)result {

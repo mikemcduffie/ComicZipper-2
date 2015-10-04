@@ -10,6 +10,7 @@
 		6A36DBFB1BBEF08600202AC5 /* Cartfile in Resources */ = {isa = PBXBuildFile; fileRef = 6A36DBFA1BBEF08600202AC5 /* Cartfile */; settings = {ASSET_TAGS = (); }; };
 		6A36DC031BBEF4AA00202AC5 /* ZipUtilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A36DC021BBEF4AA00202AC5 /* ZipUtilities.framework */; };
 		6A36DC041BBEF4AA00202AC5 /* ZipUtilities.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6A36DC021BBEF4AA00202AC5 /* ZipUtilities.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		6A51C8651BC130130055DA30 /* CZTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A51C8641BC130130055DA30 /* CZTextField.m */; settings = {ASSET_TAGS = (); }; };
 		6A5988C61BBB1B4D00932A08 /* CZScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A5988C51BBB1B4D00932A08 /* CZScrollView.m */; settings = {ASSET_TAGS = (); }; };
 		6A5988C91BBB2A1A00932A08 /* CZComicZipper.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A5988C81BBB2A1A00932A08 /* CZComicZipper.m */; settings = {ASSET_TAGS = (); }; };
 		6A5988CC1BBB2C9E00932A08 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A5988CB1BBB2C9E00932A08 /* Constants.m */; settings = {ASSET_TAGS = (); }; };
@@ -54,6 +55,8 @@
 /* Begin PBXFileReference section */
 		6A36DBFA1BBEF08600202AC5 /* Cartfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
 		6A36DC021BBEF4AA00202AC5 /* ZipUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ZipUtilities.framework; path = ComicZipper/Carthage/Build/Mac/ZipUtilities.framework; sourceTree = "<group>"; };
+		6A51C8631BC130130055DA30 /* CZTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZTextField.h; sourceTree = "<group>"; };
+		6A51C8641BC130130055DA30 /* CZTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZTextField.m; sourceTree = "<group>"; };
 		6A5988C41BBB1B4D00932A08 /* CZScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZScrollView.h; sourceTree = "<group>"; };
 		6A5988C51BBB1B4D00932A08 /* CZScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZScrollView.m; sourceTree = "<group>"; };
 		6A5988C71BBB2A1A00932A08 /* CZComicZipper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZComicZipper.h; sourceTree = "<group>"; };
@@ -147,6 +150,8 @@
 				6A5988C51BBB1B4D00932A08 /* CZScrollView.m */,
 				6ABA46A31BBFCAF100DBBC19 /* CZTableCellView.h */,
 				6ABA46A41BBFCAF100DBBC19 /* CZTableCellView.m */,
+				6A51C8631BC130130055DA30 /* CZTextField.h */,
+				6A51C8641BC130130055DA30 /* CZTextField.m */,
 				6A9341811BBC7DCC00EF2FAC /* Main.xib */,
 				6A9341841BBC803000EF2FAC /* MainMenu.xib */,
 				6A6CB0301BB8119800D39E5D /* Images.xcassets */,
@@ -304,6 +309,7 @@
 			files = (
 				6ABA46A51BBFCAF100DBBC19 /* CZTableCellView.m in Sources */,
 				6A5988C61BBB1B4D00932A08 /* CZScrollView.m in Sources */,
+				6A51C8651BC130130055DA30 /* CZTextField.m in Sources */,
 				6A6CB02F1BB8119800D39E5D /* main.m in Sources */,
 				6A6CB02D1BB8119800D39E5D /* CZAppDelegate.m in Sources */,
 				6A6CB0651BB891E300D39E5D /* CZTableView.m in Sources */,

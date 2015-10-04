@@ -15,7 +15,7 @@ extern int const kAppStateFirstItemDrop;
 extern int const kAppStatePopulatedList;
 extern int const kDeleteKey;
 
-extern float const kTableColumnRatio;
+extern float const kTableColumnWidth;
 extern float const kTableColumnHeight;
 extern float const kColumnNormalHeight;
 extern float const kColumnDetailheight;

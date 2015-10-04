@@ -13,6 +13,7 @@
 #import "CZDropView.h"
 #import "CZDropItem.h"
 #import "CZTableCellView.h"
+#import "CZTextField.h"
 
 @interface CZMainController () <CZComicZipperDelegate, CZDropViewDelegate, CZTableViewDelegate, NSTableViewDataSource>
 
@@ -21,10 +22,12 @@
 @property (weak) CZDropView *dropView;
 @property (weak) CZScrollView *scrollView;
 @property (weak) CZTableView *tableView;
+@property (weak) NSButton *compressButton;
+@property (nonatomic) long numberOfItemsToCompress, numberOfItemsCompressed;
 
 @end
 
-int const kDropViewLabel = 101;
+int const kLabelTag = 101;
 
 @implementation CZMainController
 
@@ -37,6 +40,8 @@ int const kDropViewLabel = 101;
         [comicZipper setDelegate:self];
         _comicZipper = comicZipper;
         _applicationState = applicationState;
+        _numberOfItemsToCompress = 0;
+        _numberOfItemsCompressed = 0;
     }
     
     return self;
@@ -54,22 +59,24 @@ int const kDropViewLabel = 101;
     }
 
     if ([self applicationStateIs:kAppStateNoItemDropped]) {
+        if ([self scrollView]) {
+            [[self scrollView] removeFromSuperview];
+            [self setScrollView:nil];
+            [[self tableView] removeFromSuperview];
+            [self setTableView:nil];
+            [[self compressButton] removeFromSuperview];
+            [self setCompressButton:nil];
+            [[[self dropView] viewWithTag:kLabelTag] removeFromSuperview];
+            [self resetCount];
+        }
         [self addLabelForDropView];
     } else if ([self applicationStateIs:kAppStateFirstItemDrop]) {
-        [[[self dropView] viewWithTag:kDropViewLabel] removeFromSuperview];
+        [[[self dropView] viewWithTag:kLabelTag] removeFromSuperview];
+        [self addCompressButton];
+        [self addLabelForTableView];
         [self addScrollView];
         [self addTableView];
-        [self addCompressButton];
     } else if ([self applicationStateIs:kAppStatePopulatedList]) {
-        [[self tableView] reloadData];
-    }
-}
-
-- (void)handleKeyEvent:(int)keyCode
-          atRowIndexes:(NSIndexSet *)indexes
-           withCommand:(BOOL)state {
-    if (keyCode == kDeleteKey) {
-        [[self comicZipper] removeItemsWithIndexes:indexes];
         [[self tableView] reloadData];
     }
 }
@@ -79,13 +86,13 @@ int const kDropViewLabel = 101;
 - (void)dropView:(CZDropView *)dropView didReceiveFiles:(NSArray *)items {
     // Add dropped items to the array collection before updating user interface.
     [[self comicZipper] addItems:items];
+    [self setNumberOfItemsToCompress:[[self comicZipper] count]];
     // First time drop should create the table.
     if ([self applicationStateIs:kAppStateNoItemDropped]) {
         [self setApplicationState:kAppStateFirstItemDrop];
     } else {
         [self setApplicationState:kAppStatePopulatedList];
     }
-    //
     [self updateUI];
 }
 
@@ -101,7 +108,22 @@ int const kDropViewLabel = 101;
  DidRegisterKeyUp:(int)keyCode
      atRowIndexes:(NSIndexSet *)indexes
       withCommand:(BOOL)commandState {
-    [self handleKeyEvent:keyCode atRowIndexes:indexes withCommand:commandState];
+    if (keyCode == kDeleteKey) {
+        [[self comicZipper] removeItemsWithIndexes:indexes];
+        [[self tableView] removeRowsAtIndexes:indexes
+                                withAnimation:NO];
+        if ([[self comicZipper] countAll]) {
+            NSUInteger firstIndex = [indexes firstIndex];
+            if (firstIndex >= [[self comicZipper] countAll]) {
+                firstIndex--;
+            }
+            [[self tableView] selectRowIndexes:[NSIndexSet indexSetWithIndex:firstIndex]
+                          byExtendingSelection:NO];
+        } else {
+            [self setApplicationState:kAppStateNoItemDropped];
+            [self updateUI];
+        }
+    }
 }
 
 - (CGFloat)tableView:(NSTableView *)tableView heightOfRow:(NSInteger)row {
@@ -109,37 +131,32 @@ int const kDropViewLabel = 101;
 }
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
-    return [[self comicZipper] count];
+    return [[self comicZipper] countAll];
 }
 
 - (NSView *)tableView:(CZTableView *)tableView
    viewForTableColumn:(nullable NSTableColumn *)column
                   row:(NSInteger)row {
-    CZTableCellView *cellView = [tableView makeViewWithIdentifier:@"FolderView" owner:self];
+    CZTableCellView *cellView = [tableView makeViewWithIdentifier:[column identifier]
+                                                            owner:self];
+    if (cellView == nil) {
+        NSRect frame = NSMakeRect(0, 0, [column width], kTableColumnHeight);
+        cellView = [[CZTableCellView alloc] initWithFrame:frame];
+        [cellView setIdentifier:@"RightCell"];
+    } else {
+        [cellView setWidth:[column width]];
+    }
     CZDropItem *item = [[self comicZipper] itemWithIndex:row];
-    float width = [column width];
     if ([[column identifier] isEqualToString:@"ColumnLeft"]) {
-        if (cellView == nil) {
-            cellView = [[CZTableCellView alloc] initWithFrame:NSMakeRect(0, 0, width, 32)];
-            [cellView setIdentifier:@"FolderView"];
-        } else {
-            [cellView setWidth:width];
-        }
-        [cellView setTitleText:[item description]];
         [cellView setImage:[NSImage imageNamed:@"NSFolder"]];
+    } else if ([[column identifier] isEqualToString:@"ColumnMiddle"]) {
+        [cellView setTitleText:[item description]];
         if ([item isArchived]) {
             [cellView setDetailText:[item archivePath]];
         } else {
             [cellView setDetailText:[item fileSize]];
-            [cellView setProgress:1.0];
         }
-    } else {
-        if (cellView == nil) {
-            cellView = [[CZTableCellView alloc] initWithFrame:NSMakeRect(0, 0, width, 32)];
-            [cellView setIdentifier:@"FolderView"];
-        } else {
-            [cellView setWidth:width];
-        }
+    } else if ([[column identifier] isEqualToString:@"ColumnRight"]) {
         if ([item isArchived]) {
             [cellView setImage:[NSImage imageNamed:@"NSStatusAvailable"]];
         } else if ([item isRunning]) {
@@ -147,8 +164,16 @@ int const kDropViewLabel = 101;
         } else {
             [cellView setImage:[NSImage imageNamed:@"NSStatusNone"]];
         }
+        // Update the count
+        if (![item isRunning] && [self numberOfItemsToCompress] == row+1) {
+            NSInteger count = [self numberOfItemsToCompress];
+            [self updateLabelForTableView:[NSString stringWithFormat:@"%li file(s) to compress", count]];
+            [[self compressButton] setEnabled:YES];
+        }
     }
-
+    
+    [cellView setNeedsDisplay:YES];
+    
     return cellView;
 }
 
@@ -156,7 +181,7 @@ int const kDropViewLabel = 101;
 didStartItemAtIndex:(NSUInteger)index {
     // For performance issues reload only the specific row that needs updating.
     NSIndexSet *rowIndexes = [[NSIndexSet alloc] initWithIndex:index];
-    NSIndexSet *colIndexes = [[NSIndexSet alloc] initWithIndexesInRange:NSMakeRange(0,2)];
+    NSIndexSet *colIndexes = [[NSIndexSet alloc] initWithIndexesInRange:NSMakeRange(0,3)];
     [[self tableView] reloadDataForRowIndexes:rowIndexes
                                 columnIndexes:colIndexes];
 }
@@ -164,7 +189,9 @@ didStartItemAtIndex:(NSUInteger)index {
 - (void)ComicZipper:(CZComicZipper *)comicZipper
   didUpdateProgress:(float)progress
       ofItemAtIndex:(NSUInteger)index {
-    CZTableCellView *cellView = [[self tableView] viewAtColumn:0 row:index makeIfNecessary:YES];
+    CZTableCellView *cellView = [[self tableView] viewAtColumn:1
+                                                           row:index
+                                               makeIfNecessary:YES];
     [cellView setProgress:progress];
 }
 
@@ -172,11 +199,43 @@ didStartItemAtIndex:(NSUInteger)index {
 didFinishItemAtIndex:(NSUInteger)index {
     // For performance issues reload only the specific row that needs updating.
     NSIndexSet *rowIndexes = [[NSIndexSet alloc] initWithIndex:index];
-    NSIndexSet *colIndexes = [[NSIndexSet alloc] initWithIndexesInRange:NSMakeRange(0,2)];
+    NSIndexSet *colIndexes = [[NSIndexSet alloc] initWithIndexesInRange:NSMakeRange(0,3)];
     [[self tableView] reloadDataForRowIndexes:rowIndexes
                                 columnIndexes:colIndexes];
+    [self updateCount];
 }
 
+#pragma mark USER INTERACTION METHODS
+
+- (void)compressButton:(id)sender {
+    [sender setEnabled:NO];
+    NSString *label = [NSString stringWithFormat:@"0 out of %li file(s) compressed...", [self numberOfItemsToCompress]];
+    [self updateLabelForTableView:label];
+    [[self comicZipper] readyToCompress];
+}
+
+- (void)updateLabelForTableView:(NSString *)stringValue {
+    NSTextField *label = [[self dropView] viewWithTag:kLabelTag];
+    [label setStringValue:stringValue];
+}
+
+- (void)updateCount {
+    [self setNumberOfItemsCompressed:[self numberOfItemsCompressed]+1];
+    NSInteger totalCount = [self numberOfItemsToCompress];
+    NSInteger readyCount = [self numberOfItemsCompressed];
+    NSString *labelCount;
+    if (readyCount == totalCount) {
+        labelCount = [NSString stringWithFormat:@"%li file(s) compressed!", readyCount];
+    } else {
+        labelCount = [NSString stringWithFormat:@"%li of %li file(s) compressed...", readyCount, totalCount];
+    }
+    [self updateLabelForTableView:labelCount];
+}
+
+- (void)resetCount {
+    [self setNumberOfItemsToCompress:0];
+    [self setNumberOfItemsCompressed:0];
+}
 
 #pragma mark USER INTERFACE METHODS
 
@@ -203,25 +262,26 @@ didFinishItemAtIndex:(NSUInteger)index {
 }
 
 - (void)addLabelForDropView {
-    NSTextField *textField = [self createTextFieldWithFrame:NSMakeRect(0, 0, 0, 0)
-                                                stringValue:@"Drop folders here"
-                                                   fontName:@"Lucida Grande"
-                                                   fontSize:22.0];
-    [textField setTag:kDropViewLabel];
-    [textField setTextColor:[NSColor whiteColor]];
-    [textField setAlignment:NSTextAlignmentCenter];
-    [[self dropView] addSubview:textField];
+    CZTextField *label = [CZTextField initWithFrame:NSMakeRect(0, 0, 0, 0)
+                                            stringValue:@"Drop folders here"
+                                               fontName:@"Lucida Grande"
+                                               fontSize:22.0];
+    [label setTag:kLabelTag];
+    [label setTextColor:[NSColor whiteColor]];
+    [label setAlignment:NSTextAlignmentCenter];
+    [[self dropView] addSubview:label];
     // CONSTRAINTS
-    [textField setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [label setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self setConstraintWithItem:[self dropView]
-                         toItem:textField
+                         toItem:label
                  withAttributes:@[[NSNumber numberWithInt:NSLayoutAttributeCenterX],
                                   [NSNumber numberWithInt:NSLayoutAttributeCenterY]]
                     andConstant:0];
 }
 
 - (void)addScrollView {
-    CZScrollView *scrollView = [[CZScrollView alloc] initWithFrame:[[self dropView] frame]];
+    NSRect frame = NSMakeRect(self.dropView.frame.origin.x, self.dropView.frame.origin.y, self.dropView.frame.size.width-1, self.dropView.frame.size.height);
+    CZScrollView *scrollView = [[CZScrollView alloc] initWithFrame:frame];
     [scrollView setDrawsBackground:NO];
     [scrollView setHasVerticalScroller:YES];
     [scrollView setHasHorizontalScroller:NO];
@@ -243,6 +303,7 @@ didFinishItemAtIndex:(NSUInteger)index {
                          toItem:scrollView
                   withAttribute:NSLayoutAttributeBottom
                     andConstant:38];
+    [scrollView setAutoresizesSubviews:YES];
     [self setScrollView:scrollView];
 }
 
@@ -250,10 +311,16 @@ didFinishItemAtIndex:(NSUInteger)index {
     NSRect frame = [[self scrollView] frame];
     CZTableView *tableView = [[CZTableView alloc] initWithFrame:frame];
     NSTableColumn *columnLft = [[NSTableColumn alloc] initWithIdentifier:@"ColumnLeft"];
+    NSTableColumn *columnMdl = [[NSTableColumn alloc] initWithIdentifier:@"ColumnMiddle"];
     NSTableColumn *columnRgt = [[NSTableColumn alloc] initWithIdentifier:@"ColumnRight"];
-    [columnLft setWidth:frame.size.width/kTableColumnRatio];
-    [columnRgt setWidth:frame.size.width-(frame.size.width/kTableColumnRatio)];
+    [columnLft setWidth:kTableColumnWidth];
+    [columnMdl setWidth:frame.size.width-(kTableColumnWidth*2)];
+    [columnRgt setWidth:kTableColumnWidth];
+    [columnLft setResizingMask:NSTableColumnNoResizing];
+    [columnMdl setResizingMask:NSTableColumnAutoresizingMask];
+    [columnRgt setResizingMask:NSTableColumnNoResizing];
     [tableView addTableColumn:columnLft];
+    [tableView addTableColumn:columnMdl];
     [tableView addTableColumn:columnRgt];
     [tableView setDelegate:self];
     [tableView setHeaderView:nil];
@@ -271,6 +338,7 @@ didFinishItemAtIndex:(NSUInteger)index {
 - (void)addCompressButton {
     NSButton *button = [[NSButton alloc] initWithFrame:NSMakeRect(295, 2, 100, 32)];
     [button setBordered:YES];
+    [button setEnabled:NO];
     [button setTitle:@"Compress"];
     [button setAction:@selector(compressButton:)];
     [button setBezelStyle:NSRoundedBezelStyle];
@@ -284,30 +352,28 @@ didFinishItemAtIndex:(NSUInteger)index {
                  withAttributes:@[[NSNumber numberWithInt:NSLayoutAttributeTrailing],
                                   [NSNumber numberWithInt:NSLayoutAttributeBottom]]
                     andConstant:10];
+    [self setCompressButton:button];
 }
 
-- (NSTextField *)createTextFieldWithFrame:(NSRect)frame
-                              stringValue:(NSString *)stringValue
-                                 fontName:(NSString *)fontName
-                                 fontSize:(float)fontSize {
-    NSTextField *textField = [[NSTextField alloc] initWithFrame:frame];
-    [textField setBordered:NO];
-    [textField setEditable:NO];
-    [textField setSelectable:NO];
-    [textField setDrawsBackground:NO];
-    [textField setStringValue:stringValue];
-    [textField setAllowsEditingTextAttributes:NO];
-    [[textField cell] setTruncatesLastVisibleLine:YES];
-    [[textField cell] setLineBreakMode:NSLineBreakByTruncatingMiddle];
-    [textField setFont:[NSFont fontWithName:fontName size:fontSize]];
-    return textField;
-}
-
-#pragma mark USER INTERACTION METHODS
-
-- (void)compressButton:(id)sender {
-    [sender setEnabled:NO];
-    [[self comicZipper] startCompression];
+- (void)addLabelForTableView {
+    CGSize frameSize = self.window.contentView.frame.size;
+    CZTextField *label = [CZTextField initWithFrame:NSMakeRect(0, frameSize.height-40, frameSize.width, 30)
+                                        stringValue:@"Loading..."
+                                           fontName:@"Lucida Grande"
+                                           fontSize:15.0];
+    [label setTextColor:[NSColor controlTextColor]];
+    [label setTag:kLabelTag];
+    [label setAlignment:NSTextAlignmentCenter];
+    [[self dropView] addSubview:label];
+    [label setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self setConstraintWithItem:[[self window] contentView]
+                         toItem:label
+                  withAttribute:NSLayoutAttributeTop
+                    andConstant:-25];
+    [self setConstraintWithItem:[[self window] contentView]
+                         toItem:label
+                  withAttribute:NSLayoutAttributeCenterX
+                    andConstant:0];
 }
 
 /*!
@@ -330,7 +396,6 @@ didFinishItemAtIndex:(NSUInteger)index {
                                                                    constant:constant];
     [item1 addConstraint:constraint];
 }
-
 /*!
  *  @brief Creates multiple constraint that defines the relationship between the specified attributes of the given views.
  *  @discussion Attributes are supplied in an array.
