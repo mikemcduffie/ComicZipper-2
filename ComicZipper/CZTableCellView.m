@@ -65,7 +65,7 @@
 
 - (NSTextField *)textFieldTitle {
     if (!_textFieldTitle) {
-        _textFieldTitle = [CZTextField initWithFrame:NSMakeRect(0, 15, [self width], kColumnNormalHeight)
+        _textFieldTitle = [CZTextField initWithFrame:NSMakeRect(0, 15, [self width], kSubviewNormalHeight)
                                          stringValue:@""
                                             fontName:@"Lucida Grande Bold"
                                             fontSize:13.0];
@@ -78,7 +78,7 @@
 - (NSTextField *)textFieldDetail {
     if (!_textFieldDetail) {
         [self removeFromSuperview:&_progressIndicator];
-        _textFieldDetail = [CZTextField initWithFrame:NSMakeRect(0, 0, [self width], kColumnDetailheight)
+        _textFieldDetail = [CZTextField initWithFrame:NSMakeRect(0, 0, [self width], kSubviewDetailheight)
                                           stringValue:@""
                                              fontName:@"Lucida Grande"
                                              fontSize:9.5];
@@ -100,7 +100,7 @@
 - (NSProgressIndicator *)progressIndicator {
     if (!_progressIndicator) {
         [self removeFromSuperview:&_textFieldDetail];
-        NSRect frame = NSMakeRect(0, 0, [self width], kColumnDetailheight);
+        NSRect frame = NSMakeRect(0, 0, [self width], kSubviewDetailheight);
         NSProgressIndicator *progressIndicator = [[NSProgressIndicator alloc] initWithFrame:frame];
         [progressIndicator setStyle:NSProgressIndicatorBarStyle];
         [progressIndicator setMinValue:0.0];

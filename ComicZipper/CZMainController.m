@@ -23,6 +23,7 @@
 @property (weak) CZScrollView *scrollView;
 @property (weak) CZTableView *tableView;
 @property (weak) NSButton *compressButton;
+@property (nonatomic, weak) NSUserNotificationCenter *notificationCenter;
 @property (nonatomic) long numberOfItemsToCompress, numberOfItemsCompressed;
 
 @end
@@ -50,6 +51,7 @@ int const kLabelTag = 101;
 - (void)windowDidLoad {
     [super windowDidLoad];
     [self updateUI];
+
 }
 
 - (void)updateUI {
@@ -57,7 +59,7 @@ int const kLabelTag = 101;
     if (![self dropView]) {
         [self addDropView];
     }
-
+    
     if ([self applicationStateIs:kAppStateNoItemDropped]) {
         if ([self scrollView]) {
             [[self scrollView] removeFromSuperview];
@@ -123,6 +125,7 @@ int const kLabelTag = 101;
             [self setApplicationState:kAppStateNoItemDropped];
             [self updateUI];
         }
+    } else if (keyCode == kArrowDownKey) {
     }
 }
 
@@ -184,6 +187,9 @@ didStartItemAtIndex:(NSUInteger)index {
     NSIndexSet *colIndexes = [[NSIndexSet alloc] initWithIndexesInRange:NSMakeRange(0,3)];
     [[self tableView] reloadDataForRowIndexes:rowIndexes
                                 columnIndexes:colIndexes];
+    if (![self isApplicationBadgeSet]) {
+        [self updateBadgeLabel];
+    }
 }
 
 - (void)ComicZipper:(CZComicZipper *)comicZipper
@@ -226,9 +232,14 @@ didFinishItemAtIndex:(NSUInteger)index {
     NSString *labelCount;
     if (readyCount == totalCount) {
         labelCount = [NSString stringWithFormat:@"%li file(s) compressed!", readyCount];
+        [self resetCount];
+        if (![[NSApplication sharedApplication] isActive]) {
+            [self notifyUser:labelCount];
+        }
     } else {
         labelCount = [NSString stringWithFormat:@"%li of %li file(s) compressed...", readyCount, totalCount];
     }
+    [self updateBadgeLabel];
     [self updateLabelForTableView:labelCount];
 }
 
@@ -460,6 +471,42 @@ didFinishItemAtIndex:(NSUInteger)index {
                         andConstant:constant
                           addToItem:item3];
     }
+}
+
+#pragma mark USER NOTIFICATION METHODS
+
+- (NSUserNotificationCenter *)notificationCenter {
+    if (!_notificationCenter) {
+        NSUserNotificationCenter *notificationCenter = [NSUserNotificationCenter defaultUserNotificationCenter];
+        _notificationCenter = notificationCenter;
+    }
+    return _notificationCenter;
+}
+
+- (void)notifyUser:(NSString *)message {
+    NSUserNotification *notification = [[NSUserNotification alloc] init];
+    [notification setTitle:kApplicationName];
+    [notification setInformativeText:message];
+    [notification setSoundName:kDefaultNotifySoundName];
+    [[self notificationCenter] deliverNotification:notification];
+}
+
+- (void)updateBadgeLabel {
+    // TODO: Should only show if user has chosen so and when app is inactive
+    NSInteger badgeLabel = [self numberOfItemsToCompress] - [self numberOfItemsCompressed];
+    if (badgeLabel == 0) {
+        [self setApplicationBadge:@""];
+    } else {
+        [self setApplicationBadge:[NSString stringWithFormat:@"%li", badgeLabel]];
+    }
+}
+
+- (void)setApplicationBadge:(NSString *)badgeLabel {
+    [[NSApp dockTile] setBadgeLabel:badgeLabel];
+}
+
+- (BOOL)isApplicationBadgeSet {
+    return (![[NSApp dockTile] badgeLabel]) ? NO : YES;
 }
 
 #pragma mark MISC METHODS

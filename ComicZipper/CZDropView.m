@@ -37,7 +37,7 @@
 }
 
 - (void)awakeFromNib {
-    [self initialSetup];
+//    [self initialSetup];
 }
 
 - (void)drawRect:(NSRect)dirtyRect {
@@ -48,6 +48,15 @@
         [[NSColor keyboardFocusIndicatorColor] set];
         [NSBezierPath fillRect:dirtyRect];
     }
+}
+
+- (BOOL)performKeyEquivalent:(NSEvent *)theEvent {
+    // This fixes the "error beep" sound on keystroke. Allows only up and down arrows to be pushed, any any key that was pressed with the CMD-key.
+    if ([theEvent modifierFlags] & NSCommandKeyMask || [theEvent keyCode] == 126 || [theEvent keyCode] == 125) {
+        return NO;
+    }
+
+    return YES;
 }
 
 /*!
