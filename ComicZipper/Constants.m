@@ -26,6 +26,7 @@ NSString *const kIdentifierForSettingsDeleteFolders = @"CZDeleteFolders";
 NSString *const kIdentifierForSettingsExcludedFiles = @"CZExcludedFiles";
 NSString *const kIdentifierForSettingsUserNotification = @"CZUserNotify";
 NSString *const kIdentifierForSettingsDockBadge = @"CZBadgeDockIcon";
+NSString *const kApplicationSettingsFileName = @"CZSettings.plist";
 NSString *kApplicationSupportPath;
 NSString *kApplicationSettingsPath;
 

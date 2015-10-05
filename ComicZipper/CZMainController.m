@@ -492,13 +492,24 @@ didFinishItemAtIndex:(NSUInteger)index {
 }
 
 - (void)updateBadgeLabel {
-    // TODO: Should only show if user has chosen so and when app is inactive
     NSInteger badgeLabel = [self numberOfItemsToCompress] - [self numberOfItemsCompressed];
     if (badgeLabel == 0) {
         [self setApplicationBadge:@""];
     } else {
         [self setApplicationBadge:[NSString stringWithFormat:@"%li", badgeLabel]];
     }
+}
+
+- (BOOL)shouldDeleteFolder {
+    return NO;
+}
+
+- (BOOL)shouldNotifyUser {
+    return NO;
+}
+
+- (BOOL)shouldBadgeDockIcon {
+    return NO;
 }
 
 - (void)setApplicationBadge:(NSString *)badgeLabel {

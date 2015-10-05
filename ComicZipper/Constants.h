@@ -74,6 +74,10 @@ extern NSString *const kIdentifierForSettingsUserNotification;
  */
 extern NSString *const kIdentifierForSettingsDockBadge;
 /*!
+ *  @brief The name of the application settings file.
+ */
+extern NSString *const kApplicationSettingsFileName;
+/*!
  *  @brief Global variable pointing to the application's Application support directory.
  */
 extern NSString *kApplicationSupportPath;

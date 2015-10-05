@@ -7,10 +7,17 @@
 //
 
 #import "CZSettingsController.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface CZSettingsController () <NSTableViewDelegate, NSTableViewDataSource, NSTextFieldDelegate>
 
+@property (strong) IBOutlet NSView *viewGeneral;
+@property (strong) IBOutlet NSView *viewAlerts;
+@property (strong) IBOutlet NSToolbarItem *toolbarItemGeneral;
+@property (strong) IBOutlet NSToolbarItem *toolbarItemAlerts;
 @property (strong) IBOutlet NSButton *checkBoxDelete;
+@property (strong) IBOutlet NSButton *checkBoxNotify;
+@property (strong) IBOutlet NSButton *checkBoxBadge;
 @property (strong) IBOutlet NSTableView *tableView;
 @property (strong) IBOutlet NSButton *buttonRemoveExclusion;
 @property (nonatomic) NSMutableDictionary *settings;
@@ -21,18 +28,23 @@
 
 const int kTableCellViewHeight = 20;
 
+#pragma mark STARTUP METHODS
+
 - (instancetype)initWithWindowNibName:(NSString *)windowNibName
                    settingsDictionary:(NSMutableDictionary *)settings {
     self = [super initWithWindowNibName:windowNibName];
     
     if (self) {
         _settings = settings;
+        // Initialize with the generals tab
+        [[[self window] contentView] addSubview:[self viewGeneral]];
     }
     
     return self;
 }
 
 - (void)windowWillLoad {
+    // Load the excluded files settings
     NSArray *excludedFiles = [[self settings] objectForKey:kIdentifierForSettingsExcludedFiles];
     [self setExcludedFiles:[excludedFiles mutableCopy]];
 }
@@ -42,7 +54,22 @@ const int kTableCellViewHeight = 20;
     [[self tableView] setDelegate:self];
     [[self tableView] setDataSource:self];
     [[self checkBoxDelete] setIdentifier:kIdentifierForSettingsDeleteFolders];
+    [[self checkBoxNotify] setIdentifier:kIdentifierForSettingsUserNotification];
+    [[self checkBoxBadge] setIdentifier:kIdentifierForSettingsDockBadge];
     [[self checkBoxDelete] setState:[[[self settings] objectForKey:kIdentifierForSettingsDeleteFolders] intValue]];
+    [[self checkBoxNotify] setState:[[[self settings] objectForKey:kIdentifierForSettingsUserNotification] intValue]];
+    [[self checkBoxBadge] setState:[[[self settings] objectForKey:kIdentifierForSettingsDockBadge] intValue]];
+    [[[self toolbarItemGeneral] toolbar] setSelectedItemIdentifier:[[self toolbarItemGeneral] itemIdentifier]];
+}
+
+#pragma mark USER INTERFACE METHODS
+
+- (IBAction)switchView:(id)sender {
+    if ([sender isEqualTo:[self toolbarItemGeneral]]) {
+        [[[self window] contentView] replaceSubview:[self viewAlerts] with:[self viewGeneral]];
+    } else {
+        [[[self window] contentView] replaceSubview:[self viewGeneral] with:[self viewAlerts]];
+    }
 }
 
 - (IBAction)checkBoxClicked:(id)sender {
@@ -72,14 +99,7 @@ const int kTableCellViewHeight = 20;
     [[self excludedFiles] removeObjectsAtIndexes:indexes];
 }
 
-- (void)selectLastTableViewRow {
-    NSTableCellView *view = [[self tableView] viewAtColumn:0
-                                                       row:[[self excludedFiles] count]-1
-                                           makeIfNecessary:YES];
-    NSRange selectedRange = NSMakeRange(0, 0);
-    [[view textField] selectText:self];
-    [[[view textField] currentEditor] setSelectedRange:selectedRange];
-}
+#pragma mark DELEGATE METHODS
 
 - (NSView *)tableView:(NSTableView*)tableView
    viewForTableColumn:(nullable NSTableColumn *)tableColumn
@@ -127,6 +147,17 @@ const int kTableCellViewHeight = 20;
         [[self excludedFiles] removeObjectAtIndex:row];
         [[self tableView] reloadData];
     }
+}
+
+#pragma mark MISC METHODS
+
+- (void)selectLastTableViewRow {
+    NSTableCellView *view = [[self tableView] viewAtColumn:0
+                                                       row:[[self excludedFiles] count]-1
+                                           makeIfNecessary:YES];
+    NSRange selectedRange = NSMakeRange(0, 0);
+    [[view textField] selectText:self];
+    [[[view textField] currentEditor] setSelectedRange:selectedRange];
 }
 
 - (NSMutableArray *)excludedFiles {
