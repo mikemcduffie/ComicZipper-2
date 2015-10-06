@@ -14,6 +14,8 @@
 
 @property (nonatomic) NSMutableArray *archiveItems;
 @property (nonatomic) NSOperationQueue *operations;
+@property (nonatomic) NSMutableArray *foldersToDelete;
+@property (nonatomic) NSArray *ignoredFiles;
 
 @end
 
@@ -84,9 +86,25 @@
 - (CZDropItem *)itemWithIndex:(NSInteger)index {
     return [[self archiveItems] objectAtIndex:index];
 }
-
+/*!
+ *  @brief Retrieve several items at a specific position in the list.
+ *  @param indexes The indexes of objects in list.
+ *  @return An array containing the CZDropItem objects
+ */
+- (NSArray *)itemsWithIndex:(NSIndexSet *)indexes {
+    return [[self archiveItems] objectsAtIndexes:indexes];
+}
+/*!
+ *  @brief Remove items from the array.
+ *  @discussion Remove CZDropItem objects from the archive items array, specified by their indexes.
+ *  @param indexes The position of the objects in the array.
+ */
 - (void)removeItemsWithIndexes:(NSIndexSet *)indexes {
     [[self archiveItems] removeObjectsAtIndexes:indexes];
+}
+
+- (void)ignoreFiles:(NSArray *)list {
+    [self setIgnoredFiles:list];
 }
 
 #pragma mark COMPRESSION METHODS
@@ -128,6 +146,13 @@
         [item setArchived:YES];
         [[self delegate] ComicZipper:self
                 didFinishItemAtIndex:index];
+        [self applyCustomIconForArchive:item];
+        if ([self shouldDeleteFolder]) {
+            [[self foldersToDelete] addObject:[NSURL fileURLWithPath:[item folderPath]]];
+            if ([[self operations] operationCount] == 0) {
+                [self deleteFolders];
+            }
+        }
     });
 }
 
@@ -137,12 +162,22 @@
         if ([[[self archiveItems] objectAtIndex:index] isRunning]) {
             [[self delegate] ComicZipper:self
                        didUpdateProgress:progress
-                           ofItemAtIndex:index];            
+                           ofItemAtIndex:index];
         }
     });
 }
 
 #pragma mark PRIVATE METHODS
+
+- (void)applyCustomIconForArchive:(CZDropItem *)item {
+//    [[NSWorkspace sharedWorkspace] setIcon:[NSImage imageNamed:@""] forFile:[item archivePath] options:0];
+}
+
+- (void)deleteFolders {
+    [[NSWorkspace sharedWorkspace] recycleURLs:[self foldersToDelete]
+                             completionHandler:nil];
+    [self setFoldersToDelete:nil];
+}
 
 - (NSOperationQueue *)operations {
     if (!_operations) {
@@ -151,6 +186,21 @@
     }
     
     return _operations;
+}
+
+- (NSMutableArray *)foldersToDelete {
+    if (!_foldersToDelete) {
+        _foldersToDelete = [NSMutableArray array];
+    }
+    return _foldersToDelete;
+}
+
+- (void)setIgnoredFiles:(NSArray *)ignoredFiles {
+    if (!_ignoredFiles) {
+        _ignoredFiles = [NSArray arrayWithArray:ignoredFiles];
+    } else {
+        _ignoredFiles = ignoredFiles;
+    }
 }
 
 @end

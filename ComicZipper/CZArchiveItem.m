@@ -17,7 +17,6 @@
 @property (nonatomic, copy) NSString *folderPath;
 @property (nonatomic, copy) NSString *archivePath;
 @property (nonatomic, copy) NSArray *validExtensions;
-@property (nonatomic) int deleteCount;
 @property (nonatomic, readonly) unsigned long long fileSizeInBytes;
 
 @end
@@ -36,6 +35,8 @@ static NSString *const kCZRegExTemplate = @" #$1";
  *  @description The file extension of the archive.
  */
 static NSString *const kCZFileExtension = @"cbz";
+
+#pragma mark PUBLIC METHODS
 
 + (instancetype)initWithURL:(NSURL *)url {
     return [[super alloc] initWithURL:url];
@@ -59,6 +60,39 @@ static NSString *const kCZFileExtension = @"cbz";
     return self;
 }
 
+- (NSURL *)fileURL {
+    if ([self isArchived]) {
+        return [NSURL fileURLWithPath:[self archivePath]];
+    }
+    return _fileURL;
+}
+
+- (NSString *)folderPath {
+    return _folderPath;
+}
+
+- (NSString *)archivePath {
+    return _archivePath;
+}
+
+- (NSString *)path {
+    if ([self isArchived]) {
+        return [self archivePath];
+    } else {
+        return [self folderPath];
+    }
+}
+
+- (NSString *)fileSize {
+    return [self stringFromByte:[self fileSizeInBytes]];
+}
+
+- (NSString *)description {
+    return [self folderName];
+}
+
+#pragma mark PATH SETUP METHODS
+
 - (NSString *)getFolderNameFromURL:(NSURL *)url {
     NSString *folderName = [url lastPathComponent];
     // Make sure a folder name has been set, for safety issues.
@@ -72,12 +106,6 @@ static NSString *const kCZFileExtension = @"cbz";
     }
     
     return folderName;
-}
-
-- (NSString *)getParentFolderName {
-    // Parent folder name is necessary for the zip command line tool.
-    NSRange range = NSMakeRange([_folderPath length] - [_folderName length], [_folderName length]);
-    return [_folderPath stringByReplacingCharactersInRange:range withString:@""];
 }
 
 - (NSString *)getArchivePath {
@@ -102,6 +130,12 @@ static NSString *const kCZFileExtension = @"cbz";
     return filePath;
 }
 
+- (NSString *)getParentFolderName {
+    // Parent folder name is necessary for the zip command line tool.
+    NSRange range = NSMakeRange([_folderPath length] - [_folderName length], [_folderName length]);
+    return [_folderPath stringByReplacingCharactersInRange:range withString:@""];
+}
+
 - (unsigned long long)calculateFileSize {
     unsigned long long fileSizeInBytes = 0;
     NSDirectoryEnumerator *directoryEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:_folderPath];
@@ -113,33 +147,6 @@ static NSString *const kCZFileExtension = @"cbz";
     }
 
     return fileSizeInBytes;
-}
-
-- (NSURL *)fileURL {
-    if ([self isArchived]) {
-        return [NSURL fileURLWithPath:[self archivePath]];
-    }
-    return _fileURL;
-}
-
-- (NSString *)folderPath {
-    return _folderPath;
-}
-
-- (NSString *)archivePath {
-    return _archivePath;
-}
-
-- (NSString *)description {
-    return [self folderName];
-}
-
-- (NSString *)fileSize {
-    return [self stringFromByte:[self fileSizeInBytes]];
-}
-
-- (void)dealloc {
-    NSLog(@"Dealloc: %@", self);
 }
 
 /*!

@@ -13,8 +13,10 @@
 
 @property (strong) IBOutlet NSView *viewGeneral;
 @property (strong) IBOutlet NSView *viewAlerts;
+@property (strong) IBOutlet NSView *viewAdvanced;
 @property (strong) IBOutlet NSToolbarItem *toolbarItemGeneral;
 @property (strong) IBOutlet NSToolbarItem *toolbarItemAlerts;
+@property (strong) IBOutlet NSToolbarItem *toolbarItemAdvanced;
 @property (strong) IBOutlet NSButton *checkBoxDelete;
 @property (strong) IBOutlet NSButton *checkBoxNotify;
 @property (strong) IBOutlet NSButton *checkBoxBadge;
@@ -22,6 +24,7 @@
 @property (strong) IBOutlet NSButton *buttonRemoveExclusion;
 @property (nonatomic) NSMutableDictionary *settings;
 @property (nonatomic) NSMutableArray *excludedFiles;
+
 @end
 
 @implementation CZSettingsController
@@ -66,9 +69,14 @@ const int kTableCellViewHeight = 20;
 
 - (IBAction)switchView:(id)sender {
     if ([sender isEqualTo:[self toolbarItemGeneral]]) {
-        [[[self window] contentView] replaceSubview:[self viewAlerts] with:[self viewGeneral]];
+        [[[self window] contentView] replaceSubview:[[[[self window] contentView] subviews] firstObject]
+                                               with:[self viewGeneral]];
+    } else if ([sender isEqualTo:[self toolbarItemAlerts]]) {
+        [[[self window] contentView] replaceSubview:[[[[self window] contentView] subviews] firstObject]
+                                               with:[self viewAlerts]];
     } else {
-        [[[self window] contentView] replaceSubview:[self viewGeneral] with:[self viewAlerts]];
+        [[[self window] contentView] replaceSubview:[[[[self window] contentView] subviews] firstObject]
+                                               with:[self viewAdvanced]];
     }
 }
 

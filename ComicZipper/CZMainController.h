@@ -12,6 +12,9 @@
 
 - (instancetype)initWithWindowNibName:(NSString *)windowNibName
                           ComicZipper:(CZComicZipper *)comicZipper
-                  andApplicationState:(int)applicationState;
+                     applicationState:(int)applicationState
+                  applicationSettings:(NSDictionary *)applicationSettings;
+- (void)updateApplicationSettings:(NSDictionary *)applicationSettings;
+- (void)addItemsDraggedToDock:(NSArray *)items;
 
 @end

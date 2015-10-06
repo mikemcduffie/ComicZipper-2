@@ -25,6 +25,7 @@
 @property (weak) NSButton *compressButton;
 @property (nonatomic, weak) NSUserNotificationCenter *notificationCenter;
 @property (nonatomic) long numberOfItemsToCompress, numberOfItemsCompressed;
+@property (nonatomic) NSDictionary *applicationSettings;
 
 @end
 
@@ -34,18 +35,43 @@ int const kLabelTag = 101;
 
 - (instancetype)initWithWindowNibName:(NSString *)windowNibName
                           ComicZipper:(CZComicZipper *)comicZipper
-                  andApplicationState:(int)applicationState {
+                     applicationState:(int)applicationState
+                  applicationSettings:(NSDictionary *)applicationSettings {
     self = [super initWithWindowNibName:windowNibName];
     
     if (self) {
         [comicZipper setDelegate:self];
         _comicZipper = comicZipper;
         _applicationState = applicationState;
+        _applicationSettings = applicationSettings;
         _numberOfItemsToCompress = 0;
         _numberOfItemsCompressed = 0;
     }
     
     return self;
+}
+
+- (void)updateApplicationSettings:(NSDictionary *)applicationSettings {
+    [self setApplicationSettings:applicationSettings];
+}
+
+- (void)addItemsDraggedToDock:(NSArray *)items {
+    NSMutableArray *validItems = [NSMutableArray array];
+    [items enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        BOOL isDir;
+        // Check if the dropped file is a directory
+        if ([[NSFileManager alloc] fileExistsAtPath:obj isDirectory:&isDir] && isDir) {
+            // Get the fileURL and create a DropItem object.
+            CZDropItem *item = [CZDropItem initWithURL:[NSURL fileURLWithPath:obj isDirectory:YES]];
+            // Check if the dragged item is already in the archiveItems array.
+            if (![self dropView:nil isItemInList:[obj description]]) {
+                [validItems addObject:item];
+            }
+        }
+    }];
+    if ([validItems count]) {
+        [self dropView:nil didReceiveFiles:validItems];
+    }
 }
 
 - (void)windowDidLoad {
@@ -103,7 +129,17 @@ int const kLabelTag = 101;
 }
 
 - (BOOL)isDropViewFront {
-    return YES;
+    if ([self applicationStateIs:kAppStateNoItemDropped]) {
+        return YES;
+    }
+    // If the table is loaded, the drop view should not highlight. But the scrollview should!
+    [[self scrollView] toggleHighlight];
+    return NO;
+}
+
+- (void)openItemInFinder:(NSIndexSet *)rows {
+    NSArray *items = [[[self comicZipper] itemsWithIndex:rows] valueForKey:@"fileURL"];
+    [[NSWorkspace sharedWorkspace] activateFileViewerSelectingURLs:items];
 }
 
 - (void)tableView:(CZTableView *)tableView
@@ -121,11 +157,15 @@ int const kLabelTag = 101;
             }
             [[self tableView] selectRowIndexes:[NSIndexSet indexSetWithIndex:firstIndex]
                           byExtendingSelection:NO];
+            if ([self numberOfItemsToCompress]) {
+                [self setNumberOfItemsToCompress:[self numberOfItemsToCompress]-[indexes count]];
+                NSInteger count = [self numberOfItemsToCompress];
+                [self updateLabelForTableView:[NSString stringWithFormat:@"%li file(s) to compress", count]];                
+            }
         } else {
             [self setApplicationState:kAppStateNoItemDropped];
             [self updateUI];
         }
-    } else if (keyCode == kArrowDownKey) {
     }
 }
 
@@ -174,7 +214,7 @@ int const kLabelTag = 101;
             [[self compressButton] setEnabled:YES];
         }
     }
-    
+        
     [cellView setNeedsDisplay:YES];
     
     return cellView;
@@ -217,6 +257,10 @@ didFinishItemAtIndex:(NSUInteger)index {
     [sender setEnabled:NO];
     NSString *label = [NSString stringWithFormat:@"0 out of %li file(s) compressed...", [self numberOfItemsToCompress]];
     [self updateLabelForTableView:label];
+    // Add the ignored files before compressing
+    NSArray *ignoredFiles = [self shouldIgnoreFiles];
+    [[self comicZipper] ignoreFiles:ignoredFiles];
+    [[self comicZipper] setShouldDeleteFolder:[self shouldDeleteFolder]];
     [[self comicZipper] readyToCompress];
 }
 
@@ -500,16 +544,20 @@ didFinishItemAtIndex:(NSUInteger)index {
     }
 }
 
+- (NSArray *)shouldIgnoreFiles {
+    return [[[self applicationSettings] objectForKey:kIdentifierForSettingsExcludedFiles] copy];
+}
+
 - (BOOL)shouldDeleteFolder {
-    return NO;
+    return [[[self applicationSettings] objectForKey:kIdentifierForSettingsDeleteFolders] boolValue];
 }
 
 - (BOOL)shouldNotifyUser {
-    return NO;
+    return [[[self applicationSettings] objectForKey:kIdentifierForSettingsUserNotification] boolValue];
 }
 
 - (BOOL)shouldBadgeDockIcon {
-    return NO;
+    return [[[self applicationSettings] objectForKey:kIdentifierForSettingsDockBadge] boolValue];
 }
 
 - (void)setApplicationBadge:(NSString *)badgeLabel {

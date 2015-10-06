@@ -20,6 +20,7 @@
 @interface CZComicZipper : NSObject
 
 @property (weak) id delegate;
+@property (nonatomic) BOOL shouldDeleteFolder;
 
 - (NSInteger)count;
 - (NSInteger)countAll;
@@ -27,7 +28,9 @@
 - (void)addItem:(CZDropItem *)item;
 - (BOOL)isItemInList:(NSString *)description;
 - (CZDropItem *)itemWithIndex:(NSInteger)index;
+- (NSArray *)itemsWithIndex:(NSIndexSet *)indexes;
 - (void)removeItemsWithIndexes:(NSIndexSet *)indexes;
 - (void)readyToCompress;
+- (void)ignoreFiles:(NSArray *)list;
 
 @end

@@ -54,6 +54,13 @@
         _applicationSettings = [[NSMutableDictionary alloc] initWithContentsOfFile:defaultSettingsPath];
         [self saveApplicationSettings];
     }
+
+    for (NSString *keyPath in [self applicationSettings]) {
+        [[self applicationSettings] addObserver:self
+                                     forKeyPath:keyPath
+                                        options:NSKeyValueObservingOptionNew
+                                        context:nil];
+    }
 }
 /*!
  *  @brief Save the application settings.
@@ -62,6 +69,17 @@
     [[self applicationSettings] writeToFile:kApplicationSettingsPath
                                  atomically:YES];
 }
+
+- (void)updateSettingsAcrossApplication {
+    [[self mainController] updateApplicationSettings:[self applicationSettings]];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context {
+    [[self mainController] updateApplicationSettings:[self applicationSettings]];
+}
+
+#pragma mark USER INTERFACE METHODS
+
 /*!
  *  @brief Opens the settings window.
  */
@@ -75,6 +93,13 @@
 
     [[self settingsController] showWindow:nil];
 }
+
+#pragma mark DELEGATE METHODS
+
+- (void)application:(NSApplication *)sender openFiles:(nonnull NSArray *)filenames {
+    [[self mainController] addItemsDraggedToDock:filenames];
+}
+
 /*!
  *  @brief Sent by the default notification center immediately before the application object is initialized.
  */
@@ -88,7 +113,8 @@
     CZComicZipper *comicZipper = [[CZComicZipper alloc] init];
     CZMainController *mainController = [[CZMainController alloc] initWithWindowNibName:@"Main"
                                                                              ComicZipper:comicZipper
-                                                                     andApplicationState:kAppStateNoItemDropped];
+                                                                      applicationState:kAppStateNoItemDropped
+                                                                   applicationSettings:[[self applicationSettings] copy]];
     [mainController showWindow:nil];
     [[mainController window] makeKeyAndOrderFront:nil];
     [self setMainController:mainController];

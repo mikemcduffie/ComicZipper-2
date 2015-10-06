@@ -66,7 +66,9 @@
  */
 - (void)setViewHighlight:(BOOL)highlight {
     _viewHighlight = highlight;
-    [self setNeedsDisplay:YES];
+    if ([[self delegate] isDropViewFront]) {
+        [self setNeedsDisplay:YES];
+    }
 }
 
 /*!
