@@ -1,2 +1,5 @@
-
-ComicZipper 2.xcodeproj/project.xcworkspace/xcuserdata/ardalansamimi.xcuserdatad/UserInterfaceState.xcuserstate
+project.xcworkspace/
+xcuserdata/
+.DS_Store
+*.xcuserstate
+ComicZIpper/Carthage/Checkouts/*
