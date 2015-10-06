@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="8191" systemVersion="14E46" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="8191"/>
         <capability name="box content view" minToolsVersion="7.0"/>
@@ -8,10 +8,13 @@
         <customObject id="-2" userLabel="File's Owner" customClass="CZSettingsController">
             <connections>
                 <outlet property="buttonRemoveExclusion" destination="Yq2-5E-25j" id="ftz-a4-yYz"/>
+                <outlet property="checkBoxAutoStart" destination="5RI-FX-068" id="Gnn-0B-6SS"/>
                 <outlet property="checkBoxBadge" destination="uWm-wv-M50" id="5Tj-83-y9a"/>
                 <outlet property="checkBoxDelete" destination="rZT-iw-E6S" id="5Av-Vf-npc"/>
                 <outlet property="checkBoxNotify" destination="hRb-Jp-uEF" id="FSG-vR-Fwu"/>
-                <outlet property="tableView" destination="rOw-Dp-x4c" id="QPn-ZS-Ewq"/>
+                <outlet property="checkBoxReplaceIcon" destination="ZuM-u3-2mE" id="4Nx-AT-yca"/>
+                <outlet property="checkBoxSoundAlert" destination="p8M-Vx-a0b" id="kIz-eV-bE7"/>
+                <outlet property="tableViewExclusion" destination="rOw-Dp-x4c" id="ozR-7b-Eiq"/>
                 <outlet property="toolbarItemAdvanced" destination="mAf-nc-5zy" id="BZE-xM-Yzq"/>
                 <outlet property="toolbarItemAlerts" destination="9SS-C7-pJq" id="7a3-G7-2lH"/>
                 <outlet property="toolbarItemGeneral" destination="83t-md-02k" id="Xcn-26-fNd"/>
@@ -27,7 +30,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="567" y="391" width="294" height="304"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
             <value key="minSize" type="size" width="294" height="304"/>
             <view key="contentView" id="se5-gp-TjO">
                 <rect key="frame" x="0.0" y="0.0" width="294" height="304"/>
@@ -75,7 +78,7 @@
                         <font key="font" metaFont="system"/>
                     </buttonCell>
                     <connections>
-                        <action selector="checkBoxClicked:" target="-2" id="d7p-8w-d5i"/>
+                        <action selector="checkBoxClicked:" target="-2" id="uFn-E7-yYM"/>
                     </connections>
                 </button>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="62T-gE-d1D">
@@ -88,25 +91,35 @@
                     </textFieldCell>
                 </textField>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uWm-wv-M50">
-                    <rect key="frame" x="18" y="172" width="258" height="36"/>
+                    <rect key="frame" x="18" y="188" width="258" height="36"/>
                     <animations/>
                     <buttonCell key="cell" type="check" title="Dock badge icon" bezelStyle="regularSquare" imagePosition="left" inset="2" id="s8e-kf-lzP">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
                     <connections>
-                        <action selector="checkBoxClicked:" target="-2" id="dFL-Q1-Fgg"/>
+                        <action selector="checkBoxClicked:" target="-2" id="tRM-3P-5is"/>
                     </connections>
                 </button>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="g9I-oq-1dJ">
-                    <rect key="frame" x="38" y="136" width="236" height="40"/>
+                    <rect key="frame" x="38" y="153" width="236" height="40"/>
                     <animations/>
-                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="The dock icon will display the number of items still being processed." id="zVy-XF-WXj">
+                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="The Dock icon will display the number of items still being processed." id="zVy-XF-WXj">
                         <font key="font" size="10" name=".HelveticaNeueDeskInterface-Regular"/>
                         <color key="textColor" name="windowFrameColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="p8M-Vx-a0b">
+                    <rect key="frame" x="18" y="126" width="264" height="30"/>
+                    <buttonCell key="cell" type="check" title="Play a sound when compression ends" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="7Xv-NF-nK2">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="checkBoxClicked:" target="-2" id="ujA-JA-6By"/>
+                    </connections>
+                </button>
             </subviews>
             <animations/>
             <point key="canvasLocation" x="188" y="696"/>
@@ -261,21 +274,13 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <box fixedFrame="YES" title="Compression type" borderType="line" translatesAutoresizingMaskIntoConstraints="NO" id="z2M-XD-JvD">
-                    <rect key="frame" x="17" y="16" width="258" height="139"/>
+                    <rect key="frame" x="18" y="16" width="258" height="135"/>
                     <view key="contentView" id="Ob5-IL-tb1">
-                        <rect key="frame" x="1" y="1" width="256" height="123"/>
+                        <rect key="frame" x="1" y="1" width="256" height="119"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="80f-Pq-q9t">
-                                <rect key="frame" x="19" y="86" width="219" height="18"/>
-                                <animations/>
-                                <buttonCell key="cell" type="radio" title="Compress as .cbz (zip)" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="f7z-Tg-hO5">
-                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                            </button>
                             <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eDJ-a8-VLq">
-                                <rect key="frame" x="19" y="51" width="219" height="18"/>
+                                <rect key="frame" x="19" y="57" width="219" height="18"/>
                                 <animations/>
                                 <buttonCell key="cell" type="radio" title="Compress as .cbr (rar)" bezelStyle="regularSquare" imagePosition="left" alignment="left" enabled="NO" inset="2" id="cci-cH-tdu">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -283,7 +288,7 @@
                                 </buttonCell>
                             </button>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WhC-1V-XKj">
-                                <rect key="frame" x="38" y="17" width="200" height="31"/>
+                                <rect key="frame" x="38" y="15" width="200" height="39"/>
                                 <animations/>
                                 <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="To compress as .cbr, the rar command line tool must be purchased from WinRAR." id="88p-HE-77J">
                                     <font key="font" size="10" name=".HelveticaNeueDeskInterface-Regular"/>
@@ -291,6 +296,14 @@
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
+                            <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="80f-Pq-q9t">
+                                <rect key="frame" x="19" y="88" width="219" height="18"/>
+                                <animations/>
+                                <buttonCell key="cell" type="radio" title="Compress as .cbz (zip)" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="f7z-Tg-hO5">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                            </button>
                         </subviews>
                         <animations/>
                     </view>
@@ -301,15 +314,36 @@
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZuM-u3-2mE">
                     <rect key="frame" x="18" y="250" width="258" height="36"/>
                     <animations/>
-                    <buttonCell key="cell" type="check" title="Replace archive icon with cover image" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="B6T-Gz-o68">
+                    <buttonCell key="cell" type="check" title="Replace archive icon with cover image" bezelStyle="regularSquare" imagePosition="left" enabled="NO" inset="2" id="B6T-Gz-o68">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
+                    <connections>
+                        <action selector="checkBoxClicked:" target="-2" id="RWL-gt-54M"/>
+                    </connections>
                 </button>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bRU-Qr-qr4">
                     <rect key="frame" x="38" y="214" width="236" height="40"/>
                     <animations/>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="The compressed archive's icon will be changed to the first image of the archive." id="P0q-ZJ-Tkj">
+                        <font key="font" size="10" name=".HelveticaNeueDeskInterface-Regular"/>
+                        <color key="textColor" name="windowFrameColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5RI-FX-068">
+                    <rect key="frame" x="18" y="188" width="265" height="36"/>
+                    <buttonCell key="cell" type="check" title="Start compression automatically" bezelStyle="regularSquare" imagePosition="left" inset="2" id="ABG-g1-KKp">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="checkBoxClicked:" target="-2" id="r8w-Rs-2nn"/>
+                    </connections>
+                </button>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hGi-H0-ynT">
+                    <rect key="frame" x="38" y="166" width="204" height="26"/>
+                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="Drag and drop will start the compression process automatically." id="7Ln-4q-Aqi">
                         <font key="font" size="10" name=".HelveticaNeueDeskInterface-Regular"/>
                         <color key="textColor" name="windowFrameColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>

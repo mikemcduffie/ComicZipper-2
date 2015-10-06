@@ -94,9 +94,23 @@
     [[self settingsController] showWindow:nil];
 }
 
+- (void)launchMainController {
+    if ([self mainController] == nil) {
+        CZComicZipper *comicZipper = [[CZComicZipper alloc] init];
+        CZMainController *mainController = [[CZMainController alloc] initWithWindowNibName:@"Main"
+                                                                               ComicZipper:comicZipper
+                                                                          applicationState:kAppStateNoItemDropped
+                                                                       applicationSettings:[[self applicationSettings] copy]];
+        [mainController showWindow:nil];
+        [[mainController window] makeKeyAndOrderFront:nil];
+        [self setMainController:mainController];
+    }
+}
+
 #pragma mark DELEGATE METHODS
 
 - (void)application:(NSApplication *)sender openFiles:(nonnull NSArray *)filenames {
+    [self launchMainController];
     [[self mainController] addItemsDraggedToDock:filenames];
 }
 
@@ -110,14 +124,8 @@
  *  @brief Sent by the default notification center after the application has been launched and initialized but before it has received its first event.
  */
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-    CZComicZipper *comicZipper = [[CZComicZipper alloc] init];
-    CZMainController *mainController = [[CZMainController alloc] initWithWindowNibName:@"Main"
-                                                                             ComicZipper:comicZipper
-                                                                      applicationState:kAppStateNoItemDropped
-                                                                   applicationSettings:[[self applicationSettings] copy]];
-    [mainController showWindow:nil];
-    [[mainController window] makeKeyAndOrderFront:nil];
-    [self setMainController:mainController];
+    [self launchMainController];
+
 }
 /*!
  *  @brief Sent by the default notification center immediately before the application terminates.

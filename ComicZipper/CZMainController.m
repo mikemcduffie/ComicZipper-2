@@ -98,6 +98,7 @@ int const kLabelTag = 101;
             [self resetCount];
         }
         [self addLabelForDropView];
+        [self addImageForDropView];
     } else if ([self applicationStateIs:kAppStateFirstItemDrop]) {
         [[[self dropView] viewWithTag:kLabelTag] removeFromSuperview];
         [self addCompressButton];
@@ -121,6 +122,7 @@ int const kLabelTag = 101;
     } else {
         [self setApplicationState:kAppStatePopulatedList];
     }
+    
     [self updateUI];
 }
 
@@ -207,17 +209,26 @@ int const kLabelTag = 101;
         } else {
             [cellView setImage:[NSImage imageNamed:@"NSStatusNone"]];
         }
-        // Update the count
-        if (![item isRunning] && [self numberOfItemsToCompress] == row+1) {
-            NSInteger count = [self numberOfItemsToCompress];
-            [self updateLabelForTableView:[NSString stringWithFormat:@"%li file(s) to compress", count]];
-            [[self compressButton] setEnabled:YES];
-        }
     }
         
     [cellView setNeedsDisplay:YES];
     
     return cellView;
+}
+
+- (void)tableView:(NSTableView *)tableView
+    didAddRowView:(NSTableRowView *)rowView
+           forRow:(NSInteger)row {
+    // When the last row is added, the top label should be updated and the compression, if set up that way, start automatically.
+    if ([self numberOfItemsToCompress] == row+1) {
+        NSInteger count = [self numberOfItemsToCompress];
+        [self updateLabelForTableView:[NSString stringWithFormat:@"%li file(s) to compress", count]];
+        if ([self shouldAutoStartCompression]) {
+            [self compressButton:[self compressButton]];
+        } else {
+            [[self compressButton] setEnabled:YES];
+        }
+    }
 }
 
 - (void)ComicZipper:(CZComicZipper *)comicZipper
@@ -279,6 +290,10 @@ didFinishItemAtIndex:(NSUInteger)index {
         [self resetCount];
         if (![[NSApplication sharedApplication] isActive]) {
             [self notifyUser:labelCount];
+        } else {
+            if ([self shouldPlaySound]) {
+                [self playSound];
+            }
         }
     } else {
         labelCount = [NSString stringWithFormat:@"%li of %li file(s) compressed...", readyCount, totalCount];
@@ -314,6 +329,13 @@ didFinishItemAtIndex:(NSUInteger)index {
                   withAttribute:NSLayoutAttributeBottom
                     andConstant:1];
     [self setDropView:dropView];
+}
+
+- (void)addImageForDropView {
+    NSRect frame = [[[self window] contentView] frame];
+    NSImageView *imageView = [[NSImageView alloc] initWithFrame:frame];
+    NSImage *image = [NSImage imageNamed:@"arrow"];
+    [imageView setImage:image];
 }
 
 - (void)addLabelForDropView {
@@ -528,20 +550,28 @@ didFinishItemAtIndex:(NSUInteger)index {
 }
 
 - (void)notifyUser:(NSString *)message {
-    NSUserNotification *notification = [[NSUserNotification alloc] init];
-    [notification setTitle:kApplicationName];
-    [notification setInformativeText:message];
-    [notification setSoundName:kDefaultNotifySoundName];
-    [[self notificationCenter] deliverNotification:notification];
+    if ([self shouldNotifyUser]) {
+        NSUserNotification *notification = [[NSUserNotification alloc] init];
+        [notification setTitle:kApplicationName];
+        [notification setInformativeText:message];
+        [notification setSoundName:kDefaultNotifySoundName];
+        [[self notificationCenter] deliverNotification:notification];
+    }
 }
 
 - (void)updateBadgeLabel {
-    NSInteger badgeLabel = [self numberOfItemsToCompress] - [self numberOfItemsCompressed];
-    if (badgeLabel == 0) {
-        [self setApplicationBadge:@""];
-    } else {
-        [self setApplicationBadge:[NSString stringWithFormat:@"%li", badgeLabel]];
+    if ([self shouldBadgeDockIcon]) {
+        NSInteger badgeLabel = [self numberOfItemsToCompress] - [self numberOfItemsCompressed];
+        if (badgeLabel == 0) {
+            [self setApplicationBadge:@""];
+        } else {
+            [self setApplicationBadge:[NSString stringWithFormat:@"%li", badgeLabel]];
+        }
     }
+}
+
+- (void)playSound {
+    [NSSound soundNamed:kDefaultNotifySoundName];
 }
 
 - (NSArray *)shouldIgnoreFiles {
@@ -558,6 +588,14 @@ didFinishItemAtIndex:(NSUInteger)index {
 
 - (BOOL)shouldBadgeDockIcon {
     return [[[self applicationSettings] objectForKey:kIdentifierForSettingsDockBadge] boolValue];
+}
+
+- (BOOL)shouldPlaySound {
+    return [[[self applicationSettings] objectForKey:kIdentifierForSettingsAlertSound] boolValue];
+}
+
+- (BOOL)shouldAutoStartCompression {
+    return [[[self applicationSettings] objectForKey:kIdentifierForSettingsAutoStart] boolValue];
 }
 
 - (void)setApplicationBadge:(NSString *)badgeLabel {

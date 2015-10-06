@@ -20,7 +20,11 @@
 @property (strong) IBOutlet NSButton *checkBoxDelete;
 @property (strong) IBOutlet NSButton *checkBoxNotify;
 @property (strong) IBOutlet NSButton *checkBoxBadge;
-@property (strong) IBOutlet NSTableView *tableView;
+@property (strong) IBOutlet NSButton *checkBoxSoundAlert;
+@property (strong) IBOutlet NSButton *checkBoxReplaceIcon;
+@property (strong) IBOutlet NSButton *checkBoxAutoStart;
+@property (strong) IBOutlet NSTableView *tableViewExclusion;
+@property (strong) IBOutlet NSTableView *tableViewSound;
 @property (strong) IBOutlet NSButton *buttonRemoveExclusion;
 @property (nonatomic) NSMutableDictionary *settings;
 @property (nonatomic) NSMutableArray *excludedFiles;
@@ -54,29 +58,34 @@ const int kTableCellViewHeight = 20;
 
 - (void)windowDidLoad {
     [super windowDidLoad];
-    [[self tableView] setDelegate:self];
-    [[self tableView] setDataSource:self];
-    [[self checkBoxDelete] setIdentifier:kIdentifierForSettingsDeleteFolders];
-    [[self checkBoxNotify] setIdentifier:kIdentifierForSettingsUserNotification];
-    [[self checkBoxBadge] setIdentifier:kIdentifierForSettingsDockBadge];
-    [[self checkBoxDelete] setState:[[[self settings] objectForKey:kIdentifierForSettingsDeleteFolders] intValue]];
-    [[self checkBoxNotify] setState:[[[self settings] objectForKey:kIdentifierForSettingsUserNotification] intValue]];
-    [[self checkBoxBadge] setState:[[[self settings] objectForKey:kIdentifierForSettingsDockBadge] intValue]];
+    [[self tableViewExclusion] setDelegate:self];
+    [[self tableViewExclusion] setDataSource:self];
+    [self setCheckBox:@"checkBoxDelete" identifierAndStateTo:kIdentifierForSettingsDeleteFolders];
+    [self setCheckBox:@"checkBoxNotify" identifierAndStateTo:kIdentifierForSettingsUserNotification];
+    [self setCheckBox:@"checkBoxBadge" identifierAndStateTo:kIdentifierForSettingsDockBadge];
+    [self setCheckBox:@"checkBoxSoundAlert" identifierAndStateTo:kIdentifierForSettingsAlertSound];
+    [self setCheckBox:@"checkBoxReplaceIcon" identifierAndStateTo:kIdentifierForSettingsReplaceIcon];
+    [self setCheckBox:@"checkBoxAutoStart" identifierAndStateTo:kIdentifierForSettingsAutoStart];
     [[[self toolbarItemGeneral] toolbar] setSelectedItemIdentifier:[[self toolbarItemGeneral] itemIdentifier]];
+}
+
+- (void)setCheckBox:(NSString *)checkBoxName identifierAndStateTo:(NSString *)identifier {
+    int state = [[[self settings] objectForKey:identifier] intValue];
+    [[self valueForKey:checkBoxName] setIdentifier:identifier];
+    [[self valueForKey:checkBoxName] setState:state];
 }
 
 #pragma mark USER INTERFACE METHODS
 
 - (IBAction)switchView:(id)sender {
+    NSView *view = [[self window] contentView];
+    NSView *viewToReplace = [[view subviews] firstObject];
     if ([sender isEqualTo:[self toolbarItemGeneral]]) {
-        [[[self window] contentView] replaceSubview:[[[[self window] contentView] subviews] firstObject]
-                                               with:[self viewGeneral]];
+        [view replaceSubview:viewToReplace with:[self viewGeneral]];
     } else if ([sender isEqualTo:[self toolbarItemAlerts]]) {
-        [[[self window] contentView] replaceSubview:[[[[self window] contentView] subviews] firstObject]
-                                               with:[self viewAlerts]];
+        [view replaceSubview:viewToReplace with:[self viewAlerts]];
     } else {
-        [[[self window] contentView] replaceSubview:[[[[self window] contentView] subviews] firstObject]
-                                               with:[self viewAdvanced]];
+        [view replaceSubview:viewToReplace with:[self viewAdvanced]];
     }
 }
 
@@ -93,15 +102,15 @@ const int kTableCellViewHeight = 20;
     // Make sure not to create multiple empty entries in the array.
     if (![[self excludedFiles] doesContain:@""]) {
         [[self excludedFiles] addObject:@""];
-        [[self tableView] reloadData];
+        [[self tableViewExclusion] reloadData];
     }
     [self selectLastTableViewRow];
 }
 
 - (IBAction)removeExclusion:(id)sender {
-    NSIndexSet *indexes = [[self tableView] selectedRowIndexes];
-    [[self tableView] removeRowsAtIndexes:indexes
-                            withAnimation:NO];
+    NSIndexSet *indexes = [[self tableViewExclusion] selectedRowIndexes];
+    [[self tableViewExclusion] removeRowsAtIndexes:indexes
+                                     withAnimation:NO];
     NSArray *objectsToRemove = [[self excludedFiles] objectsAtIndexes:indexes];
     [[[self settings] objectForKey:kIdentifierForSettingsExcludedFiles] removeObjectsInArray:objectsToRemove];
     [[self excludedFiles] removeObjectsAtIndexes:indexes];
@@ -128,7 +137,8 @@ const int kTableCellViewHeight = 20;
     return view;
 }
 
-- (CGFloat)tableView:(NSTableView *)tableView heightOfRow:(NSInteger)row {
+- (CGFloat)tableView:(NSTableView *)tableView
+         heightOfRow:(NSInteger)row {
     return kTableCellViewHeight;
 }
 
@@ -137,7 +147,7 @@ const int kTableCellViewHeight = 20;
 }
 
 - (void)tableViewSelectionDidChange:(NSNotification *)notification {
-    if ([[self tableView] numberOfSelectedRows] > 0) {
+    if ([[self tableViewExclusion] numberOfSelectedRows] > 0) {
         [[self buttonRemoveExclusion] setEnabled:YES];
     } else {
         [[self buttonRemoveExclusion] setEnabled:NO];
@@ -153,14 +163,14 @@ const int kTableCellViewHeight = 20;
         [[self settings] setObject:[self excludedFiles] forKey:kIdentifierForSettingsExcludedFiles];
     } else {
         [[self excludedFiles] removeObjectAtIndex:row];
-        [[self tableView] reloadData];
+        [[self tableViewExclusion] reloadData];
     }
 }
 
 #pragma mark MISC METHODS
 
 - (void)selectLastTableViewRow {
-    NSTableCellView *view = [[self tableView] viewAtColumn:0
+    NSTableCellView *view = [[self tableViewExclusion] viewAtColumn:0
                                                        row:[[self excludedFiles] count]-1
                                            makeIfNecessary:YES];
     NSRange selectedRange = NSMakeRange(0, 0);

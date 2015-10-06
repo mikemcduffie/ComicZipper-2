@@ -74,6 +74,18 @@ extern NSString *const kIdentifierForSettingsUserNotification;
  */
 extern NSString *const kIdentifierForSettingsDockBadge;
 /*!
+ *  @brief Identifier for the alert sound settings option.
+ */
+extern NSString *const kIdentifierForSettingsAlertSound;
+/*!
+ *  @brief Identifier for the replace icon settings option.
+ */
+extern NSString *const kIdentifierForSettingsReplaceIcon;
+/*!
+ *  @brief Identifier for the auto start settings option.
+ */
+extern NSString *const kIdentifierForSettingsAutoStart;
+/*!
  *  @brief The name of the application settings file.
  */
 extern NSString *const kApplicationSettingsFileName;
