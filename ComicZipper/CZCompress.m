@@ -32,6 +32,7 @@ static NSArray<NOZFileZipEntry *> * __nonnull NOZEntriesFromDirectory(NSString *
 }
 
 - (BOOL)doesFileMatchIgnoreList:(NSString *)filePath {
+    // Quick fix to exclude files added to the ignore list
     NSRange filePathRange = NSMakeRange(0, [filePath length]);
     NSUInteger indexOfObj = [[self ignoreFiles] indexOfObjectPassingTest:
                             ^BOOL(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {

@@ -34,6 +34,7 @@
         [self setDrawsBackground:NO];
         [self setStringValue:stringValue];
         [self setAllowsEditingTextAttributes:NO];
+        [self setAutoresizingMask:NSViewWidthSizable];
         [[self cell] setTruncatesLastVisibleLine:YES];
         [[self cell] setLineBreakMode:NSLineBreakByTruncatingMiddle];
         [self setFont:[NSFont fontWithName:fontName size:fontSize]];

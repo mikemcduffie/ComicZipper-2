@@ -114,6 +114,7 @@
     NSString *sourcePath = [item folderPath];
     NSString *processTag = [NSString stringWithFormat:@"%lu", [[self archiveItems] indexOfObject:item]];
     // Create the request and add the folder to it.
+    // Solved the issue with excluding files by extending the NOZCompressRequest class.
     CZCompress *compRequest = [[CZCompress alloc] initWithDestinationPath:targetPath];
     [compRequest setIgnoreFiles:[self ignoredFiles]];
     [compRequest addEntriesInDirectory:sourcePath
@@ -147,7 +148,6 @@
         [item setArchived:YES];
         [[self delegate] ComicZipper:self
                 didFinishItemAtIndex:index];
-        [self applyCustomIconForArchive:item];
         if ([self shouldDeleteFolder]) {
             [[self foldersToDelete] addObject:[NSURL fileURLWithPath:[item folderPath]]];
             if ([[self operations] operationCount] == 0) {
@@ -169,10 +169,6 @@
 }
 
 #pragma mark PRIVATE METHODS
-
-- (void)applyCustomIconForArchive:(CZDropItem *)item {
-//    [[NSWorkspace sharedWorkspace] setIcon:[NSImage imageNamed:@""] forFile:[item archivePath] options:0];
-}
 
 - (void)deleteFolders {
     [[NSWorkspace sharedWorkspace] recycleURLs:[self foldersToDelete]

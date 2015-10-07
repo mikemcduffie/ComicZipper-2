@@ -20,12 +20,6 @@
             <view key="contentView" id="se5-gp-TjO">
                 <rect key="frame" x="0.0" y="0.0" width="400" height="322"/>
                 <autoresizingMask key="autoresizingMask"/>
-                <subviews>
-                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yCW-Yl-DXX">
-                        <rect key="frame" x="0.0" y="0.0" width="400" height="302"/>
-                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="bAR-iF-dlG"/>
-                    </imageView>
-                </subviews>
                 <animations/>
             </view>
             <connections>

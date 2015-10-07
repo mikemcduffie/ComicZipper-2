@@ -98,7 +98,6 @@ int const kLabelTag = 101;
             [self resetCount];
         }
         [self addLabelForDropView];
-        [self addImageForDropView];
     } else if ([self applicationStateIs:kAppStateFirstItemDrop]) {
         [[[self dropView] viewWithTag:kLabelTag] removeFromSuperview];
         [self addCompressButton];
@@ -193,7 +192,12 @@ int const kLabelTag = 101;
     }
     CZDropItem *item = [[self comicZipper] itemWithIndex:row];
     if ([[column identifier] isEqualToString:@"ColumnLeft"]) {
-        [cellView setImage:[NSImage imageNamed:@"NSFolder"]];
+        if ([item isArchived]) {
+            NSImage *image = [self retrieveImageFromItem:item];
+            [cellView setImage:image];
+        } else {
+            [cellView setImage:[NSImage imageNamed:@"NSFolder"]];
+        }
     } else if ([[column identifier] isEqualToString:@"ColumnMiddle"]) {
         [cellView setTitleText:[item description]];
         if ([item isArchived]) {
@@ -260,6 +264,7 @@ didFinishItemAtIndex:(NSUInteger)index {
     [[self tableView] reloadDataForRowIndexes:rowIndexes
                                 columnIndexes:colIndexes];
     [self updateCount];
+
 }
 
 #pragma mark USER INTERACTION METHODS
@@ -331,15 +336,8 @@ didFinishItemAtIndex:(NSUInteger)index {
     [self setDropView:dropView];
 }
 
-- (void)addImageForDropView {
-    NSRect frame = [[[self window] contentView] frame];
-    NSImageView *imageView = [[NSImageView alloc] initWithFrame:frame];
-    NSImage *image = [NSImage imageNamed:@"arrow"];
-    [imageView setImage:image];
-}
-
 - (void)addLabelForDropView {
-    CZTextField *label = [CZTextField initWithFrame:NSMakeRect(0, 0, 0, 0)
+    CZTextField *label = [CZTextField initWithFrame:NSMakeRect(0, 83, 0, 0)
                                             stringValue:@"Drop folders here"
                                                fontName:@"Lucida Grande"
                                                fontSize:22.0];
@@ -351,8 +349,8 @@ didFinishItemAtIndex:(NSUInteger)index {
     [label setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self setConstraintWithItem:[self dropView]
                          toItem:label
-                 withAttributes:@[[NSNumber numberWithInt:NSLayoutAttributeCenterX],
-                                  [NSNumber numberWithInt:NSLayoutAttributeCenterY]]
+                 withAttributes:@[[NSNumber numberWithInt:NSLayoutAttributeCenterY],
+                                  [NSNumber numberWithInt:NSLayoutAttributeCenterX]]
                     andConstant:0];
 }
 
@@ -574,6 +572,27 @@ didFinishItemAtIndex:(NSUInteger)index {
     [NSSound soundNamed:kDefaultNotifySoundName];
 }
 
+- (NSImage *)retrieveImageFromItem:(CZDropItem *)item {
+    NSDirectoryEnumerator *directoryEnumerator = [[NSFileManager defaultManager] enumeratorAtURL:[NSURL fileURLWithPath:[item folderPath]
+                                                                                                            isDirectory:YES]
+                                                                      includingPropertiesForKeys:nil
+                                                                                         options:NSDirectoryEnumerationSkipsHiddenFiles
+                                                                                    errorHandler:nil];
+    NSString *imagePath;
+    NSArray *fileExtensionArray = @[@"jpg", @"jpeg", @"png", @"gif"];
+    for (NSURL *file in directoryEnumerator) {
+        if ([fileExtensionArray containsObject:[[file pathExtension] lowercaseString]]) {
+            imagePath = [file path];
+            break;
+        }
+    }
+    if (!imagePath) {
+        return nil;
+    }
+    
+    return [[NSImage alloc] initWithContentsOfFile:imagePath];
+}
+
 - (NSArray *)shouldIgnoreFiles {
     return [[[self applicationSettings] objectForKey:kIdentifierForSettingsExcludedFiles] copy];
 }
@@ -592,6 +611,10 @@ didFinishItemAtIndex:(NSUInteger)index {
 
 - (BOOL)shouldPlaySound {
     return [[[self applicationSettings] objectForKey:kIdentifierForSettingsAlertSound] boolValue];
+}
+
+- (BOOL)shouldReplaceIcon {
+    return [[[self applicationSettings] objectForKeyedSubscript:kIdentifierForSettingsReplaceIcon] boolValue];
 }
 
 - (BOOL)shouldAutoStartCompression {
