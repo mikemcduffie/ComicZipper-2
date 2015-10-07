@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="8191" systemVersion="14E46" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="8191"/>
         <capability name="box content view" minToolsVersion="7.0"/>
@@ -30,7 +30,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="567" y="391" width="294" height="304"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
             <value key="minSize" type="size" width="294" height="304"/>
             <view key="contentView" id="se5-gp-TjO">
                 <rect key="frame" x="0.0" y="0.0" width="294" height="304"/>
@@ -112,6 +112,7 @@
                 </textField>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="p8M-Vx-a0b">
                     <rect key="frame" x="18" y="126" width="264" height="30"/>
+                    <animations/>
                     <buttonCell key="cell" type="check" title="Play a sound when compression ends" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="7Xv-NF-nK2">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
@@ -170,7 +171,7 @@
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="20u-Vl-yQg">
                     <rect key="frame" x="18" y="171" width="258" height="44"/>
                     <animations/>
-                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Add filenames or extensions to exlude them from the compression." id="rAc-TG-Ah8">
+                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Exclude files from the resulting archive that matches these regular expression patterns" id="rAc-TG-Ah8">
                         <font key="font" size="13" name=".HelveticaNeueDeskInterface-Regular"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -210,7 +211,7 @@
                                                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="S8v-uK-8aU">
                                                         <rect key="frame" x="0.0" y="0.0" width="248" height="20"/>
                                                         <animations/>
-                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" placeholderString="" id="FRA-UK-TbJ">
+                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" placeholderString="^.DS_Store$" id="FRA-UK-TbJ">
                                                             <font key="font" metaFont="system"/>
                                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -333,6 +334,7 @@
                 </textField>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5RI-FX-068">
                     <rect key="frame" x="18" y="188" width="265" height="36"/>
+                    <animations/>
                     <buttonCell key="cell" type="check" title="Start compression automatically" bezelStyle="regularSquare" imagePosition="left" inset="2" id="ABG-g1-KKp">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
@@ -343,6 +345,7 @@
                 </button>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hGi-H0-ynT">
                     <rect key="frame" x="38" y="166" width="204" height="26"/>
+                    <animations/>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="Drag and drop will start the compression process automatically." id="7Ln-4q-Aqi">
                         <font key="font" size="10" name=".HelveticaNeueDeskInterface-Regular"/>
                         <color key="textColor" name="windowFrameColor" catalog="System" colorSpace="catalog"/>

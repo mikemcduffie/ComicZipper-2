@@ -10,7 +10,9 @@
 	<false/>
 	<key>CZExcludedFiles</key>
 	<array>
-		<string>.DS_Store</string>
+		<string>\.DS_Store$</string>
+		<string>\.svn$</string>
+		<string>\._[A-z0-9]+</string>
 	</array>
 </dict>
 </plist>

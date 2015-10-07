@@ -8,7 +8,7 @@
 
 #import "CZComicZipper.h"
 #import "CZDropItem.h"
-#import <ZipUtilities/ZipUtilities.h>
+#import "CZCompress.h"
 
 @interface CZComicZipper () <NOZCompressDelegate>
 
@@ -114,7 +114,8 @@
     NSString *sourcePath = [item folderPath];
     NSString *processTag = [NSString stringWithFormat:@"%lu", [[self archiveItems] indexOfObject:item]];
     // Create the request and add the folder to it.
-    NOZCompressRequest *compRequest = [[NOZCompressRequest alloc] initWithDestinationPath:targetPath];
+    CZCompress *compRequest = [[CZCompress alloc] initWithDestinationPath:targetPath];
+    [compRequest setIgnoreFiles:[self ignoredFiles]];
     [compRequest addEntriesInDirectory:sourcePath
              compressionSelectionBlock:NULL];
     // Create the operation that will perform the request.

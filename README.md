@@ -1,13 +1,25 @@
-# ComicZipper 2
-Create Comic Book Archives fast and easy with **ComicZipper**.
+# ComicZipper
+Create Comic Book Archives fast and easy.
 
-### Usage
-With a simple drag and drop, **ComicZipper** lets you compress your folders, containing images, into zip archives for your comic book reading purposes.
+![logo](https://github.com/pkrll/ComicZipper-2/blob/master/logo.png)
+
+## Usage
+Tired of manually zipping and renaming your digital comic books after laboring for hours with (legally) scanning them? Well, no more. With **ComicZipper**, you can let the your computer do most of the work for you.
+
+A simple drag and drop is all that is required to compress your folders – containing images – into zip archives for your comic book reading purposes.
 
 **FEATURES**
-* Drag and drop folders to either the app window, or app/dock icon to add items to compress.
-* **ComicZipper** also likes to clean up, so it even offers to delete the folders afterwards when the compression is done.
+* Drag and drop folders, either onto the app/dock icon or the application window, to add items to be compressed. You can also let the app automatically begin compression on drag and drop.
+* ~~Exclude certain files or extensions from the resulting archive.~~ (Feature removed, but will be added soon again).
+* **ComicZipper** also likes to clean up and offers to delete the original folders afterwards.
+* And more.
 
-![Screenshot](https://github.com/pkrll/ComicZipper-2/blob/master/Screenshot.png)
 ### Compression
-Currently the app only supports compression of folders to zip-files with the cbz-extension. **ComicZipper** use the framework ZipUtilities to perform the zip compression.
+ComicZipper currently only supports zip-compression (.cbz files) and uses the framework [ZipUtilities](https://github.com/NSProgrammer/ZipUtilities). Support for rar-compression (.cbr files) will be added.
+
+![Screenshot](https://github.com/pkrll/ComicZipper-2/blob/master/screenshot.png)
+![Screenshot](https://github.com/pkrll/ComicZipper-2/blob/master/screenshot-1.png)
+![Screenshot](https://github.com/pkrll/ComicZipper-2/blob/master/screenshot-2.png)
+
+### Author
+ComicZipper was birthed by Ardalan Samimi.

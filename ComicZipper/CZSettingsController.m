@@ -113,7 +113,6 @@ const int kTableCellViewHeight = 20;
                                      withAnimation:NO];
     NSArray *objectsToRemove = [[self excludedFiles] objectsAtIndexes:indexes];
     [[[self settings] objectForKey:kIdentifierForSettingsExcludedFiles] removeObjectsInArray:objectsToRemove];
-    [[self excludedFiles] removeObjectsAtIndexes:indexes];
 }
 
 #pragma mark DELEGATE METHODS
