@@ -25,7 +25,7 @@
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
-        <customObject id="-3" userLabel="Application"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <window title="Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" animationBehavior="default" id="F0z-JX-Cv5">
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
@@ -247,9 +247,9 @@
                     </scroller>
                 </scrollView>
                 <button identifier="CZDeleteFolders" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rZT-iw-E6S">
-                    <rect key="frame" x="18" y="250" width="258" height="36"/>
+                    <rect key="frame" x="18" y="250" width="272" height="36"/>
                     <animations/>
-                    <buttonCell key="cell" type="check" title="Delete folders when compressed" bezelStyle="regularSquare" imagePosition="left" inset="2" id="WiE-LD-eby">
+                    <buttonCell key="cell" type="check" title="Move folders to trash after compression" bezelStyle="regularSquare" imagePosition="left" inset="2" id="WiE-LD-eby">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
@@ -260,7 +260,7 @@
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1Ea-0b-bf8">
                     <rect key="frame" x="38" y="216" width="236" height="40"/>
                     <animations/>
-                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="Folders that have been compressed will automatically be deleted." id="NtJ-46-Ybf">
+                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="Folders that have been compressed will be moved to the trash after the compression has finished." id="NtJ-46-Ybf">
                         <font key="font" size="10" name=".HelveticaNeueDeskInterface-Regular"/>
                         <color key="textColor" name="windowFrameColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>

@@ -25,7 +25,7 @@
 		6A6CB0621BB867EB00D39E5D /* CZArchiveItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A6CB0611BB867EB00D39E5D /* CZArchiveItem.m */; };
 		6A6CB0651BB891E300D39E5D /* CZTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A6CB0641BB891E300D39E5D /* CZTableView.m */; };
 		6A753EAE1BC663D10096B6D1 /* CZApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A753EAD1BC663D10096B6D1 /* CZApplication.m */; settings = {ASSET_TAGS = (); }; };
-		6A8A2A0F1BC523EC00BED381 /* CZCompress.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A8A2A0E1BC523EC00BED381 /* CZCompress.m */; settings = {ASSET_TAGS = (); }; };
+		6A8A2A0F1BC523EC00BED381 /* CZCompressRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A8A2A0E1BC523EC00BED381 /* CZCompressRequest.m */; settings = {ASSET_TAGS = (); }; };
 		6A9341821BBC7DCC00EF2FAC /* CZMainController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A9341801BBC7DCC00EF2FAC /* CZMainController.m */; settings = {ASSET_TAGS = (); }; };
 		6A9341831BBC7DCC00EF2FAC /* Main.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A9341811BBC7DCC00EF2FAC /* Main.xib */; settings = {ASSET_TAGS = (); }; };
 		6A9341851BBC803000EF2FAC /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A9341841BBC803000EF2FAC /* MainMenu.xib */; settings = {ASSET_TAGS = (); }; };
@@ -40,6 +40,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 6A6CB0251BB8119800D39E5D;
 			remoteInfo = ComicZipper;
+		};
+		6A753F221BC6C64F0096B6D1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6A753F1E1BC6C64F0096B6D1 /* Panoptes.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6A753F0F1BC6C64F0096B6D1;
+			remoteInfo = Panoptes;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -91,8 +98,9 @@
 		6A6CB0641BB891E300D39E5D /* CZTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZTableView.m; sourceTree = "<group>"; };
 		6A753EAC1BC663D10096B6D1 /* CZApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZApplication.h; sourceTree = "<group>"; };
 		6A753EAD1BC663D10096B6D1 /* CZApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZApplication.m; sourceTree = "<group>"; };
-		6A8A2A0D1BC523EC00BED381 /* CZCompress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZCompress.h; sourceTree = "<group>"; };
-		6A8A2A0E1BC523EC00BED381 /* CZCompress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZCompress.m; sourceTree = "<group>"; };
+		6A753F1E1BC6C64F0096B6D1 /* Panoptes.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Panoptes.xcodeproj; path = Panoptes/Panoptes.xcodeproj; sourceTree = "<group>"; };
+		6A8A2A0D1BC523EC00BED381 /* CZCompressRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZCompressRequest.h; sourceTree = "<group>"; };
+		6A8A2A0E1BC523EC00BED381 /* CZCompressRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZCompressRequest.m; sourceTree = "<group>"; };
 		6A93417F1BBC7DCC00EF2FAC /* CZMainController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZMainController.h; sourceTree = "<group>"; };
 		6A9341801BBC7DCC00EF2FAC /* CZMainController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZMainController.m; sourceTree = "<group>"; };
 		6A9341811BBC7DCC00EF2FAC /* Main.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Main.xib; sourceTree = "<group>"; };
@@ -143,6 +151,7 @@
 		6A6CB0281BB8119800D39E5D /* ComicZipper */ = {
 			isa = PBXGroup;
 			children = (
+				6A753F041BC6C63F0096B6D1 /* Panoptes */,
 				6A753EAC1BC663D10096B6D1 /* CZApplication.h */,
 				6A753EAD1BC663D10096B6D1 /* CZApplication.m */,
 				6A6CB02B1BB8119800D39E5D /* CZAppDelegate.h */,
@@ -167,8 +176,8 @@
 				6A51C8641BC130130055DA30 /* CZTextField.m */,
 				6A51C8661BC1A9610055DA30 /* CZSettingsController.h */,
 				6A51C8671BC1A9610055DA30 /* CZSettingsController.m */,
-				6A8A2A0D1BC523EC00BED381 /* CZCompress.h */,
-				6A8A2A0E1BC523EC00BED381 /* CZCompress.m */,
+				6A8A2A0D1BC523EC00BED381 /* CZCompressRequest.h */,
+				6A8A2A0E1BC523EC00BED381 /* CZCompressRequest.m */,
 				6A9341811BBC7DCC00EF2FAC /* Main.xib */,
 				6A51C8681BC1A9610055DA30 /* Settings.xib */,
 				6A9341841BBC803000EF2FAC /* MainMenu.xib */,
@@ -207,6 +216,22 @@
 				6A6CB03E1BB8119800D39E5D /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		6A753F041BC6C63F0096B6D1 /* Panoptes */ = {
+			isa = PBXGroup;
+			children = (
+				6A753F1E1BC6C64F0096B6D1 /* Panoptes.xcodeproj */,
+			);
+			name = Panoptes;
+			sourceTree = "<group>";
+		};
+		6A753F1F1BC6C64F0096B6D1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6A753F231BC6C64F0096B6D1 /* Panoptes.qlgenerator */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -278,6 +303,12 @@
 			mainGroup = 6A6CB01D1BB8119800D39E5D;
 			productRefGroup = 6A6CB0271BB8119800D39E5D /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 6A753F1F1BC6C64F0096B6D1 /* Products */;
+					ProjectRef = 6A753F1E1BC6C64F0096B6D1 /* Panoptes.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				6A6CB0251BB8119800D39E5D /* ComicZipper */,
@@ -285,6 +316,16 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		6A753F231BC6C64F0096B6D1 /* Panoptes.qlgenerator */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = Panoptes.qlgenerator;
+			remoteRef = 6A753F221BC6C64F0096B6D1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		6A6CB0241BB8119800D39E5D /* Resources */ = {
@@ -332,7 +373,7 @@
 			files = (
 				6ABA46A51BBFCAF100DBBC19 /* CZTableCellView.m in Sources */,
 				6A5988C61BBB1B4D00932A08 /* CZScrollView.m in Sources */,
-				6A8A2A0F1BC523EC00BED381 /* CZCompress.m in Sources */,
+				6A8A2A0F1BC523EC00BED381 /* CZCompressRequest.m in Sources */,
 				6A753EAE1BC663D10096B6D1 /* CZApplication.m in Sources */,
 				6A51C8691BC1A9610055DA30 /* CZSettingsController.m in Sources */,
 				6A51C8651BC130130055DA30 /* CZTextField.m in Sources */,

@@ -8,7 +8,7 @@
 
 #import <ZipUtilities/ZipUtilities.h>
 
-@interface CZCompress : NOZCompressRequest
+@interface CZCompressRequest : NOZCompressRequest
 
 @property (nonatomic) NSArray *ignoreFiles;
 

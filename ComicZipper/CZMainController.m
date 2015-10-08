@@ -14,6 +14,8 @@
 #import "CZDropItem.h"
 #import "CZTableCellView.h"
 #import "CZTextField.h"
+#import <QuickLook/Quicklook.h>
+#import <Quartz/Quartz.h>
 
 @interface CZMainController () <CZComicZipperDelegate, CZDropViewDelegate, CZTableViewDelegate, NSTableViewDataSource>
 
@@ -202,7 +204,7 @@ int const kLabelTag = 101;
     CZDropItem *item = [[self comicZipper] itemWithIndex:row];
     if ([[column identifier] isEqualToString:@"ColumnLeft"]) {
         if ([item isArchived]) {
-            NSImage *image = [self retrieveImageFromItem:item];
+            NSImage *image = [self switchImageForItem:item];
             [cellView setImage:image];
         } else {
             [cellView setImage:[NSImage imageNamed:@"NSFolder"]];
@@ -580,16 +582,31 @@ didFinishItemAtIndex:(NSUInteger)index {
     [[NSSound soundNamed:kDefaultNotifySoundName] play];
 }
 
-- (NSImage *)retrieveImageFromItem:(CZDropItem *)item {
+- (NSImage *)switchImageForItem:(CZDropItem *)item {
+    // Check first if the item has a cached image stored away. It'll otherwise retrieve and store it in the cache directory.
+    NSString *cachedFilePath = [NSString stringWithFormat:@"%@.jpg", [item temporaryPath]];
+    NSData *data = [NSData dataWithContentsOfFile:cachedFilePath];
+    if (data == nil) {
+        NSString *filePath = [self retrieveImageFromItem:item];
+        if (filePath == nil) {
+            return nil;
+        }
+        data = [NSData dataWithContentsOfFile:filePath];
+        [data writeToFile:cachedFilePath atomically:YES];
+    }
+    
+    return [[NSImage alloc] initWithData:data];
+}
+
+- (NSString *)retrieveImageFromItem:(CZDropItem *)item {
     NSDirectoryEnumerator *directoryEnumerator = [[NSFileManager defaultManager] enumeratorAtURL:[NSURL fileURLWithPath:[item folderPath]
                                                                                                             isDirectory:YES]
                                                                       includingPropertiesForKeys:nil
                                                                                          options:NSDirectoryEnumerationSkipsHiddenFiles
                                                                                     errorHandler:nil];
     NSString *imagePath;
-    NSArray *fileExtensionArray = @[@"jpg", @"jpeg", @"png", @"gif"];
     for (NSURL *file in directoryEnumerator) {
-        if ([fileExtensionArray containsObject:[[file pathExtension] lowercaseString]]) {
+        if ([kValidFileExtensions containsObject:[[file pathExtension] lowercaseString]]) {
             imagePath = [file path];
             break;
         }
@@ -598,7 +615,7 @@ didFinishItemAtIndex:(NSUInteger)index {
         return nil;
     }
     
-    return [[NSImage alloc] initWithContentsOfFile:imagePath];
+    return imagePath;
 }
 
 - (NSArray *)shouldIgnoreFiles {

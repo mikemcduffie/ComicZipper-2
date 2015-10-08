@@ -21,6 +21,7 @@ float const kTableColumnHeight = 40.0;
 float const kSubviewNormalHeight = kTableColumnHeight/2;
 float const kSubviewDetailheight = kTableColumnHeight/2-3;
 NSString *const kApplicationName = @"ComicZipper";
+NSString *const kCZFileExtension = @"cbz";
 NSString *const kDefaultNotifySoundName = @"Glass";
 NSString *const kIdentifierForSettingsDeleteFolders = @"CZDeleteFolders";
 NSString *const kIdentifierForSettingsExcludedFiles = @"CZExcludedFiles";
@@ -34,5 +35,6 @@ NSString *const kApplicationSettingsFileName = @"CZSettings.plist";
 NSString *kApplicationSupportPath;
 NSString *kApplicationCachePath;
 NSString *kApplicationSettingsPath;
+NSArray *kValidFileExtensions;
 
 @end

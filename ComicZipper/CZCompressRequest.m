@@ -6,18 +6,19 @@
 //  Copyright © 2015 Ardalan Samimi. All rights reserved.
 //
 
-#import "CZCompress.h"
+#import "CZCompressRequest.h"
 #import <ZipUtilities/NOZCompress.h>
 #import <ZipUtilities/NOZZipper.h>
 
 static NSArray<NOZFileZipEntry *> * __nonnull NOZEntriesFromDirectory(NSString * __nonnull directoryPath);
 
-@implementation CZCompress
+@implementation CZCompressRequest
 
 - (void)addEntriesInDirectory:(NSString *)directoryPath compressionSelectionBlock:(nullable NOZCompressionSelectionBlock)block
 {
     for (NOZFileZipEntry *entry in NOZEntriesFromDirectory(directoryPath)) {
-        if (![self doesFileMatchIgnoreList:entry.name]) {
+        // Quick fix to exclude files added to the ignore list or file with zero length.
+        if (![self doesFileMatchIgnoreList:entry.name] && [self doesFileHaveLength:entry.name]) {
             if (block) {
                 NOZCompressionMethod method = NOZCompressionMethodDeflate;
                 NOZCompressionLevel level = NOZCompressionLevelDefault;
@@ -32,7 +33,7 @@ static NSArray<NOZFileZipEntry *> * __nonnull NOZEntriesFromDirectory(NSString *
 }
 
 - (BOOL)doesFileMatchIgnoreList:(NSString *)filePath {
-    // Quick fix to exclude files added to the ignore list
+    // Check the file name against the items in the ignorelist array.
     NSRange filePathRange = NSMakeRange(0, [filePath length]);
     NSUInteger indexOfObj = [[self ignoreFiles] indexOfObjectPassingTest:
                             ^BOOL(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -40,8 +41,8 @@ static NSArray<NOZFileZipEntry *> * __nonnull NOZEntriesFromDirectory(NSString *
                                                                                                         options:0
                                                                                                           error:0];
                                 NSUInteger matches = [regExp numberOfMatchesInString:filePath
-                                                                         options:0
-                                                                           range:filePathRange];
+                                                                             options:0
+                                                                               range:filePathRange];
                                 if (matches > 0) {
                                     *stop = YES;
                                     return YES;
@@ -50,6 +51,17 @@ static NSArray<NOZFileZipEntry *> * __nonnull NOZEntriesFromDirectory(NSString *
                                 return NO;
     }];
     if (indexOfObj == NSNotFound) {
+        return NO;
+    } else {
+        return YES;
+    }
+}
+
+- (BOOL)doesFileHaveLength:(NSString *)filePath {
+    // Check if the file is not zero byte
+    NSDictionary *fileAttributes = [[NSFileManager defaultManager] attributesOfItemAtPath:filePath
+                                                                                    error:nil];
+    if (fileAttributes && [fileAttributes fileSize] == 0) {
         return NO;
     } else {
         return YES;

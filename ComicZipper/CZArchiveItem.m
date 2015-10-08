@@ -33,10 +33,6 @@ static NSString *const kCZRegExPattern = @"\\s([0-9]+$)";
  *  @description Regular expression pattern for issue numbering.
  */
 static NSString *const kCZRegExTemplate = @" #$1";
-/*!
- *  @description The file extension of the archive.
- */
-static NSString *const kCZFileExtension = @"cbz";
 
 #pragma mark PUBLIC METHODS
 
@@ -53,8 +49,12 @@ static NSString *const kCZFileExtension = @"cbz";
         _folderName = [self getFolderNameFromURL:url];
         _parentFolder = [self getParentFolderName];
         _archivePath = [self getArchivePath];
-        _validExtensions = @[@"jpg", @"jpeg", @"png", @"gif"];
+        _validExtensions = kValidFileExtensions;
         _fileSizeInBytes = [self calculateFileSize];
+        // Empty folders should not be added
+        if (_fileSizeInBytes == 0) {
+            return nil;
+        }
         _running = NO;
         _archived = NO;
     }
@@ -92,7 +92,7 @@ static NSString *const kCZFileExtension = @"cbz";
 - (NSString *)temporaryPath {
     if (!_temporaryPath) {
         NSString *uniqueID = [[NSProcessInfo processInfo] globallyUniqueString];
-        _temporaryPath = [NSString stringWithFormat:@"%@/%@.temp", kApplicationCachePath, uniqueID];
+        _temporaryPath = [NSString stringWithFormat:@"%@/%@.tmp", kApplicationCachePath, uniqueID];
     }
     
     return _temporaryPath;

@@ -106,4 +106,10 @@ extern NSString *kApplicationCachePath;
  */
 extern NSString *kApplicationSettingsPath;
 
+extern NSArray *kValidFileExtensions;
+/*!
+ *  @description The file extension of the archive.
+ */
+extern NSString *const kCZFileExtension;
+
 @end

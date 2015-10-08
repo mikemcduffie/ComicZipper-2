@@ -8,7 +8,7 @@
 
 #import "CZComicZipper.h"
 #import "CZDropItem.h"
-#import "CZCompress.h"
+#import "CZCompressRequest.h"
 
 @interface CZComicZipper () <NOZCompressDelegate>
 
@@ -115,7 +115,7 @@
     NSString *processTag = [NSString stringWithFormat:@"%lu", [[self archiveItems] indexOfObject:item]];
     // Create the request and add the folder to it.
     // Solved the issue with excluding files by extending the NOZCompressRequest class.
-    CZCompress *compRequest = [[CZCompress alloc] initWithDestinationPath:targetPath];
+    CZCompressRequest *compRequest = [[CZCompressRequest alloc] initWithDestinationPath:targetPath];
     [compRequest setIgnoreFiles:[self ignoredFiles]];
     [compRequest addEntriesInDirectory:sourcePath
              compressionSelectionBlock:NULL];
@@ -156,6 +156,8 @@
             }
         }
     });
+    result = nil;
+    operation = nil;
 }
 
 - (void)compressOperation:(NOZCompressOperation *)operation didUpdateProgress:(float)progress {

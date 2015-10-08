@@ -10,9 +10,9 @@
 	<false/>
 	<key>CZExcludedFiles</key>
 	<array>
-		<string>\.DS_Store$</string>
-		<string>\.svn$</string>
-		<string>\._[A-z0-9]+</string>
+		<string>^\.\w+</string>
+		<string>thumbs.db$</string>
+		<string>__MACOS</string>
 	</array>
 </dict>
 </plist>
