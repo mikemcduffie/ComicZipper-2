@@ -14,6 +14,7 @@
 @property (nonatomic) double progress;
 @property (nonatomic, getter = isRunning) BOOL running;
 @property (nonatomic, getter = isArchived) BOOL archived;
+@property (nonatomic, readonly) NSString *temporaryPath;
 
 + (instancetype)initWithURL:(NSURL *)url;
 - (instancetype)initWithURL:(NSURL *)url;

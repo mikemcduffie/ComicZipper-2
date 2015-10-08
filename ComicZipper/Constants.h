@@ -86,6 +86,10 @@ extern NSString *const kIdentifierForSettingsReplaceIcon;
  */
 extern NSString *const kIdentifierForSettingsAutoStart;
 /*!
+ *  @brief Identifier for the last window size.
+ */
+extern NSString *const kidentifierForSettingsWindowState;
+/*!
  *  @brief The name of the application settings file.
  */
 extern NSString *const kApplicationSettingsFileName;
@@ -93,6 +97,10 @@ extern NSString *const kApplicationSettingsFileName;
  *  @brief Global variable pointing to the application's Application support directory.
  */
 extern NSString *kApplicationSupportPath;
+/*!
+ *  @brief Global variable pointing to the application's cache directory.
+ */
+extern NSString *kApplicationCachePath;
 /*!
  *  @brief Global variable pointing to the application's settings file.
  */

@@ -29,8 +29,10 @@ NSString *const kIdentifierForSettingsDockBadge = @"CZBadgeDockIcon";
 NSString *const kIdentifierForSettingsAlertSound = @"CZAlertSound";
 NSString *const kIdentifierForSettingsReplaceIcon = @"CZChangeIcon";
 NSString *const kIdentifierForSettingsAutoStart = @"CZAutoStart";
+NSString *const kidentifierForSettingsWindowState = @"CZWindowState";
 NSString *const kApplicationSettingsFileName = @"CZSettings.plist";
 NSString *kApplicationSupportPath;
+NSString *kApplicationCachePath;
 NSString *kApplicationSettingsPath;
 
 @end

@@ -96,7 +96,7 @@
                                    usingBlock:^(NSDraggingItem *draggingItem, NSInteger idx, BOOL *stop) {
                                        // Folders already added to the list should not be added or reloaded.
                                        if (![[self delegate] dropView:self
-                                                         isItemInList:[[draggingItem item] description]]) {
+                                                         isItemInList:[[draggingItem item] folderPath]]) {
                                            if (![self droppedItems]) {
                                                NSMutableArray *droppedItems = [[NSMutableArray alloc] init];
                                                [self setDroppedItems:droppedItems];

@@ -21,8 +21,6 @@
 
 @implementation CZAppDelegate
 
-#pragma mark PREFERENCES SETTINGS
-
 /*!
  *  @brief Sets up the necessary path strings.
  *  @discussion The Application Support folder and the path to the application settings file in that folder will be set up. If there is no application specific folder in the Application Support directory, one will be created.
@@ -31,7 +29,8 @@
     NSString *applicationSupportPath = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) firstObject];
     kApplicationSupportPath = [NSString stringWithFormat:@"%@/%@", applicationSupportPath, kApplicationName];
     BOOL isDirectory;
-    if (![[NSFileManager defaultManager] fileExistsAtPath:kApplicationSupportPath isDirectory:&isDirectory] && !isDirectory) {
+    if (![[NSFileManager defaultManager] fileExistsAtPath:kApplicationSupportPath
+                                              isDirectory:&isDirectory] && !isDirectory) {
         // Create the Application Support directory if it does not exist.
         [[NSFileManager defaultManager] createDirectoryAtPath:kApplicationSupportPath
                                   withIntermediateDirectories:YES
@@ -39,14 +38,37 @@
                                                         error:NULL];
     }
     kApplicationSettingsPath = [NSString stringWithFormat:@"%@/%@", kApplicationSupportPath, kApplicationSettingsFileName];
+    
+    NSString *cacheDirectoryPath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    cacheDirectoryPath = [cacheDirectoryPath stringByAppendingPathComponent:kApplicationName];
+    isDirectory = NO;
+    if (![[NSFileManager defaultManager] fileExistsAtPath:cacheDirectoryPath
+                                              isDirectory:&isDirectory] && !isDirectory) {
+        NSError *error = nil;
+        // Create the cache directory if it does not exist.
+        [[NSFileManager defaultManager] createDirectoryAtPath:cacheDirectoryPath
+                                  withIntermediateDirectories:YES
+                                                   attributes:NULL
+                                                        error:&error];
+    }
+    kApplicationCachePath = cacheDirectoryPath;
 }
+
+#pragma mark CACHE DIRECTORY SETTINGS
+
+- (void)clearCacheDirectory {
+}
+
+#pragma mark PREFERENCES SETTINGS
+
 /*!
  *  @brief Load application settings.
  *  @discussion Settings from the DefaultPreferences.plist file will be used if a settings file cannot be found in the Application Support directory.
  */
 - (void)loadApplicationSettings {
     [self setUpPaths];
-    if ([[NSFileManager defaultManager] fileExistsAtPath:kApplicationSettingsPath isDirectory:nil]) {
+    if ([[NSFileManager defaultManager] fileExistsAtPath:kApplicationSettingsPath
+                                             isDirectory:nil]) {
         _applicationSettings = [[NSMutableDictionary alloc] initWithContentsOfFile:kApplicationSettingsPath];
     } else {
         NSString *defaultSettingsPath = [[NSBundle mainBundle] pathForResource:@"DefaultPreferences"
@@ -66,6 +88,8 @@
  *  @brief Save the application settings.
  */
 - (void)saveApplicationSettings {
+    NSRect frame = [[[self mainController] window] frame];
+    [[self applicationSettings] setObject:NSStringFromRect(frame) forKey:kidentifierForSettingsWindowState];
     [[self applicationSettings] writeToFile:kApplicationSettingsPath
                                  atomically:YES];
 }
@@ -125,7 +149,6 @@
  */
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     [self launchMainController];
-
 }
 /*!
  *  @brief Sent by the default notification center immediately before the application terminates.

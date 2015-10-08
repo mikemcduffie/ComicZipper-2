@@ -23,6 +23,8 @@
 
 @implementation CZArchiveItem
 
+@synthesize temporaryPath = _temporaryPath;
+
 /*!
  *  @description Regular expression pattern for issue numbering.
  */
@@ -85,6 +87,15 @@ static NSString *const kCZFileExtension = @"cbz";
 
 - (NSString *)fileSize {
     return [self stringFromByte:[self fileSizeInBytes]];
+}
+
+- (NSString *)temporaryPath {
+    if (!_temporaryPath) {
+        NSString *uniqueID = [[NSProcessInfo processInfo] globallyUniqueString];
+        _temporaryPath = [NSString stringWithFormat:@"%@/%@.temp", kApplicationCachePath, uniqueID];
+    }
+    
+    return _temporaryPath;
 }
 
 - (NSString *)description {

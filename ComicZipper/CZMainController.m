@@ -75,9 +75,14 @@ int const kLabelTag = 101;
 }
 
 - (void)windowDidLoad {
+    // Load the last saved state of application window
+    NSRect frame = NSRectFromString([[self applicationSettings] objectForKey:kidentifierForSettingsWindowState]);
+    if (!NSIsEmptyRect(frame)) {
+        [[self window] setFrame:frame
+                        display:YES];
+    }
     [super windowDidLoad];
     [self updateUI];
-
 }
 
 - (void)updateUI {
@@ -167,6 +172,10 @@ int const kLabelTag = 101;
             [self setApplicationState:kAppStateNoItemDropped];
             [self updateUI];
         }
+    } else if (keyCode == 0 && commandState) {
+        NSRange range = NSMakeRange(0, [[self tableView] numberOfRows]);
+        NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:range];
+        [[self tableView] selectRowIndexes:indexSet byExtendingSelection:NO];
     }
 }
 
@@ -242,9 +251,7 @@ didStartItemAtIndex:(NSUInteger)index {
     NSIndexSet *colIndexes = [[NSIndexSet alloc] initWithIndexesInRange:NSMakeRange(0,3)];
     [[self tableView] reloadDataForRowIndexes:rowIndexes
                                 columnIndexes:colIndexes];
-    if (![self isApplicationBadgeSet]) {
-        [self updateBadgeLabel];
-    }
+    [self updateBadgeLabel];
 }
 
 - (void)ComicZipper:(CZComicZipper *)comicZipper
@@ -293,12 +300,12 @@ didFinishItemAtIndex:(NSUInteger)index {
     if (readyCount == totalCount) {
         labelCount = [NSString stringWithFormat:@"%li file(s) compressed!", readyCount];
         [self resetCount];
-        if (![[NSApplication sharedApplication] isActive]) {
-            [self notifyUser:labelCount];
-        } else {
+        if ([[NSApplication sharedApplication] isActive]) {
             if ([self shouldPlaySound]) {
                 [self playSound];
             }
+        } else {
+            [self notifyUser:labelCount];
         }
     } else {
         labelCount = [NSString stringWithFormat:@"%li of %li file(s) compressed...", readyCount, totalCount];
@@ -407,6 +414,7 @@ didFinishItemAtIndex:(NSUInteger)index {
     [tableView setUsesAlternatingRowBackgroundColors:YES];
     [tableView setColumnAutoresizingStyle:NSTableViewReverseSequentialColumnAutoresizingStyle];
     [[self scrollView] setDocumentView:tableView];
+    [[self window] makeFirstResponder:tableView];
     [self setTableView:tableView];
 }
 
@@ -569,7 +577,7 @@ didFinishItemAtIndex:(NSUInteger)index {
 }
 
 - (void)playSound {
-    [NSSound soundNamed:kDefaultNotifySoundName];
+    [[NSSound soundNamed:kDefaultNotifySoundName] play];
 }
 
 - (NSImage *)retrieveImageFromItem:(CZDropItem *)item {

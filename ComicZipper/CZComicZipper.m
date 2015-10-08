@@ -43,7 +43,7 @@
                                       *stop = YES;
                                       return NO;
                                   }
-                                  BOOL found = [[obj description] isEqualToString:description];
+                                  BOOL found = [[obj folderPath] isEqualToString:description];
                                   return found;
                               }];
     if (indexOfItem == NSNotFound) {
@@ -110,7 +110,7 @@
 #pragma mark COMPRESSION METHODS
 
 - (NSOperation *)compressItem:(CZDropItem *)item {
-    NSString *targetPath = [item archivePath];
+    NSString *targetPath = [item temporaryPath];
     NSString *sourcePath = [item folderPath];
     NSString *processTag = [NSString stringWithFormat:@"%lu", [[self archiveItems] indexOfObject:item]];
     // Create the request and add the folder to it.
@@ -146,6 +146,7 @@
         CZDropItem *item = [[self archiveItems] objectAtIndex:index];
         [item setRunning:NO];
         [item setArchived:YES];
+        [self moveItem:item];
         [[self delegate] ComicZipper:self
                 didFinishItemAtIndex:index];
         if ([self shouldDeleteFolder]) {
@@ -169,6 +170,12 @@
 }
 
 #pragma mark PRIVATE METHODS
+
+- (void)moveItem:(CZDropItem *)item {
+    [[NSFileManager defaultManager] moveItemAtPath:[item temporaryPath]
+                                            toPath:[item archivePath]
+                                             error:nil];
+}
 
 - (void)deleteFolders {
     [[NSWorkspace sharedWorkspace] recycleURLs:[self foldersToDelete]
