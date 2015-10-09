@@ -44,9 +44,9 @@
     [super drawRect:dirtyRect];
     // Highlight the drop view area
     if ([self isViewHighlighted]) {
-        [NSBezierPath setDefaultLineWidth:5.0];
-        [[NSColor keyboardFocusIndicatorColor] set];
-        [NSBezierPath fillRect:dirtyRect];
+//        [NSBezierPath setDefaultLineWidth:5.0];
+//        [[NSColor keyboardFocusIndicatorColor] set];
+//        [NSBezierPath fillRect:dirtyRect];
     }
 }
 
@@ -67,7 +67,8 @@
 - (void)setViewHighlight:(BOOL)highlight {
     _viewHighlight = highlight;
     if ([[self delegate] isDropViewFront]) {
-        [self setNeedsDisplay:YES];
+//        [self setNeedsDisplay:YES];
+        [[self delegate] dropView:self shouldToggleHighlight:highlight];
     }
 }
 

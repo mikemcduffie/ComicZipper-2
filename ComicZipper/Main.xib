@@ -4,8 +4,9 @@
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="8191"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner">
+        <customObject id="-2" userLabel="File's Owner" customClass="CZMainController">
             <connections>
+                <outlet property="imageView" destination="Tk4-cA-RkM" id="xTT-eq-EPS"/>
                 <outlet property="window" destination="F0z-JX-Cv5" id="ngW-S6-C7U"/>
             </connections>
         </customObject>
@@ -21,6 +22,36 @@
             <view key="contentView" id="se5-gp-TjO">
                 <rect key="frame" x="0.0" y="0.0" width="400" height="322"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                <subviews>
+                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Tk4-cA-RkM">
+                        <rect key="frame" x="124" y="102" width="153" height="119"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="153" id="ZMs-5N-Kav"/>
+                            <constraint firstAttribute="height" constant="119" id="Zll-Ub-vdf"/>
+                        </constraints>
+                        <animations/>
+                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="DropFolderWhite" id="lMp-qY-pT3"/>
+                    </imageView>
+                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XsK-PG-3qi">
+                        <rect key="frame" x="99" y="63" width="203" height="31"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="31" id="Bb9-Tl-y6k"/>
+                            <constraint firstAttribute="width" constant="199" id="dfU-2v-t2s"/>
+                        </constraints>
+                        <animations/>
+                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="Drop folders here" id="eH0-Vn-6Sm">
+                            <font key="font" size="25" name="Helvetica-Light"/>
+                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="XsK-PG-3qi" firstAttribute="centerX" secondItem="Tk4-cA-RkM" secondAttribute="centerX" id="DvG-h2-Fna"/>
+                    <constraint firstItem="Tk4-cA-RkM" firstAttribute="centerX" secondItem="se5-gp-TjO" secondAttribute="centerX" id="Lhc-bw-Ohb"/>
+                    <constraint firstItem="Tk4-cA-RkM" firstAttribute="centerY" secondItem="se5-gp-TjO" secondAttribute="centerY" id="Y18-WU-f88"/>
+                    <constraint firstItem="XsK-PG-3qi" firstAttribute="top" secondItem="Tk4-cA-RkM" secondAttribute="bottom" constant="8" id="apc-bY-B4I"/>
+                </constraints>
                 <animations/>
             </view>
             <connections>
@@ -29,4 +60,7 @@
             <point key="canvasLocation" x="-115" y="260"/>
         </window>
     </objects>
+    <resources>
+        <image name="DropFolderWhite" width="634" height="468"/>
+    </resources>
 </document>

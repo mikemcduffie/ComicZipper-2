@@ -54,6 +54,18 @@ extern float const kSubviewDetailheight;
  */
 extern NSString *const kApplicationName;
 /*!
+ *  @description The file extension of the archive.
+ */
+extern NSString *const kCZFileExtension;
+/*!
+ *  @brief Name of the image representing normal state of drop view.
+ */
+extern NSString *const kImageNameForNoHighlight;
+/*!
+ *  @brief Name of the image representing highlighted state of drop view.
+ */
+extern NSString *const kImageNameForHighlight;
+/*!
  *  @brief The application's default notification sound name.
  */
 extern NSString *const kDefaultNotifySoundName;
@@ -107,9 +119,5 @@ extern NSString *kApplicationCachePath;
 extern NSString *kApplicationSettingsPath;
 
 extern NSArray *kValidFileExtensions;
-/*!
- *  @description The file extension of the archive.
- */
-extern NSString *const kCZFileExtension;
 
 @end

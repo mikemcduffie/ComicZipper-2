@@ -12,20 +12,22 @@
 @interface CZSettingsController () <NSTableViewDelegate, NSTableViewDataSource, NSTextFieldDelegate>
 
 @property (strong) IBOutlet NSView *viewGeneral;
-@property (strong) IBOutlet NSView *viewFilters;
+@property (strong) IBOutlet NSView *viewAlerts;
 @property (strong) IBOutlet NSView *viewAdvanced;
 @property (strong) IBOutlet NSToolbarItem *toolbarItemGeneral;
-@property (strong) IBOutlet NSToolbarItem *toolbarItemFilters;
+@property (strong) IBOutlet NSToolbarItem *toolbarItemAlerts;
 @property (strong) IBOutlet NSToolbarItem *toolbarItemAdvanced;
+@property (strong) IBOutlet NSButton *checkBoxToggleNotification;
 @property (strong) IBOutlet NSButton *checkBoxDelete;
 @property (strong) IBOutlet NSButton *checkBoxNotify;
 @property (strong) IBOutlet NSButton *checkBoxBadge;
 @property (strong) IBOutlet NSButton *checkBoxSoundAlert;
 @property (strong) IBOutlet NSButton *checkBoxReplaceIcon;
 @property (strong) IBOutlet NSButton *checkBoxAutoStart;
-@property (strong) IBOutlet NSTableView *tableViewExclusion;
-@property (strong) IBOutlet NSTableView *tableViewSound;
+@property (strong) IBOutlet NSTextField *textFieldNotify;
+@property (strong) IBOutlet NSTextField *textFieldSoundAlert;
 @property (strong) IBOutlet NSButton *buttonRemoveExclusion;
+@property (strong) IBOutlet NSTableView *tableViewExclusion;
 @property (nonatomic) NSMutableDictionary *settings;
 @property (nonatomic) NSMutableArray *excludedFiles;
 
@@ -67,6 +69,14 @@ const int kTableCellViewHeight = 20;
     [self setCheckBox:@"checkBoxReplaceIcon" identifierAndStateTo:kIdentifierForSettingsReplaceIcon];
     [self setCheckBox:@"checkBoxAutoStart" identifierAndStateTo:kIdentifierForSettingsAutoStart];
     [[[self toolbarItemGeneral] toolbar] setSelectedItemIdentifier:[[self toolbarItemGeneral] itemIdentifier]];
+    
+    if ([[self checkBoxSoundAlert] state] == NSOnState || [[self checkBoxNotify] state] == NSOnState) {
+        [[self checkBoxToggleNotification] setState:1];
+    } else {
+        [[self checkBoxToggleNotification] setState:0];
+    }
+    [self setStateOfNotificationCheckBoxes:[self checkBoxToggleNotification]];
+    
 }
 
 - (void)setCheckBox:(NSString *)checkBoxName identifierAndStateTo:(NSString *)identifier {
@@ -82,8 +92,8 @@ const int kTableCellViewHeight = 20;
     NSView *viewToReplace = [[view subviews] firstObject];
     if ([sender isEqualTo:[self toolbarItemGeneral]]) {
         [view replaceSubview:viewToReplace with:[self viewGeneral]];
-    } else if ([sender isEqualTo:[self toolbarItemFilters]]) {
-        [view replaceSubview:viewToReplace with:[self viewFilters]];
+    } else if ([sender isEqualTo:[self toolbarItemAlerts]]) {
+        [view replaceSubview:viewToReplace with:[self viewAlerts]];
     } else {
         [view replaceSubview:viewToReplace with:[self viewAdvanced]];
     }
@@ -97,6 +107,28 @@ const int kTableCellViewHeight = 20;
     [[self settings] setObject:checkValue forKey:[sender identifier]];
 }
 
+- (IBAction)toggleNotifications:(id)sender {
+    [[self checkBoxNotify] setState:[sender state]];
+    [[self checkBoxSoundAlert] setState:[sender state]];
+    [self checkBoxClicked:[self checkBoxNotify]];
+    [self checkBoxClicked:[self checkBoxSoundAlert]];
+    [self setStateOfNotificationCheckBoxes:sender];
+}
+
+- (void)setStateOfNotificationCheckBoxes:(id)sender {
+    NSNumber *checkValue = [NSNumber numberWithBool:YES];
+    NSColor *fieldColor = [NSColor blackColor];
+    if ([sender state] != NSOnState) {
+        checkValue = @NO;
+        fieldColor = [NSColor grayColor];
+    }
+    
+    [[self checkBoxNotify] setEnabled:[checkValue boolValue]];
+    [[self checkBoxSoundAlert] setEnabled:[checkValue boolValue]];
+    // Disable/enable their respective boxes too
+    [[self textFieldNotify] setTextColor:fieldColor];
+    [[self textFieldSoundAlert] setTextColor:fieldColor];
+}
 
 - (IBAction)addExclusion:(id)sender {
     // Make sure not to create multiple empty entries in the array.
@@ -113,6 +145,7 @@ const int kTableCellViewHeight = 20;
                                      withAnimation:NO];
     NSArray *objectsToRemove = [[self excludedFiles] objectsAtIndexes:indexes];
     [[[self settings] objectForKey:kIdentifierForSettingsExcludedFiles] removeObjectsInArray:objectsToRemove];
+    [[self tableViewExclusion] reloadData];
 }
 
 #pragma mark DELEGATE METHODS

@@ -14,6 +14,7 @@
 - (void)dropView:(CZDropView *)dropView didReceiveFiles:(NSArray *)items;
 - (BOOL)dropView:(CZDropView *)dropView isItemInList:(NSString *)description;
 - (BOOL)isDropViewFront;
+- (void)dropView:(CZDropView *)dropView shouldToggleHighlight:(BOOL)highlight;
 
 @end
 

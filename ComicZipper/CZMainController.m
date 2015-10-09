@@ -26,6 +26,8 @@
 @property (nonatomic, weak) NSUserNotificationCenter *notificationCenter;
 @property (nonatomic) long numberOfItemsToCompress, numberOfItemsCompressed;
 @property (nonatomic) NSDictionary *applicationSettings;
+@property (strong) IBOutlet NSImageView *imageView;
+
 
 @end
 
@@ -99,7 +101,6 @@ int const kLabelTag = 101;
     if (![self dropView]) {
         [self addDropView];
     }
-    
     if ([self applicationStateIs:kAppStateNoItemDropped]) {
         if ([self scrollView]) {
             [[self scrollView] removeFromSuperview];
@@ -111,7 +112,6 @@ int const kLabelTag = 101;
             [[[self dropView] viewWithTag:kLabelTag] removeFromSuperview];
             [self resetCount];
         }
-        [self addLabelForDropView];
     } else if ([self applicationStateIs:kAppStateFirstItemDrop]) {
         [[[self dropView] viewWithTag:kLabelTag] removeFromSuperview];
         [self addCompressButton];
@@ -124,6 +124,14 @@ int const kLabelTag = 101;
 }
 
 #pragma mark DELEGATE METHODS
+
+- (void)dropView:(CZDropView *)dropView shouldToggleHighlight:(BOOL)highlight {
+    if (highlight) {
+        [[self imageView] setImage:[NSImage imageNamed:kImageNameForHighlight]];
+    } else {
+        [[self imageView] setImage:[NSImage imageNamed:kImageNameForNoHighlight]];
+    }
+}
 
 - (void)dropView:(CZDropView *)dropView didReceiveFiles:(NSArray *)items {
     // Add dropped items to the array collection before updating user interface.
