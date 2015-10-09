@@ -143,7 +143,7 @@
  */
 - (void)applicationWillFinishLaunching:(NSNotification *)notification {
     [self loadApplicationSettings];
-    kValidFileExtensions = @[@"jpg", @"jpeg", @"png", @"gif", @"tiff"];
+    kValidFileExtensions = @[@"jpg", @"jpeg", @"png", @"gif", @"tiff", @"tif", @"bmp"];
 }
 /*!
  *  @brief Sent by the default notification center after the application has been launched and initialized but before it has received its first event.

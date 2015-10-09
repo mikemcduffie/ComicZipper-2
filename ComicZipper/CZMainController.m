@@ -14,10 +14,8 @@
 #import "CZDropItem.h"
 #import "CZTableCellView.h"
 #import "CZTextField.h"
-#import <QuickLook/Quicklook.h>
-#import <Quartz/Quartz.h>
 
-@interface CZMainController () <CZComicZipperDelegate, CZDropViewDelegate, CZTableViewDelegate, NSTableViewDataSource>
+@interface CZMainController () <NSWindowDelegate, CZComicZipperDelegate, CZDropViewDelegate, CZTableViewDelegate, NSTableViewDataSource>
 
 @property (nonatomic) int applicationState;
 @property (strong) CZComicZipper *comicZipper;
@@ -66,7 +64,7 @@ int const kLabelTag = 101;
             // Get the fileURL and create a DropItem object.
             CZDropItem *item = [CZDropItem initWithURL:[NSURL fileURLWithPath:obj isDirectory:YES]];
             // Check if the dragged item is already in the archiveItems array.
-            if (![self dropView:nil isItemInList:[obj description]]) {
+            if (item != nil && ![self dropView:nil isItemInList:[obj description]]) {
                 [validItems addObject:item];
             }
         }
@@ -83,8 +81,17 @@ int const kLabelTag = 101;
         [[self window] setFrame:frame
                         display:YES];
     }
+    [[self window] setDelegate:self];
     [super windowDidLoad];
     [self updateUI];
+}
+
+- (NSRect)windowWillUseStandardFrame:(NSWindow *)window defaultFrame:(NSRect)newFrame {
+//    CZTableCellView *rect = [[self tableView] viewAtColumn:1 row:0 makeIfNecessary:NO];
+//    NSSize size = [[[rect textFieldTitle] stringValue] sizeWithAttributes:nil];
+//    NSRect frame = NSMakeRect(0, 0, size.width+200, newFrame.size.height);
+//    return frame;
+    return newFrame;
 }
 
 - (void)updateUI {

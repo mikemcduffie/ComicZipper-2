@@ -38,4 +38,6 @@
  */
 - (void)setProgress:(double)progress;
 
+- (NSTextField *)textFieldTitle;
+
 @end

@@ -16,6 +16,7 @@
 		6A5988C61BBB1B4D00932A08 /* CZScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A5988C51BBB1B4D00932A08 /* CZScrollView.m */; settings = {ASSET_TAGS = (); }; };
 		6A5988C91BBB2A1A00932A08 /* CZComicZipper.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A5988C81BBB2A1A00932A08 /* CZComicZipper.m */; settings = {ASSET_TAGS = (); }; };
 		6A5988CC1BBB2C9E00932A08 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A5988CB1BBB2C9E00932A08 /* Constants.m */; settings = {ASSET_TAGS = (); }; };
+		6A62FA381BC8141E00B24D7A /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 6A62FA371BC8141E00B24D7A /* Credits.rtf */; settings = {ASSET_TAGS = (); }; };
 		6A6CB02D1BB8119800D39E5D /* CZAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A6CB02C1BB8119800D39E5D /* CZAppDelegate.m */; };
 		6A6CB02F1BB8119800D39E5D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A6CB02E1BB8119800D39E5D /* main.m */; };
 		6A6CB0311BB8119800D39E5D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6A6CB0301BB8119800D39E5D /* Images.xcassets */; };
@@ -40,13 +41,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 6A6CB0251BB8119800D39E5D;
 			remoteInfo = ComicZipper;
-		};
-		6A753F221BC6C64F0096B6D1 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 6A753F1E1BC6C64F0096B6D1 /* Panoptes.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 6A753F0F1BC6C64F0096B6D1;
-			remoteInfo = Panoptes;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -79,6 +73,7 @@
 		6A5988CA1BBB2BD300932A08 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		6A5988CB1BBB2C9E00932A08 /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 		6A5988CD1BBB383000932A08 /* CZPrefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CZPrefix.pch; sourceTree = "<group>"; };
+		6A62FA371BC8141E00B24D7A /* Credits.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 		6A6CB0261BB8119800D39E5D /* ComicZipper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ComicZipper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A6CB02A1BB8119800D39E5D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6A6CB02B1BB8119800D39E5D /* CZAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CZAppDelegate.h; sourceTree = "<group>"; };
@@ -98,7 +93,6 @@
 		6A6CB0641BB891E300D39E5D /* CZTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZTableView.m; sourceTree = "<group>"; };
 		6A753EAC1BC663D10096B6D1 /* CZApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZApplication.h; sourceTree = "<group>"; };
 		6A753EAD1BC663D10096B6D1 /* CZApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZApplication.m; sourceTree = "<group>"; };
-		6A753F1E1BC6C64F0096B6D1 /* Panoptes.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Panoptes.xcodeproj; path = Panoptes/Panoptes.xcodeproj; sourceTree = "<group>"; };
 		6A8A2A0D1BC523EC00BED381 /* CZCompressRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZCompressRequest.h; sourceTree = "<group>"; };
 		6A8A2A0E1BC523EC00BED381 /* CZCompressRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZCompressRequest.m; sourceTree = "<group>"; };
 		6A93417F1BBC7DCC00EF2FAC /* CZMainController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZMainController.h; sourceTree = "<group>"; };
@@ -151,7 +145,6 @@
 		6A6CB0281BB8119800D39E5D /* ComicZipper */ = {
 			isa = PBXGroup;
 			children = (
-				6A753F041BC6C63F0096B6D1 /* Panoptes */,
 				6A753EAC1BC663D10096B6D1 /* CZApplication.h */,
 				6A753EAD1BC663D10096B6D1 /* CZApplication.m */,
 				6A6CB02B1BB8119800D39E5D /* CZAppDelegate.h */,
@@ -197,6 +190,7 @@
 				6A6CB02A1BB8119800D39E5D /* Info.plist */,
 				6A9A010F1BC2AD6A002B7A8B /* DefaultPreferences.plist */,
 				6A36DBFA1BBEF08600202AC5 /* Cartfile */,
+				6A62FA371BC8141E00B24D7A /* Credits.rtf */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -216,22 +210,6 @@
 				6A6CB03E1BB8119800D39E5D /* Info.plist */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		6A753F041BC6C63F0096B6D1 /* Panoptes */ = {
-			isa = PBXGroup;
-			children = (
-				6A753F1E1BC6C64F0096B6D1 /* Panoptes.xcodeproj */,
-			);
-			name = Panoptes;
-			sourceTree = "<group>";
-		};
-		6A753F1F1BC6C64F0096B6D1 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				6A753F231BC6C64F0096B6D1 /* Panoptes.qlgenerator */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -280,8 +258,9 @@
 		6A6CB01E1BB8119800D39E5D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				CLASSPREFIX = CZ;
 				LastUpgradeCheck = 0700;
-				ORGANIZATIONNAME = "Ardalan Samimi";
+				ORGANIZATIONNAME = "Saturn Five";
 				TargetAttributes = {
 					6A6CB0251BB8119800D39E5D = {
 						CreatedOnToolsVersion = 6.4;
@@ -303,12 +282,6 @@
 			mainGroup = 6A6CB01D1BB8119800D39E5D;
 			productRefGroup = 6A6CB0271BB8119800D39E5D /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 6A753F1F1BC6C64F0096B6D1 /* Products */;
-					ProjectRef = 6A753F1E1BC6C64F0096B6D1 /* Panoptes.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				6A6CB0251BB8119800D39E5D /* ComicZipper */,
@@ -316,16 +289,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		6A753F231BC6C64F0096B6D1 /* Panoptes.qlgenerator */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = Panoptes.qlgenerator;
-			remoteRef = 6A753F221BC6C64F0096B6D1 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		6A6CB0241BB8119800D39E5D /* Resources */ = {
@@ -337,6 +300,7 @@
 				6A36DBFB1BBEF08600202AC5 /* Cartfile in Resources */,
 				6A51C86A1BC1A9610055DA30 /* Settings.xib in Resources */,
 				6A9341851BBC803000EF2FAC /* MainMenu.xib in Resources */,
+				6A62FA381BC8141E00B24D7A /* Credits.rtf in Resources */,
 				6A9A01101BC2AD6A002B7A8B /* DefaultPreferences.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
