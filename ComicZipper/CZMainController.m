@@ -663,7 +663,7 @@ didFinishItemAtIndex:(NSUInteger)index {
 
 - (NSURL *)URLToImageForItem:(CZDropItem *)item {
     // Check first if the item has a cached image stored away. It'll otherwise retrieve and store it in the cache directory.
-    NSString *cachedFilePath = [NSString stringWithFormat:@"%@img", [item temporaryPath]];
+    NSString *cachedFilePath = [NSString stringWithFormat:@"%@.jpg", [item temporaryPath]];
     NSData *data = [NSData dataWithContentsOfFile:cachedFilePath];
     if (data == nil) {
         NSString *filePath = [self retrieveImageFromItem:item];

@@ -82,7 +82,18 @@
 
 #pragma mark CACHE DIRECTORY SETTINGS
 
+/*!
+ *  @brief Clears the cache directory.
+ *  @discussion Invoked before application terminates. Removes all files stored there.
+ */
 - (void)clearCacheDirectory {
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSError *error;
+    for (NSString *file in [fileManager contentsOfDirectoryAtPath:kApplicationCachePath
+                                                            error:nil]) {
+        [fileManager removeItemAtPath:[NSString stringWithFormat:@"%@/%@", kApplicationCachePath, file]
+                                error:&error];
+    }
 }
 
 #pragma mark PREFERENCES SETTINGS
@@ -180,6 +191,7 @@
  *  @brief Sent by the default notification center immediately before the application terminates.
  */
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
+    [self clearCacheDirectory];
     [self saveApplicationSettings];
 }
 /*!
