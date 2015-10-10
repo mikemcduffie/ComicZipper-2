@@ -241,11 +241,11 @@ int const kLabelTag = 101;
         }
     } else if ([[column identifier] isEqualToString:@"ColumnRight"]) {
         if ([item isArchived]) {
-            [cellView setImage:[NSImage imageNamed:@"NSStatusAvailable"]];
+            [cellView setImage:[NSImage imageNamed:@"Status-Success"]];
         } else if ([item isRunning]) {
-            [cellView setImage:[NSImage imageNamed:@"NSStatusPartiallyAvailable"]];
+            [cellView setImage:[NSImage imageNamed:@"Status-NormalClose"]];
         } else {
-            [cellView setImage:[NSImage imageNamed:@"NSStatusNone"]];
+            [cellView setImage:[NSImage imageNamed:@"Status-NormalClose"]];
         }
     }
         
