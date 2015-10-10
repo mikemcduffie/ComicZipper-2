@@ -186,7 +186,23 @@
  *  @brief Sent to notify the delegate that the application is about to terminate.
  */
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender {
-    return YES;
+    if ([[self comicZipper] isRunning]) {
+        NSAlert *alert = [[NSAlert alloc] init];
+        [alert setAlertStyle:NSWarningAlertStyle];
+        [alert setMessageText:@"ComicZipper"];
+        [alert setInformativeText:@"The compression has not finished. Do you want to quit?"];
+        [alert setIcon:[NSImage imageNamed:@"ComicZipper"]];
+        [alert addButtonWithTitle:@"Quit"];
+        [alert addButtonWithTitle:@"Cancel"];
+        NSModalResponse response = [alert runModal];
+        if (response == NSAlertFirstButtonReturn) {
+            return YES;
+        } else {
+            return NO;
+        }
+    } else {
+        return YES;
+    }
 }
 /*!
  *  @brief Invoked when the user closes the last window the application has open.

@@ -243,11 +243,11 @@ int const kLabelTag = 101;
         }
     } else if ([[column identifier] isEqualToString:@"ColumnRight"]) {
         if ([item isArchived]) {
-            [cellView setImage:[NSImage imageNamed:@"Status-Success"]];
+            [cellView setStatus:@"statusSuccess"];
         } else if ([item isRunning]) {
-            [cellView setImage:[NSImage imageNamed:@"Status-NormalClose"]];
+            [cellView setStatus:@"statusCloseNormal"];
         } else {
-            [cellView setImage:[NSImage imageNamed:@"Status-NormalClose"]];
+            [cellView setStatus:@"statusCloseNormal"];
         }
     }
         
@@ -627,6 +627,7 @@ didFinishItemAtIndex:(NSUInteger)index {
  *  @brief Creates an animation simulating a shake.
  */
 - (NSDictionary *)shakeAnimation:(NSRect)windowFrame {
+    // Borrowed from cimgf.com/2008/02/27/core-animation-tutorial-window-shake-effect/
     // Set the shake properties
     int numberOfShakes = 3;
     float shakesDuration = 0.5f;
@@ -662,7 +663,7 @@ didFinishItemAtIndex:(NSUInteger)index {
 
 - (NSURL *)URLToImageForItem:(CZDropItem *)item {
     // Check first if the item has a cached image stored away. It'll otherwise retrieve and store it in the cache directory.
-    NSString *cachedFilePath = [NSString stringWithFormat:@"%@.jpg", [item temporaryPath]];
+    NSString *cachedFilePath = [NSString stringWithFormat:@"%@img", [item temporaryPath]];
     NSData *data = [NSData dataWithContentsOfFile:cachedFilePath];
     if (data == nil) {
         NSString *filePath = [self retrieveImageFromItem:item];

@@ -8,10 +8,12 @@
 
 #import "CZTableCellView.h"
 #import "CZTextField.h"
-
+#import "CZStatusButton.h"
 @interface CZTableCellView ()
 
-@property (nonatomic, strong) NSImageView *imageIconView;
+@property (nonatomic, strong) NSButton *statusButton;
+@property (nonatomic, strong) NSImageView *rightImageView;
+@property (nonatomic, strong) NSImageView *statusIconView;
 @property (nonatomic, strong) NSTextField *textFieldTitle;
 @property (nonatomic, strong) NSTextField *textFieldDetail;
 @property (nonatomic, strong) NSProgressIndicator *progressIndicator;
@@ -54,7 +56,15 @@
 }
 
 - (void)setImage:(NSImage *)image {
-    [[self imageIconView] setImage:image];
+    [[self rightImageView] setImage:image];
+}
+
+- (void)setStatus:(NSString *)status {
+    if ([status isEqual:kStatusIconSuccess]) {
+        [[self statusIconView] setImage:[NSImage imageNamed:status]];
+    } else {
+        [[self statusButton] setImage:[NSImage imageNamed:status]];
+    }
 }
 
 - (void)setProgress:(double)progress {
@@ -88,13 +98,43 @@
     return _textFieldDetail;
 }
 
-- (NSImageView *)imageIconView {
-    if (!_imageIconView) {
-        _imageIconView = [[NSImageView alloc] initWithFrame:NSMakeRect(0, 0, 50, kTableColumnHeight)];
-        [self addSubview:_imageIconView];
+- (NSImageView *)rightImageView {
+    if (!_rightImageView) {
+        _rightImageView = [[NSImageView alloc] initWithFrame:NSMakeRect(0, 0, 50, kTableColumnHeight)];
+        [self addSubview:_rightImageView];
     }
     
-    return _imageIconView;
+    return _rightImageView;
+}
+
+
+- (NSImageView *)statusIconView {
+    if (!_statusIconView) {
+        [self removeFromSuperview:&_statusButton];
+        _statusIconView = [[NSImageView alloc] initWithFrame:NSMakeRect(0, 0, 50, kTableColumnHeight)];
+        [self addSubview:_statusIconView];
+    }
+    
+    return _statusIconView;
+}
+
+- (NSButton *)statusButton {
+    if (!_statusButton) {
+        [self removeFromSuperview:&_statusIconView];
+        _statusButton = [[CZStatusButton alloc] initWithFrame:NSMakeRect(0, 0, 50, kTableColumnHeight)];
+        [_statusButton setBordered:NO];
+        [_statusButton setButtonType:NSMomentaryChangeButton];
+        [_statusButton setBezelStyle:NSRegularSquareBezelStyle];
+        [_statusButton setHighlighted:NO];
+        [self addSubview:_statusButton];
+        NSTrackingArea* trackingArea = [[NSTrackingArea alloc]
+                                        initWithRect:[_statusButton bounds]
+                                        options:NSTrackingMouseEnteredAndExited | NSTrackingActiveAlways
+                                        owner:_statusButton userInfo:nil];
+        [_statusButton addTrackingArea:trackingArea];
+    }
+    
+    return _statusButton;
 }
 
 - (NSProgressIndicator *)progressIndicator {

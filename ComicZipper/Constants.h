@@ -70,6 +70,22 @@ extern NSString *const kImageNameForHighlight;
  */
 extern NSString *const kDefaultNotifySoundName;
 /*!
+ *  @brief Icon for error statuses.
+ */
+extern NSString *const kStatusIconError;
+/*!
+ *  @brief Icon for success statuses.
+ */
+extern NSString *const kStatusIconSuccess;
+/*!
+ *  @brief Icon for normal state statuses and close/remove items.
+ */
+extern NSString *const kStatusIconCloseNormal;
+/*!
+ *  @brief Icon for when normal state status button is hovered.
+ */
+extern NSString *const kStatusIconCloseHover;
+/*!
  *  @brief Identifier for the delete folders settings option.
  */
 extern NSString *const kIdentifierForSettingsDeleteFolders;

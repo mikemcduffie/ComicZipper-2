@@ -47,7 +47,7 @@
                             <action selector="switchView:" target="-2" id="NOG-67-CBf"/>
                         </connections>
                     </toolbarItem>
-                    <toolbarItem implicitItemIdentifier="08BA412D-C5A0-45F5-8D93-972B8839A15D" explicitItemIdentifier="NSToolbarShowFiltersItem" label="Filters" paletteLabel="Filters" tag="-1" image="PreferencesExcludeFiles" selectable="YES" id="9SS-C7-pJq">
+                    <toolbarItem implicitItemIdentifier="08BA412D-C5A0-45F5-8D93-972B8839A15D" explicitItemIdentifier="NSToolbarShowFiltersItem" label="Exclude list" paletteLabel="Exclude list" tag="-1" image="PreferencesExcludeFiles" selectable="YES" id="9SS-C7-pJq">
                         <connections>
                             <action selector="switchView:" target="-2" id="9J4-aV-KcH"/>
                         </connections>
@@ -106,13 +106,13 @@
                     </connections>
                 </button>
                 <scrollView fixedFrame="YES" autohidesScrollers="YES" horizontalLineScroll="22" horizontalPageScroll="10" verticalLineScroll="22" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vUo-Cr-F0Y">
-                    <rect key="frame" x="20" y="40" width="254" height="135"/>
+                    <rect key="frame" x="20" y="40" width="254" height="118"/>
                     <clipView key="contentView" ambiguous="YES" id="Hdz-uV-6CT">
-                        <rect key="frame" x="1" y="1" width="252" height="133"/>
+                        <rect key="frame" x="1" y="1" width="252" height="116"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" columnSelection="YES" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" rowHeight="20" rowSizeStyle="automatic" viewBased="YES" id="WLX-DZ-hkh">
-                                <rect key="frame" x="0.0" y="0.0" width="252" height="133"/>
+                                <rect key="frame" x="0.0" y="0.0" width="252" height="116"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <animations/>
                                 <size key="intercellSpacing" width="3" height="2"/>
@@ -192,9 +192,9 @@
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2BA-Oc-oBi">
-                    <rect key="frame" x="18" y="178" width="256" height="40"/>
+                    <rect key="frame" x="18" y="161" width="256" height="57"/>
                     <animations/>
-                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Use custom filters to remove specific files from the archives (must follow regex syntax)." id="GPj-T6-ewI">
+                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Add filenames (or optionally regex expressions) below to exclude them from be added to the comic book archive." id="GPj-T6-ewI">
                         <font key="font" size="12" name="HelveticaNeue-Light"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -321,7 +321,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eDJ-a8-VLq">
-                                <rect key="frame" x="19" y="55" width="219" height="18"/>
+                                <rect key="frame" x="19" y="53" width="219" height="20"/>
                                 <animations/>
                                 <buttonCell key="cell" type="radio" title="Compress as .cbr (rar)" bezelStyle="regularSquare" imagePosition="left" alignment="left" enabled="NO" inset="2" id="cci-cH-tdu">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -337,7 +337,7 @@
                                 </buttonCell>
                             </button>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WhC-1V-XKj">
-                                <rect key="frame" x="38" y="14" width="200" height="40"/>
+                                <rect key="frame" x="38" y="12" width="200" height="40"/>
                                 <animations/>
                                 <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="To compress as .cbr, the rar command line tool must be purchased from WinRAR." id="88p-HE-77J">
                                     <font key="font" size="11" name="HelveticaNeue-Thin"/>

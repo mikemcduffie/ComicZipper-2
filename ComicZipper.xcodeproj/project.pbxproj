@@ -32,6 +32,7 @@
 		6A9341851BBC803000EF2FAC /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A9341841BBC803000EF2FAC /* MainMenu.xib */; settings = {ASSET_TAGS = (); }; };
 		6A9A01101BC2AD6A002B7A8B /* DefaultPreferences.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6A9A010F1BC2AD6A002B7A8B /* DefaultPreferences.plist */; settings = {ASSET_TAGS = (); }; };
 		6ABA46A51BBFCAF100DBBC19 /* CZTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ABA46A41BBFCAF100DBBC19 /* CZTableCellView.m */; settings = {ASSET_TAGS = (); }; };
+		6AC820901BC9B5C2006DBF5B /* CZStatusButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AC8208F1BC9B5C2006DBF5B /* CZStatusButton.m */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -102,6 +103,8 @@
 		6A9A010F1BC2AD6A002B7A8B /* DefaultPreferences.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = DefaultPreferences.plist; sourceTree = "<group>"; };
 		6ABA46A31BBFCAF100DBBC19 /* CZTableCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZTableCellView.h; sourceTree = "<group>"; };
 		6ABA46A41BBFCAF100DBBC19 /* CZTableCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZTableCellView.m; sourceTree = "<group>"; };
+		6AC8208E1BC9B5C2006DBF5B /* CZStatusButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZStatusButton.h; sourceTree = "<group>"; };
+		6AC8208F1BC9B5C2006DBF5B /* CZStatusButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZStatusButton.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -167,6 +170,8 @@
 				6ABA46A41BBFCAF100DBBC19 /* CZTableCellView.m */,
 				6A51C8631BC130130055DA30 /* CZTextField.h */,
 				6A51C8641BC130130055DA30 /* CZTextField.m */,
+				6AC8208E1BC9B5C2006DBF5B /* CZStatusButton.h */,
+				6AC8208F1BC9B5C2006DBF5B /* CZStatusButton.m */,
 				6A51C8661BC1A9610055DA30 /* CZSettingsController.h */,
 				6A51C8671BC1A9610055DA30 /* CZSettingsController.m */,
 				6A8A2A0D1BC523EC00BED381 /* CZCompressRequest.h */,
@@ -343,6 +348,7 @@
 				6A51C8651BC130130055DA30 /* CZTextField.m in Sources */,
 				6A6CB02F1BB8119800D39E5D /* main.m in Sources */,
 				6A6CB02D1BB8119800D39E5D /* CZAppDelegate.m in Sources */,
+				6AC820901BC9B5C2006DBF5B /* CZStatusButton.m in Sources */,
 				6A6CB0651BB891E300D39E5D /* CZTableView.m in Sources */,
 				6A5988C91BBB2A1A00932A08 /* CZComicZipper.m in Sources */,
 				6A6CB04B1BB813AC00D39E5D /* CZDropView.m in Sources */,
