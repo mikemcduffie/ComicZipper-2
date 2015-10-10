@@ -21,6 +21,7 @@
 
 @property (weak) id delegate;
 @property (nonatomic) BOOL shouldDeleteFolder;
+@property (nonatomic, readonly, getter = isRunning) BOOL running;
 
 - (NSInteger)count;
 - (NSInteger)countAll;

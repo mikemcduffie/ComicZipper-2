@@ -13,6 +13,7 @@
 
 @interface CZAppDelegate ()
 
+@property (weak) CZComicZipper *comicZipper;
 @property (strong) CZMainController *mainController;
 @property (strong) CZSettingsController *settingsController;
 @property (strong) NSWindowController *aboutController;
@@ -42,6 +43,7 @@
         [mainController showWindow:nil];
         [[mainController window] makeKeyAndOrderFront:nil];
         [self setMainController:mainController];
+        [self setComicZipper:comicZipper];
     }
 }
 
@@ -190,7 +192,18 @@
  *  @brief Invoked when the user closes the last window the application has open.
  */
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender {
+    if ([[self comicZipper] isRunning]) {
+        return NO;
+    }
+    
     return YES;
+}
+/*!
+ *  @brief Sent by the application to the delegate prior to default behavior to reopen (rapp) AppleEvents.
+ */
+- (BOOL)applicationShouldHandleReopen:(NSApplication *)sender hasVisibleWindows:(BOOL)flag {
+    [[[self mainController] window] makeKeyAndOrderFront:nil];
+    return NO;
 }
 
 @end

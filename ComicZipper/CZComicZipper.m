@@ -21,7 +21,13 @@
 
 @implementation CZComicZipper
 
+@synthesize running = _running;
+
 #pragma mark ARCHIVE ITEMS COLLECTION METHODS
+
+- (void)setRunning:(BOOL)running {
+    _running = running;
+}
 
 - (NSMutableArray *)archiveItems {
     if (!_archiveItems) {
@@ -127,6 +133,9 @@
         [item setRunning:YES];
         [[self delegate] ComicZipper:self
                  didStartItemAtIndex:[processTag integerValue]];
+        if (![self isRunning]) {
+            [self setRunning:YES];
+        }
     });
     return operation;
 }
@@ -154,6 +163,9 @@
             if ([[self operations] operationCount] == 0) {
                 [self deleteFolders];
             }
+        }
+        if ([[self operations] operationCount] == 0) {
+            [self setRunning:NO];
         }
     });
     result = nil;

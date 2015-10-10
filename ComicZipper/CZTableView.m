@@ -67,10 +67,15 @@
                    withCommand:[self commandKeyState]];
 }
 
+- (void)delete:(id)sender {
+    // Needed to enable the delete menu item.
+    [self menuItemRemove];
+}
+
 - (NSMenu *)menuForEvent:(NSEvent *)event {
     NSPoint point = [self convertPoint:[event locationInWindow] fromView:nil];
     NSInteger row = [self rowAtPoint:point];
-    //
+
     if (row > -1 && row < [self numberOfRows]) {
         if ([[self selectedRowIndexes] containsIndex:row] == NO) {
             [self selectRowIndexes:[NSIndexSet indexSetWithIndex:row]
