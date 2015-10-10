@@ -78,7 +78,7 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Edit" id="yeB-CU-Gfv">
                         <items>
-                            <menuItem title="Delete" id="sEZ-d4-fDb">
+                            <menuItem title="Remove from list" id="sEZ-d4-fDb">
                                 <string key="keyEquivalent" base64-UTF8="YES">
 CA
 </string>

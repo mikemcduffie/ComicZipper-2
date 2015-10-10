@@ -73,15 +73,15 @@ int const kLabelTag = 101;
             } else {
                 failed = YES;
             }
+        } else {
+            failed = YES;
         }
     }];
     if ([validItems count]) {
         [self dropView:nil didReceiveFiles:validItems];
     }
-
     if (failed) {
-        // Bouncing icon does not work if the application is in focus.
-        [[NSApplication sharedApplication] requestUserAttention:NSInformationalRequest];
+        [self shakeWindow];
     }
 }
 
@@ -122,7 +122,6 @@ int const kLabelTag = 101;
             [self resetCount];
         }
     } else if ([self applicationStateIs:kAppStateFirstItemDrop]) {
-        [[[self dropView] viewWithTag:kLabelTag] removeFromSuperview];
         [self addCompressButton];
         [self addLabelForTableView];
         [self addScrollView];
@@ -398,24 +397,6 @@ didFinishItemAtIndex:(NSUInteger)index {
     [self setDropView:dropView];
 }
 
-- (void)addLabelForDropView {
-    CZTextField *label = [CZTextField initWithFrame:NSMakeRect(0, 83, 0, 0)
-                                            stringValue:@"Drop folders here"
-                                               fontName:@"Lucida Grande"
-                                               fontSize:22.0];
-    [label setTag:kLabelTag];
-    [label setTextColor:[NSColor whiteColor]];
-    [label setAlignment:NSTextAlignmentCenter];
-    [[self dropView] addSubview:label];
-    // CONSTRAINTS
-    [label setTranslatesAutoresizingMaskIntoConstraints:NO];
-    [self setConstraintWithItem:[self dropView]
-                         toItem:label
-                 withAttributes:@[[NSNumber numberWithInt:NSLayoutAttributeCenterY],
-                                  [NSNumber numberWithInt:NSLayoutAttributeCenterX]]
-                    andConstant:0];
-}
-
 - (void)addScrollView {
     NSRect frame = NSMakeRect(self.dropView.frame.origin.x, self.dropView.frame.origin.y, self.dropView.frame.size.width-1, self.dropView.frame.size.height);
     CZScrollView *scrollView = [[CZScrollView alloc] initWithFrame:frame];
@@ -635,6 +616,50 @@ didFinishItemAtIndex:(NSUInteger)index {
     [[NSSound soundNamed:kDefaultNotifySoundName] play];
 }
 
+- (void)setApplicationBadge:(NSString *)badgeLabel {
+    [[NSApp dockTile] setBadgeLabel:badgeLabel];
+}
+
+- (BOOL)isApplicationBadgeSet {
+    return (![[NSApp dockTile] badgeLabel]) ? NO : YES;
+}
+/*!
+ *  @brief Creates an animation simulating a shake.
+ */
+- (NSDictionary *)shakeAnimation:(NSRect)windowFrame {
+    // Set the shake properties
+    int numberOfShakes = 3;
+    float shakesDuration = 0.5f;
+    float shakesVigor = 0.05f;
+    CAKeyframeAnimation *shakeAnimation = [CAKeyframeAnimation animation];
+    CGMutablePathRef shakePath = CGPathCreateMutable();
+    CGPathMoveToPoint(shakePath, nil, NSMinX(windowFrame), NSMinY(windowFrame));
+    for (NSInteger i = 0; i < numberOfShakes; i++) {
+        float positionOfX = windowFrame.size.width * shakesVigor;
+        CGPathAddLineToPoint(shakePath, nil, NSMinX(windowFrame) - positionOfX, NSMinY(windowFrame));
+        CGPathAddLineToPoint(shakePath, nil, NSMinX(windowFrame) + positionOfX, NSMinY(windowFrame));
+    }
+    CGPathCloseSubpath(shakePath);
+    [shakeAnimation setPath:shakePath];
+    [shakeAnimation setDuration:shakesDuration];
+    
+    return [NSDictionary dictionaryWithObject:shakeAnimation
+                                       forKey:@"frameOrigin"];
+}
+/*!
+ *  @brief Shakes the window
+ *  @discussion Calls the shakeAnimation: method.
+ */
+- (void)shakeWindow {
+    NSWindow *window = [self window];
+    NSDictionary *animations = [self shakeAnimation:[window frame]];
+    [window setAnimations:animations];
+    [[window animator] setFrameOrigin:window.frame.origin];
+    
+}
+
+#pragma mark ITEM IMAGE METHODS
+
 - (NSURL *)URLToImageForItem:(CZDropItem *)item {
     // Check first if the item has a cached image stored away. It'll otherwise retrieve and store it in the cache directory.
     NSString *cachedFilePath = [NSString stringWithFormat:@"%@.jpg", [item temporaryPath]];
@@ -647,7 +672,7 @@ didFinishItemAtIndex:(NSUInteger)index {
         data = [NSData dataWithContentsOfFile:filePath];
         [data writeToFile:cachedFilePath atomically:YES];
     }
-
+    
     return [NSURL fileURLWithPath:cachedFilePath];
 }
 
@@ -669,13 +694,15 @@ didFinishItemAtIndex:(NSUInteger)index {
             break;
         }
     }
-
+    
     if (!imagePath) {
         return nil;
     }
     
     return imagePath;
 }
+
+#pragma mark PREFERENCES METHODS
 
 - (NSArray *)shouldIgnoreFiles {
     return [[[self applicationSettings] objectForKey:kIdentifierForSettingsExcludedFiles] copy];
@@ -703,14 +730,6 @@ didFinishItemAtIndex:(NSUInteger)index {
 
 - (BOOL)shouldAutoStartCompression {
     return [[[self applicationSettings] objectForKey:kIdentifierForSettingsAutoStart] boolValue];
-}
-
-- (void)setApplicationBadge:(NSString *)badgeLabel {
-    [[NSApp dockTile] setBadgeLabel:badgeLabel];
-}
-
-- (BOOL)isApplicationBadgeSet {
-    return (![[NSApp dockTile] badgeLabel]) ? NO : YES;
 }
 
 #pragma mark MISC METHODS
