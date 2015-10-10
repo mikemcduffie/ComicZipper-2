@@ -2,12 +2,12 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "DropHereNormal.png",
+      "filename" : "StatusClosePress.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "DropHereNormal2x.png",
+      "filename" : "StatusClosePress2x.png",
       "scale" : "2x"
     },
     {

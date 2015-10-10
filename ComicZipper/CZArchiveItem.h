@@ -6,11 +6,13 @@
 //  Copyright (c) 2015 Ardalan Samimi. All rights reserved.
 //
 
+#import <Quartz/Quartz.h>
+#import <QuickLook/QuickLook.h>
+
 @class CZArchiveItem;
 
-@interface CZArchiveItem : NSObject
+@interface CZArchiveItem : NSObject <QLPreviewItem>
 
-@property (weak) id delegate;
 @property (nonatomic) double progress;
 @property (nonatomic, getter = isRunning) BOOL running;
 @property (nonatomic, getter = isArchived) BOOL archived;
@@ -42,5 +44,7 @@
  *  @discussion Counts only files not added to the ignore list.
  */
 - (NSString *)fileSize;
+
+- (void)setPreviewItemURL:(NSURL *)url;
 
 @end

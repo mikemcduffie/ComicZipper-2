@@ -74,6 +74,27 @@
                         </items>
                     </menu>
                 </menuItem>
+                <menuItem title="Edit" id="9Bn-Kp-3T2">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <menu key="submenu" title="Edit" id="yeB-CU-Gfv">
+                        <items>
+                            <menuItem title="Remove from list" id="sEZ-d4-fDb">
+                                <string key="keyEquivalent" base64-UTF8="YES">
+CA
+</string>
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="delete:" target="-1" id="81W-7h-JhX"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Select All" keyEquivalent="a" id="ORJ-zl-8rw">
+                                <connections>
+                                    <action selector="selectAll:" target="-1" id="pGG-4o-fAt"/>
+                                </connections>
+                            </menuItem>
+                        </items>
+                    </menu>
+                </menuItem>
                 <menuItem title="Window" id="aUF-d1-5bR">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Window" systemMenu="window" id="Td7-aD-5lo">

@@ -24,6 +24,7 @@
 @implementation CZArchiveItem
 
 @synthesize temporaryPath = _temporaryPath;
+@synthesize previewItemURL = _previewItemURL;
 
 /*!
  *  @description Regular expression pattern for issue numbering.
@@ -35,6 +36,14 @@ static NSString *const kCZRegExPattern = @"\\s([0-9]+$)";
 static NSString *const kCZRegExTemplate = @" #$1";
 
 #pragma mark PUBLIC METHODS
+
+- (void)setPreviewItemURL:(NSURL *)url {
+    _previewItemURL = url;
+}
+
+- (NSURL *)previewItemURL {
+    return _previewItemURL;
+}
 
 + (instancetype)initWithURL:(NSURL *)url {
     return [[super alloc] initWithURL:url];

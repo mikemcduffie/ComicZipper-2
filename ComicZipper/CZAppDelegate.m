@@ -13,6 +13,7 @@
 
 @interface CZAppDelegate ()
 
+@property (weak) CZComicZipper *comicZipper;
 @property (strong) CZMainController *mainController;
 @property (strong) CZSettingsController *settingsController;
 @property (strong) NSWindowController *aboutController;
@@ -42,6 +43,7 @@
         [mainController showWindow:nil];
         [[mainController window] makeKeyAndOrderFront:nil];
         [self setMainController:mainController];
+        [self setComicZipper:comicZipper];
     }
 }
 
@@ -80,7 +82,18 @@
 
 #pragma mark CACHE DIRECTORY SETTINGS
 
+/*!
+ *  @brief Clears the cache directory.
+ *  @discussion Invoked before application terminates. Removes all files stored there.
+ */
 - (void)clearCacheDirectory {
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSError *error;
+    for (NSString *file in [fileManager contentsOfDirectoryAtPath:kApplicationCachePath
+                                                            error:nil]) {
+        [fileManager removeItemAtPath:[NSString stringWithFormat:@"%@/%@", kApplicationCachePath, file]
+                                error:&error];
+    }
 }
 
 #pragma mark PREFERENCES SETTINGS
@@ -178,19 +191,47 @@
  *  @brief Sent by the default notification center immediately before the application terminates.
  */
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
+    [self clearCacheDirectory];
     [self saveApplicationSettings];
 }
 /*!
  *  @brief Sent to notify the delegate that the application is about to terminate.
  */
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender {
-    return YES;
+    if ([[self comicZipper] isRunning]) {
+        NSAlert *alert = [[NSAlert alloc] init];
+        [alert setAlertStyle:NSWarningAlertStyle];
+        [alert setMessageText:@"ComicZipper"];
+        [alert setInformativeText:@"The compression has not finished. Do you want to quit?"];
+        [alert setIcon:[NSImage imageNamed:@"ComicZipper"]];
+        [alert addButtonWithTitle:@"Quit"];
+        [alert addButtonWithTitle:@"Cancel"];
+        NSModalResponse response = [alert runModal];
+        if (response == NSAlertFirstButtonReturn) {
+            return YES;
+        } else {
+            return NO;
+        }
+    } else {
+        return YES;
+    }
 }
 /*!
  *  @brief Invoked when the user closes the last window the application has open.
  */
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender {
+    if ([[self comicZipper] isRunning]) {
+        return NO;
+    }
+    
     return YES;
+}
+/*!
+ *  @brief Sent by the application to the delegate prior to default behavior to reopen (rapp) AppleEvents.
+ */
+- (BOOL)applicationShouldHandleReopen:(NSApplication *)sender hasVisibleWindows:(BOOL)flag {
+    [[[self mainController] window] makeKeyAndOrderFront:nil];
+    return NO;
 }
 
 @end

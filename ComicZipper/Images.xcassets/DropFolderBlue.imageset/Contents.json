@@ -2,11 +2,12 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "Drop Images Folder Here v2 Blue.png",
+      "filename" : "DropHereHighlighted.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
+      "filename" : "DropHereHighlighted2x.png",
       "scale" : "2x"
     },
     {

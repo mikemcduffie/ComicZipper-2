@@ -24,7 +24,7 @@
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
                     <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Tk4-cA-RkM">
-                        <rect key="frame" x="124" y="102" width="153" height="119"/>
+                        <rect key="frame" x="124" y="118" width="153" height="119"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="153" id="ZMs-5N-Kav"/>
                             <constraint firstAttribute="height" constant="119" id="Zll-Ub-vdf"/>
@@ -33,14 +33,14 @@
                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="DropFolderWhite" id="lMp-qY-pT3"/>
                     </imageView>
                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XsK-PG-3qi">
-                        <rect key="frame" x="99" y="63" width="203" height="31"/>
+                        <rect key="frame" x="96" y="69" width="210" height="37"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="31" id="Bb9-Tl-y6k"/>
-                            <constraint firstAttribute="width" constant="199" id="dfU-2v-t2s"/>
+                            <constraint firstAttribute="height" constant="37" id="Bb9-Tl-y6k"/>
+                            <constraint firstAttribute="width" constant="206" id="dfU-2v-t2s"/>
                         </constraints>
                         <animations/>
                         <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="Drop folders here" id="eH0-Vn-6Sm">
-                            <font key="font" size="25" name="Helvetica-Light"/>
+                            <font key="font" size="26" name="HelveticaNeue-Light"/>
                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
@@ -49,8 +49,8 @@
                 <constraints>
                     <constraint firstItem="XsK-PG-3qi" firstAttribute="centerX" secondItem="Tk4-cA-RkM" secondAttribute="centerX" id="DvG-h2-Fna"/>
                     <constraint firstItem="Tk4-cA-RkM" firstAttribute="centerX" secondItem="se5-gp-TjO" secondAttribute="centerX" id="Lhc-bw-Ohb"/>
-                    <constraint firstItem="Tk4-cA-RkM" firstAttribute="centerY" secondItem="se5-gp-TjO" secondAttribute="centerY" id="Y18-WU-f88"/>
-                    <constraint firstItem="XsK-PG-3qi" firstAttribute="top" secondItem="Tk4-cA-RkM" secondAttribute="bottom" constant="8" id="apc-bY-B4I"/>
+                    <constraint firstItem="Tk4-cA-RkM" firstAttribute="centerY" secondItem="se5-gp-TjO" secondAttribute="centerY" constant="-16.5" id="Y18-WU-f88"/>
+                    <constraint firstItem="XsK-PG-3qi" firstAttribute="top" secondItem="Tk4-cA-RkM" secondAttribute="bottom" constant="12" id="apc-bY-B4I"/>
                 </constraints>
                 <animations/>
             </view>
@@ -61,6 +61,6 @@
         </window>
     </objects>
     <resources>
-        <image name="DropFolderWhite" width="634" height="468"/>
+        <image name="DropFolderWhite" width="317" height="234"/>
     </resources>
 </document>

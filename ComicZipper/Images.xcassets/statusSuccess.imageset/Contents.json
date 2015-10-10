@@ -2,12 +2,12 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "DropHereNormal.png",
+      "filename" : "StatusSuccess.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "DropHereNormal2x.png",
+      "filename" : "StatusSuccess2x.png",
       "scale" : "2x"
     },
     {

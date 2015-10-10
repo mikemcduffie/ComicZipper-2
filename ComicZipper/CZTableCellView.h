@@ -32,6 +32,10 @@
  */
 - (void)setImage:(NSImage *)image;
 /*!
+ *  @brief Set the status icon of the cell view.
+ */
+- (void)setStatus:(NSString *)imageName;
+/*!
  *  @brief Value of the progress indicator.
  *  @discussion The progress indicator will replace the subtitle text field, when a value is first set. To re-add the subtitle text use method setDetailText:.
  *  @param progress A double value between 0.0 and 1.0.
