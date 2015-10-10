@@ -59,6 +59,7 @@ int const kLabelTag = 101;
 
 - (void)addItemsDraggedToDock:(NSArray *)items {
     NSMutableArray *validItems = [NSMutableArray array];
+    __block BOOL failed = NO;
     [items enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         BOOL isDir;
         // Check if the dropped file is a directory
@@ -68,11 +69,18 @@ int const kLabelTag = 101;
             // Check if the dragged item is already in the archiveItems array.
             if (item != nil && ![self dropView:nil isItemInList:[obj description]]) {
                 [validItems addObject:item];
+            } else {
+                failed = YES;
             }
         }
     }];
     if ([validItems count]) {
         [self dropView:nil didReceiveFiles:validItems];
+    }
+
+    if (failed) {
+        // Bouncing icon does not work if the application is in focus.
+        [[NSApplication sharedApplication] requestUserAttention:NSInformationalRequest];
     }
 }
 

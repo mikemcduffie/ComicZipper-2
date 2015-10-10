@@ -19,11 +19,11 @@
                 <outlet property="textFieldNotify" destination="62T-gE-d1D" id="j3h-iR-Mdp"/>
                 <outlet property="textFieldSoundAlert" destination="wpD-9G-l6D" id="aNZ-s2-57n"/>
                 <outlet property="toolbarItemAdvanced" destination="mAf-nc-5zy" id="BZE-xM-Yzq"/>
-                <outlet property="toolbarItemAlerts" destination="9SS-C7-pJq" id="ZHR-w8-EJO"/>
+                <outlet property="toolbarItemFilters" destination="9SS-C7-pJq" id="PKs-zk-ZX8"/>
                 <outlet property="toolbarItemGeneral" destination="83t-md-02k" id="Xcn-26-fNd"/>
                 <outlet property="viewAdvanced" destination="0sH-3C-aBA" id="OSJ-OY-fOa"/>
-                <outlet property="viewAlerts" destination="GDn-Rs-Uq1" id="F89-e0-CPF"/>
-                <outlet property="viewGeneral" destination="841-Cv-ezJ" id="kVb-ny-Gns"/>
+                <outlet property="viewFilters" destination="841-Cv-ezJ" id="LPB-zS-DIP"/>
+                <outlet property="viewGeneral" destination="GDn-Rs-Uq1" id="2my-hh-a0M"/>
                 <outlet property="window" destination="F0z-JX-Cv5" id="gIp-Ho-8D9"/>
             </connections>
         </customObject>
@@ -42,17 +42,17 @@
             </view>
             <toolbar key="toolbar" implicitIdentifier="D5E0F902-40B8-4568-A15F-E29AC9D11864" autosavesConfiguration="NO" allowsUserCustomization="NO" displayMode="iconAndLabel" sizeMode="small" id="4ZD-FY-AMY">
                 <allowedToolbarItems>
-                    <toolbarItem implicitItemIdentifier="DC029A0E-AC33-4919-A8EF-1267FA80C5C7" explicitItemIdentifier="NSToolbarShowGeneralsItem" label="General" paletteLabel="General" tag="-1" image="NSPreferencesGeneral" selectable="YES" id="83t-md-02k">
+                    <toolbarItem implicitItemIdentifier="DC029A0E-AC33-4919-A8EF-1267FA80C5C7" explicitItemIdentifier="NSToolbarShowGeneralsItem" label="General" paletteLabel="General" tag="-1" image="PreferencesGeneralAlt" selectable="YES" id="83t-md-02k">
                         <connections>
                             <action selector="switchView:" target="-2" id="NOG-67-CBf"/>
                         </connections>
                     </toolbarItem>
-                    <toolbarItem implicitItemIdentifier="08BA412D-C5A0-45F5-8D93-972B8839A15D" explicitItemIdentifier="NSToolbarShowFiltersItem" label="Alerts" paletteLabel="Alerts" tag="-1" image="notification" selectable="YES" id="9SS-C7-pJq">
+                    <toolbarItem implicitItemIdentifier="08BA412D-C5A0-45F5-8D93-972B8839A15D" explicitItemIdentifier="NSToolbarShowFiltersItem" label="Filters" paletteLabel="Filters" tag="-1" image="PreferencesExcludeFiles" selectable="YES" id="9SS-C7-pJq">
                         <connections>
                             <action selector="switchView:" target="-2" id="9J4-aV-KcH"/>
                         </connections>
                     </toolbarItem>
-                    <toolbarItem implicitItemIdentifier="E71DF189-8E28-4270-AF16-DACDD3036193" explicitItemIdentifier="NSToolbarAdvancedItem" label="Advanced" paletteLabel="Advanced" tag="-1" image="NSAdvanced" selectable="YES" id="mAf-nc-5zy">
+                    <toolbarItem implicitItemIdentifier="E71DF189-8E28-4270-AF16-DACDD3036193" explicitItemIdentifier="NSToolbarAdvancedItem" label="Advanced" paletteLabel="Advanced" tag="-1" image="PreferncesAdvanced" selectable="YES" id="mAf-nc-5zy">
                         <connections>
                             <action selector="switchView:" target="-2" id="QcT-oX-CPM"/>
                         </connections>
@@ -329,7 +329,7 @@
                                 </buttonCell>
                             </button>
                             <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="80f-Pq-q9t">
-                                <rect key="frame" x="19" y="77" width="219" height="26"/>
+                                <rect key="frame" x="19" y="71" width="219" height="36"/>
                                 <animations/>
                                 <buttonCell key="cell" type="radio" title="Compress as .cbz (zip)" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="f7z-Tg-hO5">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -400,9 +400,9 @@
     </objects>
     <resources>
         <image name="NSAddTemplate" width="11" height="11"/>
-        <image name="NSAdvanced" width="32" height="32"/>
-        <image name="NSPreferencesGeneral" width="32" height="32"/>
         <image name="NSRemoveTemplate" width="11" height="11"/>
-        <image name="notification" width="128" height="126"/>
+        <image name="PreferencesExcludeFiles" width="32" height="32"/>
+        <image name="PreferencesGeneralAlt" width="33" height="33"/>
+        <image name="PreferncesAdvanced" width="16" height="16"/>
     </resources>
 </document>

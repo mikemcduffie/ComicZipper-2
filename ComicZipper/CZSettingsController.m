@@ -12,10 +12,10 @@
 @interface CZSettingsController () <NSTableViewDelegate, NSTableViewDataSource, NSTextFieldDelegate>
 
 @property (strong) IBOutlet NSView *viewGeneral;
-@property (strong) IBOutlet NSView *viewAlerts;
+@property (strong) IBOutlet NSView *viewFilters;
 @property (strong) IBOutlet NSView *viewAdvanced;
 @property (strong) IBOutlet NSToolbarItem *toolbarItemGeneral;
-@property (strong) IBOutlet NSToolbarItem *toolbarItemAlerts;
+@property (strong) IBOutlet NSToolbarItem *toolbarItemFilters;
 @property (strong) IBOutlet NSToolbarItem *toolbarItemAdvanced;
 @property (strong) IBOutlet NSButton *checkBoxToggleNotification;
 @property (strong) IBOutlet NSButton *checkBoxDelete;
@@ -92,8 +92,8 @@ const int kTableCellViewHeight = 20;
     NSView *viewToReplace = [[view subviews] firstObject];
     if ([sender isEqualTo:[self toolbarItemGeneral]]) {
         [view replaceSubview:viewToReplace with:[self viewGeneral]];
-    } else if ([sender isEqualTo:[self toolbarItemAlerts]]) {
-        [view replaceSubview:viewToReplace with:[self viewAlerts]];
+    } else if ([sender isEqualTo:[self toolbarItemFilters]]) {
+        [view replaceSubview:viewToReplace with:[self viewFilters]];
     } else {
         [view replaceSubview:viewToReplace with:[self viewAdvanced]];
     }

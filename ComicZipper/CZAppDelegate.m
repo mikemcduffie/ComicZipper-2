@@ -15,11 +15,35 @@
 
 @property (strong) CZMainController *mainController;
 @property (strong) CZSettingsController *settingsController;
+@property (strong) NSWindowController *aboutController;
 @property (nonatomic) NSMutableDictionary *applicationSettings;
 
 @end
 
 @implementation CZAppDelegate
+
+- (NSString *)bundleVersionNumber {
+    NSString *versionShort = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+    NSString *versionBuild = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
+    return [NSString stringWithFormat:@"Version %@ (%@)", versionShort, versionBuild];
+}
+
+- (NSString *)bundleApplicationName {
+    return [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"];
+}
+
+- (void)launchMainController {
+    if ([self mainController] == nil) {
+        CZComicZipper *comicZipper = [[CZComicZipper alloc] init];
+        CZMainController *mainController = [[CZMainController alloc] initWithWindowNibName:@"Main"
+                                                                               ComicZipper:comicZipper
+                                                                          applicationState:kAppStateNoItemDropped
+                                                                       applicationSettings:[[self applicationSettings] copy]];
+        [mainController showWindow:nil];
+        [[mainController window] makeKeyAndOrderFront:nil];
+        [self setMainController:mainController];
+    }
+}
 
 /*!
  *  @brief Sets up the necessary path strings.
@@ -89,7 +113,8 @@
  */
 - (void)saveApplicationSettings {
     NSRect frame = [[[self mainController] window] frame];
-    [[self applicationSettings] setObject:NSStringFromRect(frame) forKey:kidentifierForSettingsWindowState];
+    [[self applicationSettings] setObject:NSStringFromRect(frame)
+                                   forKey:kidentifierForSettingsWindowState];
     [[self applicationSettings] writeToFile:kApplicationSettingsPath
                                  atomically:YES];
 }
@@ -98,7 +123,10 @@
     [[self mainController] updateApplicationSettings:[self applicationSettings]];
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context {
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary<NSString *,id> *)change
+                       context:(void *)context {
     [[self mainController] updateApplicationSettings:[self applicationSettings]];
 }
 
@@ -118,17 +146,12 @@
     [[self settingsController] showWindow:nil];
 }
 
-- (void)launchMainController {
-    if ([self mainController] == nil) {
-        CZComicZipper *comicZipper = [[CZComicZipper alloc] init];
-        CZMainController *mainController = [[CZMainController alloc] initWithWindowNibName:@"Main"
-                                                                               ComicZipper:comicZipper
-                                                                          applicationState:kAppStateNoItemDropped
-                                                                       applicationSettings:[[self applicationSettings] copy]];
-        [mainController showWindow:nil];
-        [[mainController window] makeKeyAndOrderFront:nil];
-        [self setMainController:mainController];
-    }
+- (IBAction)openAbout:(id)sender {
+    NSWindowController *aboutWindow = [[NSWindowController alloc] initWithWindowNibName:@"About"
+                                                                                  owner:self];
+    [aboutWindow showWindow:nil];
+    [[aboutWindow window] makeKeyAndOrderFront:nil];
+    [self setAboutController:aboutWindow];
 }
 
 #pragma mark DELEGATE METHODS

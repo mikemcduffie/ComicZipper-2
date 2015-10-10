@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6A2B07821BC85E19009D3953 /* About.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A2B07811BC85E19009D3953 /* About.xib */; settings = {ASSET_TAGS = (); }; };
 		6A36DBFB1BBEF08600202AC5 /* Cartfile in Resources */ = {isa = PBXBuildFile; fileRef = 6A36DBFA1BBEF08600202AC5 /* Cartfile */; settings = {ASSET_TAGS = (); }; };
 		6A36DC031BBEF4AA00202AC5 /* ZipUtilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A36DC021BBEF4AA00202AC5 /* ZipUtilities.framework */; };
 		6A36DC041BBEF4AA00202AC5 /* ZipUtilities.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6A36DC021BBEF4AA00202AC5 /* ZipUtilities.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -16,7 +17,6 @@
 		6A5988C61BBB1B4D00932A08 /* CZScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A5988C51BBB1B4D00932A08 /* CZScrollView.m */; settings = {ASSET_TAGS = (); }; };
 		6A5988C91BBB2A1A00932A08 /* CZComicZipper.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A5988C81BBB2A1A00932A08 /* CZComicZipper.m */; settings = {ASSET_TAGS = (); }; };
 		6A5988CC1BBB2C9E00932A08 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A5988CB1BBB2C9E00932A08 /* Constants.m */; settings = {ASSET_TAGS = (); }; };
-		6A62FA381BC8141E00B24D7A /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 6A62FA371BC8141E00B24D7A /* Credits.rtf */; settings = {ASSET_TAGS = (); }; };
 		6A6CB02D1BB8119800D39E5D /* CZAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A6CB02C1BB8119800D39E5D /* CZAppDelegate.m */; };
 		6A6CB02F1BB8119800D39E5D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A6CB02E1BB8119800D39E5D /* main.m */; };
 		6A6CB0311BB8119800D39E5D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6A6CB0301BB8119800D39E5D /* Images.xcassets */; };
@@ -59,6 +59,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		6A2B07811BC85E19009D3953 /* About.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = About.xib; sourceTree = "<group>"; };
 		6A36DBFA1BBEF08600202AC5 /* Cartfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
 		6A36DC021BBEF4AA00202AC5 /* ZipUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ZipUtilities.framework; path = ComicZipper/Carthage/Build/Mac/ZipUtilities.framework; sourceTree = "<group>"; };
 		6A51C8631BC130130055DA30 /* CZTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZTextField.h; sourceTree = "<group>"; };
@@ -73,7 +74,6 @@
 		6A5988CA1BBB2BD300932A08 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		6A5988CB1BBB2C9E00932A08 /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 		6A5988CD1BBB383000932A08 /* CZPrefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CZPrefix.pch; sourceTree = "<group>"; };
-		6A62FA371BC8141E00B24D7A /* Credits.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 		6A6CB0261BB8119800D39E5D /* ComicZipper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ComicZipper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A6CB02A1BB8119800D39E5D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6A6CB02B1BB8119800D39E5D /* CZAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CZAppDelegate.h; sourceTree = "<group>"; };
@@ -173,6 +173,7 @@
 				6A8A2A0E1BC523EC00BED381 /* CZCompressRequest.m */,
 				6A9341811BBC7DCC00EF2FAC /* Main.xib */,
 				6A51C8681BC1A9610055DA30 /* Settings.xib */,
+				6A2B07811BC85E19009D3953 /* About.xib */,
 				6A9341841BBC803000EF2FAC /* MainMenu.xib */,
 				6A6CB0301BB8119800D39E5D /* Images.xcassets */,
 				6A6CB0291BB8119800D39E5D /* Supporting Files */,
@@ -190,7 +191,6 @@
 				6A6CB02A1BB8119800D39E5D /* Info.plist */,
 				6A9A010F1BC2AD6A002B7A8B /* DefaultPreferences.plist */,
 				6A36DBFA1BBEF08600202AC5 /* Cartfile */,
-				6A62FA371BC8141E00B24D7A /* Credits.rtf */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -300,7 +300,7 @@
 				6A36DBFB1BBEF08600202AC5 /* Cartfile in Resources */,
 				6A51C86A1BC1A9610055DA30 /* Settings.xib in Resources */,
 				6A9341851BBC803000EF2FAC /* MainMenu.xib in Resources */,
-				6A62FA381BC8141E00B24D7A /* Credits.rtf in Resources */,
+				6A2B07821BC85E19009D3953 /* About.xib in Resources */,
 				6A9A01101BC2AD6A002B7A8B /* DefaultPreferences.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
