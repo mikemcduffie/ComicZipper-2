@@ -191,7 +191,7 @@ int const kLabelTag = 101;
             if ([self numberOfItemsToCompress]) {
                 [self setNumberOfItemsToCompress:[self numberOfItemsToCompress]-[indexes count]];
                 NSInteger count = [self numberOfItemsToCompress];
-                [self updateLabelForTableView:[NSString stringWithFormat:@"%li file(s) to compress", count]];                
+                [self updateLabelForTableView:[NSString stringWithFormat:@"%li item(s) to compress", count]];                
             }
         } else {
             [self setApplicationState:kAppStateNoItemDropped];
@@ -262,7 +262,7 @@ int const kLabelTag = 101;
     // When the last row is added, the top label should be updated and the compression, if set up that way, start automatically.
     if ([self numberOfItemsToCompress] == row+1) {
         NSInteger count = [self numberOfItemsToCompress];
-        [self updateLabelForTableView:[NSString stringWithFormat:@"%li file(s) to compress", count]];
+        [self updateLabelForTableView:[NSString stringWithFormat:@"%li item(s) to compress", count]];
         if ([self shouldAutoStartCompression]) {
             [self compressButton:[self compressButton]];
         } else {
@@ -332,7 +332,7 @@ didFinishItemAtIndex:(NSUInteger)index {
 
 - (void)compressButton:(id)sender {
     [sender setEnabled:NO];
-    NSString *label = [NSString stringWithFormat:@"0 out of %li file(s) compressed...", [self numberOfItemsToCompress]];
+    NSString *label = [NSString stringWithFormat:@"0 out of %li item(s) compressed...", [self numberOfItemsToCompress]];
     [self updateLabelForTableView:label];
     // Add the ignored files before compressing
     NSArray *ignoredFiles = [self shouldIgnoreFiles];
@@ -352,7 +352,7 @@ didFinishItemAtIndex:(NSUInteger)index {
     NSInteger readyCount = [self numberOfItemsCompressed];
     NSString *labelCount;
     if (readyCount == totalCount) {
-        labelCount = [NSString stringWithFormat:@"%li file(s) compressed!", readyCount];
+        labelCount = [NSString stringWithFormat:@"%li item(s) compressed!", readyCount];
         [self resetCount];
         if ([[NSApplication sharedApplication] isActive]) {
             if ([self shouldPlaySound]) {
@@ -362,7 +362,7 @@ didFinishItemAtIndex:(NSUInteger)index {
             [self notifyUser:labelCount];
         }
     } else {
-        labelCount = [NSString stringWithFormat:@"%li of %li file(s) compressed...", readyCount, totalCount];
+        labelCount = [NSString stringWithFormat:@"%li of %li item(s) compressed...", readyCount, totalCount];
     }
     [self updateBadgeLabel];
     [self updateLabelForTableView:labelCount];
