@@ -14,8 +14,10 @@
 #import "CZDropItem.h"
 #import "CZTableCellView.h"
 #import "CZTextField.h"
+#import <QuickLook/QuickLook.h>
+#import <Quartz/Quartz.h>
 
-@interface CZMainController () <NSWindowDelegate, CZComicZipperDelegate, CZDropViewDelegate, CZTableViewDelegate, NSTableViewDataSource>
+@interface CZMainController () <NSWindowDelegate, CZComicZipperDelegate, CZDropViewDelegate, CZTableViewDelegate, NSTableViewDataSource, QLPreviewPanelDelegate, QLPreviewPanelDataSource>
 
 @property (nonatomic) int applicationState;
 @property (strong) CZComicZipper *comicZipper;
@@ -27,7 +29,6 @@
 @property (nonatomic) long numberOfItemsToCompress, numberOfItemsCompressed;
 @property (nonatomic) NSDictionary *applicationSettings;
 @property (strong) IBOutlet NSImageView *imageView;
-
 
 @end
 
@@ -201,6 +202,8 @@ int const kLabelTag = 101;
         NSRange range = NSMakeRange(0, [[self tableView] numberOfRows]);
         NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:range];
         [[self tableView] selectRowIndexes:indexSet byExtendingSelection:NO];
+    } else if (keyCode == 49) {
+        [[QLPreviewPanel sharedPreviewPanel] orderFront:nil];
     }
 }
 
@@ -227,7 +230,7 @@ int const kLabelTag = 101;
     CZDropItem *item = [[self comicZipper] itemWithIndex:row];
     if ([[column identifier] isEqualToString:@"ColumnLeft"]) {
         if ([item isArchived]) {
-            NSImage *image = [self switchImageForItem:item];
+            NSImage *image = [self imageForItem:item];
             [cellView setImage:image];
         } else {
             [cellView setImage:[NSImage imageNamed:@"NSFolder"]];
@@ -297,6 +300,33 @@ didFinishItemAtIndex:(NSUInteger)index {
                                 columnIndexes:colIndexes];
     [self updateCount];
 
+}
+
+#pragma mark DELEGATE AND DATA SOURCE METHODS FOR QUICKLOOK
+
+- (BOOL)acceptsPreviewPanelControl:(QLPreviewPanel *)panel {
+    return YES;
+}
+
+- (void)beginPreviewPanelControl:(QLPreviewPanel *)panel {
+    [[QLPreviewPanel sharedPreviewPanel] setDelegate:self];
+    [[QLPreviewPanel sharedPreviewPanel] setDataSource:self];
+}
+
+- (void)endPreviewPanelControl:(QLPreviewPanel *)panel {
+    [[QLPreviewPanel sharedPreviewPanel] setDelegate:nil];
+    [[QLPreviewPanel sharedPreviewPanel] setDataSource:nil];
+}
+
+- (NSInteger)numberOfPreviewItemsInPreviewPanel:(QLPreviewPanel *)panel {
+    return [[self comicZipper] countArchived];
+}
+
+- (id<QLPreviewItem>)previewPanel:(QLPreviewPanel *)panel previewItemAtIndex:(NSInteger)index {
+    CZDropItem *item = [[self comicZipper] itemWithIndex:index];
+    NSURL *url = [self URLToImageForItem:item];
+    [item setPreviewItemURL:url];
+    return [[self comicZipper] itemWithIndex:index];
 }
 
 #pragma mark USER INTERACTION METHODS
@@ -605,7 +635,7 @@ didFinishItemAtIndex:(NSUInteger)index {
     [[NSSound soundNamed:kDefaultNotifySoundName] play];
 }
 
-- (NSImage *)switchImageForItem:(CZDropItem *)item {
+- (NSURL *)URLToImageForItem:(CZDropItem *)item {
     // Check first if the item has a cached image stored away. It'll otherwise retrieve and store it in the cache directory.
     NSString *cachedFilePath = [NSString stringWithFormat:@"%@.jpg", [item temporaryPath]];
     NSData *data = [NSData dataWithContentsOfFile:cachedFilePath];
@@ -617,8 +647,13 @@ didFinishItemAtIndex:(NSUInteger)index {
         data = [NSData dataWithContentsOfFile:filePath];
         [data writeToFile:cachedFilePath atomically:YES];
     }
-    
-    return [[NSImage alloc] initWithData:data];
+
+    return [NSURL fileURLWithPath:cachedFilePath];
+}
+
+- (NSImage *)imageForItem:(CZDropItem *)item {
+    NSURL *imageURL = [self URLToImageForItem:item];
+    return [[NSImage alloc] initWithContentsOfURL:imageURL];
 }
 
 - (NSString *)retrieveImageFromItem:(CZDropItem *)item {
@@ -634,6 +669,7 @@ didFinishItemAtIndex:(NSUInteger)index {
             break;
         }
     }
+
     if (!imagePath) {
         return nil;
     }

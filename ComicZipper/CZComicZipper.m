@@ -9,6 +9,8 @@
 #import "CZComicZipper.h"
 #import "CZDropItem.h"
 #import "CZCompressRequest.h"
+#import <Quartz/Quartz.h>
+#import <QuickLook/QuickLook.h>
 
 @interface CZComicZipper () <NOZCompressDelegate>
 
@@ -76,6 +78,13 @@
  */
 - (NSInteger)count {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isArchived == NO"];
+    return [[[self archiveItems] filteredArrayUsingPredicate:predicate] count];
+}
+/*!
+ *  @brief Returns the number of items archived in the list.
+ */
+- (NSInteger)countArchived {
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isArchived == YES"];
     return [[[self archiveItems] filteredArrayUsingPredicate:predicate] count];
 }
 /*!
