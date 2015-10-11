@@ -86,15 +86,15 @@ int const kLabelTag = 101;
 }
 
 - (void)windowDidLoad {
+    [[self window] setTitleVisibility:NSWindowTitleHidden];
+    [[self window] setBackgroundColor:[NSColor controlHighlightColor]];
+    [[self window] setDelegate:self];
     // Load the last saved state of application window
     NSRect frame = NSRectFromString([[self applicationSettings] objectForKey:kidentifierForSettingsWindowState]);
     if (!NSIsEmptyRect(frame)) {
         [[self window] setFrame:frame
                         display:YES];
     }
-    [[self window] setDelegate:self];
-    [[self window] setTitleVisibility:NSWindowTitleHidden];
-    [[self window] setBackgroundColor:[NSColor controlHighlightColor]];
     [super windowDidLoad];
     [[self dropView] setDelegate:self];
     [[self dropView] setDragMode:YES];
@@ -688,7 +688,11 @@ didFinishItemAtIndex:(NSUInteger)index {
 #pragma mark PREFERENCES METHODS
 
 - (NSArray *)shouldIgnoreFiles {
-    return [[[self applicationSettings] objectForKey:kIdentifierForSettingsExcludedFiles] copy];
+    NSMutableArray *ignoredFiles = [[[self applicationSettings] objectForKey:kIdentifierForSettingsExcludedFiles] mutableCopy];
+    if ([[[self applicationSettings] objectForKey:kIdentifierForSettingsExcludeHidden] boolValue]) {
+        [ignoredFiles addObjectsFromArray:[Constants kHiddenFiles]];
+    }
+    return ignoredFiles;
 }
 
 - (BOOL)shouldDeleteFolder {
@@ -705,10 +709,6 @@ didFinishItemAtIndex:(NSUInteger)index {
 
 - (BOOL)shouldPlaySound {
     return [[[self applicationSettings] objectForKey:kIdentifierForSettingsAlertSound] boolValue];
-}
-
-- (BOOL)shouldReplaceIcon {
-    return [[[self applicationSettings] objectForKeyedSubscript:kIdentifierForSettingsReplaceIcon] boolValue];
 }
 
 - (BOOL)shouldAutoStartCompression {

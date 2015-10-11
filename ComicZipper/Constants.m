@@ -30,11 +30,11 @@ NSString *const kStatusIconSuccess = @"statusSuccess";
 NSString *const kStatusIconCloseNormal = @"statusCloseNormal";
 NSString *const kStatusIconCloseHover = @"statusCloseHover";
 NSString *const kIdentifierForSettingsDeleteFolders = @"CZDeleteFolders";
+NSString *const kIdentifierForSettingsExcludeHidden = @"CZExcludeHidden";
 NSString *const kIdentifierForSettingsExcludedFiles = @"CZExcludedFiles";
 NSString *const kIdentifierForSettingsUserNotification = @"CZUserNotify";
 NSString *const kIdentifierForSettingsDockBadge = @"CZBadgeDockIcon";
 NSString *const kIdentifierForSettingsAlertSound = @"CZAlertSound";
-NSString *const kIdentifierForSettingsReplaceIcon = @"CZChangeIcon";
 NSString *const kIdentifierForSettingsAutoStart = @"CZAutoStart";
 NSString *const kidentifierForSettingsWindowState = @"CZWindowState";
 NSString *const kApplicationSettingsFileName = @"CZSettings.plist";
@@ -42,5 +42,9 @@ NSString *kApplicationSupportPath;
 NSString *kApplicationCachePath;
 NSString *kApplicationSettingsPath;
 NSArray *kValidFileExtensions;
+
++ (NSArray *)kHiddenFiles {
+    return @[@"^\\.\\w+", @"thumbs.db$", @"__MACOS"];
+}
 
 @end

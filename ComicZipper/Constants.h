@@ -86,9 +86,13 @@ extern NSString *const kStatusIconCloseNormal;
  */
 extern NSString *const kStatusIconCloseHover;
 /*!
- *  @brief Identifier for the delete folders settings option.
+ *  @brief Delete folders after compression has finished.
  */
 extern NSString *const kIdentifierForSettingsDeleteFolders;
+/*!
+ *  @brief Exclude hidden files and other meta data.
+ */
+extern NSString *const kIdentifierForSettingsExcludeHidden;
 /*!
  *  @brief Identifier for the file exclusion settings option.
  */
@@ -105,10 +109,6 @@ extern NSString *const kIdentifierForSettingsDockBadge;
  *  @brief Identifier for the alert sound settings option.
  */
 extern NSString *const kIdentifierForSettingsAlertSound;
-/*!
- *  @brief Identifier for the replace icon settings option.
- */
-extern NSString *const kIdentifierForSettingsReplaceIcon;
 /*!
  *  @brief Identifier for the auto start settings option.
  */
@@ -133,7 +133,13 @@ extern NSString *kApplicationCachePath;
  *  @brief Global variable pointing to the application's settings file.
  */
 extern NSString *kApplicationSettingsPath;
-
+/*!
+ *  @brief Global variable containing the valid file extensions.
+ */
 extern NSArray *kValidFileExtensions;
+/*!
+ *  @brief Regular expression patterns for hidden files and meta files.
+ */
++ (NSArray *)kHiddenFiles;
 
 @end
