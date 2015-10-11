@@ -22,11 +22,12 @@
 @property (strong) IBOutlet NSButton *checkBoxNotify;
 @property (strong) IBOutlet NSButton *checkBoxBadge;
 @property (strong) IBOutlet NSButton *checkBoxSoundAlert;
-@property (strong) IBOutlet NSButton *checkBoxReplaceIcon;
 @property (strong) IBOutlet NSButton *checkBoxAutoStart;
+@property (strong) IBOutlet NSButton *buttonRemoveExclusion;
+@property (strong) IBOutlet NSButton *checkBoxExcludeHiddenFiles;
 @property (strong) IBOutlet NSTextField *textFieldNotify;
 @property (strong) IBOutlet NSTextField *textFieldSoundAlert;
-@property (strong) IBOutlet NSButton *buttonRemoveExclusion;
+
 @property (strong) IBOutlet NSTableView *tableViewExclusion;
 @property (nonatomic) NSMutableDictionary *settings;
 @property (nonatomic) NSMutableArray *excludedFiles;
@@ -66,8 +67,8 @@ const int kTableCellViewHeight = 20;
     [self setCheckBox:@"checkBoxNotify" identifierAndStateTo:kIdentifierForSettingsUserNotification];
     [self setCheckBox:@"checkBoxBadge" identifierAndStateTo:kIdentifierForSettingsDockBadge];
     [self setCheckBox:@"checkBoxSoundAlert" identifierAndStateTo:kIdentifierForSettingsAlertSound];
-    [self setCheckBox:@"checkBoxReplaceIcon" identifierAndStateTo:kIdentifierForSettingsReplaceIcon];
     [self setCheckBox:@"checkBoxAutoStart" identifierAndStateTo:kIdentifierForSettingsAutoStart];
+    [self setCheckBox:@"checkBoxExcludeHiddenFiles" identifierAndStateTo:kIdentifierForSettingsExcludeHidden];
     [[[self toolbarItemGeneral] toolbar] setSelectedItemIdentifier:[[self toolbarItemGeneral] itemIdentifier]];
     
     if ([[self checkBoxSoundAlert] state] == NSOnState || [[self checkBoxNotify] state] == NSOnState) {
@@ -144,6 +145,7 @@ const int kTableCellViewHeight = 20;
     [[self tableViewExclusion] removeRowsAtIndexes:indexes
                                      withAnimation:NO];
     NSArray *objectsToRemove = [[self excludedFiles] objectsAtIndexes:indexes];
+    [[self excludedFiles] removeObjectsAtIndexes:indexes];
     [[[self settings] objectForKey:kIdentifierForSettingsExcludedFiles] removeObjectsInArray:objectsToRemove];
     [[self tableViewExclusion] reloadData];
 }

@@ -18,7 +18,7 @@ static NSArray<NOZFileZipEntry *> * __nonnull NOZEntriesFromDirectory(NSString *
 {
     for (NOZFileZipEntry *entry in NOZEntriesFromDirectory(directoryPath)) {
         // Quick fix to exclude files added to the ignore list or file with zero length.
-        if (![self doesFileMatchIgnoreList:entry.name] && [self doesFileHaveLength:entry.name]) {
+        if ([self shouldIncludeFile:entry]) {
             if (block) {
                 NOZCompressionMethod method = NOZCompressionMethodDeflate;
                 NOZCompressionLevel level = NOZCompressionLevelDefault;
@@ -32,15 +32,26 @@ static NSArray<NOZFileZipEntry *> * __nonnull NOZEntriesFromDirectory(NSString *
     }
 }
 
-- (BOOL)doesFileMatchIgnoreList:(NSString *)filePath {
+- (BOOL)shouldIncludeFile:(NOZFileZipEntry *)entry {
+    if ([self doesFileHaveLength:[entry name]] == NO) {
+        return NO;
+    }
+    if ([self doesFileMatchIgnoreList:[[entry name] lastPathComponent]]) {
+        return NO;
+    }
+    
+    return YES;
+}
+
+- (BOOL)doesFileMatchIgnoreList:(NSString *)fileName {
     // Check the file name against the items in the ignorelist array.
-    NSRange filePathRange = NSMakeRange(0, [filePath length]);
+    NSRange filePathRange = NSMakeRange(0, [fileName length]);
     NSUInteger indexOfObj = [[self ignoreFiles] indexOfObjectPassingTest:
                             ^BOOL(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                                 NSRegularExpression *regExp = [NSRegularExpression regularExpressionWithPattern:obj
                                                                                                         options:0
                                                                                                           error:0];
-                                NSUInteger matches = [regExp numberOfMatchesInString:filePath
+                                NSUInteger matches = [regExp numberOfMatchesInString:fileName
                                                                              options:0
                                                                                range:filePathRange];
                                 if (matches > 0) {
