@@ -14,7 +14,11 @@
                   stringValue:(NSString *)stringValue
                      fontName:(NSString *)fontName
                      fontSize:(float)fontSize;
-
++ (instancetype)initWithFrame:(NSRect)frame
+                  stringValue:(NSString *)stringValue
+                     fontName:(NSString *)fontName
+                     fontSize:(float)fontSize
+                    fontStyle:(NSFontTraitMask)fontStyle;
 - (instancetype)initWithFrame:(NSRect)frame
                   stringValue:(NSString *)stringValue
                      fontName:(NSString *)fontName

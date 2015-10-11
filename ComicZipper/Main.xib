@@ -6,6 +6,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="CZMainController">
             <connections>
+                <outlet property="dropView" destination="3x7-LV-4ti" id="XGt-Q2-JPQ"/>
                 <outlet property="imageView" destination="Tk4-cA-RkM" id="xTT-eq-EPS"/>
                 <outlet property="window" destination="F0z-JX-Cv5" id="ngW-S6-C7U"/>
             </connections>
@@ -41,19 +42,31 @@
                         <animations/>
                         <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="Drop folders here" id="eH0-Vn-6Sm">
                             <font key="font" size="26" name="HelveticaNeue-Light"/>
-                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="textColor" red="0.046077388743455461" green="0.046077388743455461" blue="0.046077388743455461" alpha="1" colorSpace="calibratedRGB"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
+                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="3x7-LV-4ti" customClass="CZDropView">
+                        <rect key="frame" x="0.0" y="0.0" width="400" height="322"/>
+                        <animations/>
+                    </customView>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="3x7-LV-4ti" firstAttribute="top" secondItem="se5-gp-TjO" secondAttribute="top" id="0Ta-NV-ylE"/>
                     <constraint firstItem="XsK-PG-3qi" firstAttribute="centerX" secondItem="Tk4-cA-RkM" secondAttribute="centerX" id="DvG-h2-Fna"/>
                     <constraint firstItem="Tk4-cA-RkM" firstAttribute="centerX" secondItem="se5-gp-TjO" secondAttribute="centerX" id="Lhc-bw-Ohb"/>
+                    <constraint firstAttribute="bottom" secondItem="3x7-LV-4ti" secondAttribute="bottom" id="OjN-Mm-aqY"/>
                     <constraint firstItem="Tk4-cA-RkM" firstAttribute="centerY" secondItem="se5-gp-TjO" secondAttribute="centerY" constant="-16.5" id="Y18-WU-f88"/>
+                    <constraint firstItem="3x7-LV-4ti" firstAttribute="centerX" secondItem="Tk4-cA-RkM" secondAttribute="centerX" id="acZ-qg-rvK"/>
                     <constraint firstItem="XsK-PG-3qi" firstAttribute="top" secondItem="Tk4-cA-RkM" secondAttribute="bottom" constant="12" id="apc-bY-B4I"/>
+                    <constraint firstItem="3x7-LV-4ti" firstAttribute="leading" secondItem="se5-gp-TjO" secondAttribute="leading" id="mVI-ih-tuq"/>
                 </constraints>
                 <animations/>
             </view>
+            <toolbar key="toolbar" implicitIdentifier="B920CF63-A5D4-46A3-9992-1F8FD8D8C4B9" autosavesConfiguration="NO" displayMode="iconAndLabel" sizeMode="regular" id="zQ5-rN-TdZ">
+                <allowedToolbarItems/>
+                <defaultToolbarItems/>
+            </toolbar>
             <connections>
                 <outlet property="delegate" destination="-2" id="0bl-1N-AYu"/>
             </connections>
