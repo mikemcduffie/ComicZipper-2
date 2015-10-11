@@ -21,7 +21,7 @@
 
 @property (nonatomic) int applicationState;
 @property (strong) CZComicZipper *comicZipper;
-@property (weak) CZDropView *dropView;
+@property (strong) IBOutlet CZDropView *dropView;
 @property (weak) CZScrollView *scrollView;
 @property (weak) CZTableView *tableView;
 @property (weak) NSButton *compressButton;
@@ -93,7 +93,11 @@ int const kLabelTag = 101;
                         display:YES];
     }
     [[self window] setDelegate:self];
+    [[self window] setTitleVisibility:NSWindowTitleHidden];
+    [[self window] setBackgroundColor:[NSColor controlHighlightColor]];
     [super windowDidLoad];
+    [[self dropView] setDelegate:self];
+    [[self dropView] setDragMode:YES];
     [self updateUI];
 }
 
@@ -106,10 +110,6 @@ int const kLabelTag = 101;
 }
 
 - (void)updateUI {
-    // The drop view should always be present.
-    if (![self dropView]) {
-        [self addDropView];
-    }
     if ([self applicationStateIs:kAppStateNoItemDropped]) {
         if ([self scrollView]) {
             [[self scrollView] removeFromSuperview];
@@ -375,30 +375,8 @@ didFinishItemAtIndex:(NSUInteger)index {
 
 #pragma mark USER INTERFACE METHODS
 
-- (void)addDropView {
-    CZDropView *dropView = [[CZDropView alloc] initWithFrame:[[[self window] contentView] frame]];
-    [dropView setDelegate:self];
-    [dropView setDragMode:YES];
-    [dropView setAutoresizesSubviews:YES];
-    [dropView setFocusRingType:NSFocusRingTypeExterior];
-    [[[self window] contentView] addSubview:dropView];
-    // CONSTRAINTS
-    [dropView setTranslatesAutoresizingMaskIntoConstraints:NO];
-    [self setConstraintWithItem:[[self window] contentView]
-                         toItem:dropView
-                 withAttributes:@[[NSNumber numberWithInt:NSLayoutAttributeLeading],
-                                  [NSNumber numberWithInt:NSLayoutAttributeTop],
-                                  [NSNumber numberWithInt:NSLayoutAttributeTrailing]]
-                    andConstant:0];
-    [self setConstraintWithItem:[[self window] contentView]
-                         toItem:dropView
-                  withAttribute:NSLayoutAttributeBottom
-                    andConstant:1];
-    [self setDropView:dropView];
-}
-
 - (void)addScrollView {
-    NSRect frame = NSMakeRect(self.dropView.frame.origin.x, self.dropView.frame.origin.y, self.dropView.frame.size.width-1, self.dropView.frame.size.height);
+    NSRect frame = NSMakeRect(self.dropView.frame.origin.x, self.dropView.frame.origin.y, self.dropView.frame.size.width, self.dropView.frame.size.height);
     CZScrollView *scrollView = [[CZScrollView alloc] initWithFrame:frame];
     [scrollView setDrawsBackground:NO];
     [scrollView setHasVerticalScroller:YES];
@@ -410,13 +388,16 @@ didFinishItemAtIndex:(NSUInteger)index {
     NSView *superView = [[self window] contentView];
     [self setConstraintWithItem:superView
                          toItem:scrollView
-                 withAttributes:@[[NSNumber numberWithInt:NSLayoutAttributeLeading],
-                                  [NSNumber numberWithInt:NSLayoutAttributeTrailing]]
-                    andConstant:0];
+                  withAttribute:NSLayoutAttributeLeading
+                    andConstant:1];
+    [self setConstraintWithItem:superView
+                         toItem:scrollView
+                  withAttribute:NSLayoutAttributeTrailing
+                    andConstant:-1];
     [self setConstraintWithItem:superView
                          toItem:scrollView
                   withAttribute:NSLayoutAttributeTop
-                    andConstant:-60];
+                    andConstant:-45];
     [self setConstraintWithItem:superView
                          toItem:scrollView
                   withAttribute:NSLayoutAttributeBottom
@@ -463,7 +444,7 @@ didFinishItemAtIndex:(NSUInteger)index {
     [button setBezelStyle:NSRoundedBezelStyle];
     [button setButtonType:NSMomentaryPushInButton];
     [button setTranslatesAutoresizingMaskIntoConstraints:NO];
-    [button setFont:[NSFont fontWithName:@"Lucida Grande"
+    [button setFont:[NSFont fontWithName:@"Helvetica"
                                     size:13.0]];
     [[self dropView] addSubview:button];
     [self setConstraintWithItem:[[self window] contentView]
@@ -476,10 +457,11 @@ didFinishItemAtIndex:(NSUInteger)index {
 
 - (void)addLabelForTableView {
     CGSize frameSize = self.window.contentView.frame.size;
-    CZTextField *label = [CZTextField initWithFrame:NSMakeRect(0, frameSize.height-40, frameSize.width, 30)
+    CZTextField *label = [CZTextField initWithFrame:NSMakeRect(0, frameSize.height, frameSize.width, 30)
                                         stringValue:@"Loading..."
-                                           fontName:@"Lucida Grande"
-                                           fontSize:15.0];
+                                           fontName:@"Helvetica"
+                                           fontSize:18.0
+                                          fontStyle:NSNarrowFontMask];
     [label setTextColor:[NSColor controlTextColor]];
     [label setTag:kLabelTag];
     [label setAlignment:NSTextAlignmentCenter];
@@ -488,7 +470,7 @@ didFinishItemAtIndex:(NSUInteger)index {
     [self setConstraintWithItem:[[self window] contentView]
                          toItem:label
                   withAttribute:NSLayoutAttributeTop
-                    andConstant:-25];
+                    andConstant:-10];
     [self setConstraintWithItem:[[self window] contentView]
                          toItem:label
                   withAttribute:NSLayoutAttributeCenterX

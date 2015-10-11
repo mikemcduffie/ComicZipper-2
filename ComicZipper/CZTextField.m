@@ -21,6 +21,28 @@
                               fontSize:fontSize];
 }
 
++ (instancetype)initWithFrame:(NSRect)frame
+                  stringValue:(NSString *)stringValue
+                     fontName:(NSString *)fontName
+                     fontSize:(float)fontSize
+                    fontStyle:(NSFontTraitMask)fontStyle {
+    CZTextField *textField = [self initWithFrame:frame
+                                     stringValue:stringValue
+                                        fontName:fontName
+                                        fontSize:fontSize];
+    
+    if (textField) {
+        NSFontManager *fontManager = [NSFontManager sharedFontManager];
+        NSFont *font = [fontManager fontWithFamily:fontName
+                                            traits:fontStyle
+                                            weight:0
+                                              size:fontSize];
+        [textField setFont:font];
+    }
+    
+    return textField;
+}
+
 - (instancetype)initWithFrame:(NSRect)frame
                   stringValue:(NSString *)stringValue
                      fontName:(NSString *)fontName

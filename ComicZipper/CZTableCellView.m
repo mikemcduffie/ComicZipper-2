@@ -77,7 +77,7 @@
     if (!_textFieldTitle) {
         _textFieldTitle = [CZTextField initWithFrame:NSMakeRect(0, 15, [self width], kSubviewNormalHeight)
                                          stringValue:@""
-                                            fontName:@"Lucida Grande Bold"
+                                            fontName:@"Helvetica"
                                             fontSize:13.0];
         [self addSubview:_textFieldTitle];
     }
@@ -90,7 +90,7 @@
         [self removeFromSuperview:&_progressIndicator];
         _textFieldDetail = [CZTextField initWithFrame:NSMakeRect(0, 0, [self width], kSubviewDetailheight)
                                           stringValue:@""
-                                             fontName:@"Lucida Grande"
+                                             fontName:@"Helvetica"
                                              fontSize:9.5];
         [self addSubview:_textFieldDetail];
     }
