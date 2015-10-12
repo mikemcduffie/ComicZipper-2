@@ -337,6 +337,8 @@ didFinishItemAtIndex:(NSUInteger)index {
     // Add the ignored files before compressing
     NSArray *ignoredFiles = [self shouldIgnoreFiles];
     [[self comicZipper] ignoreFiles:ignoredFiles];
+    [[self comicZipper] shouldIgnoreEmptyFiles:[self shouldIgnoreEmptyFiles]];
+    [[self comicZipper] shouldIgnoreEmptyFolders:[self shouldIgnoreEmptyFolders]];
     [[self comicZipper] setShouldDeleteFolder:[self shouldDeleteFolder]];
     [[self comicZipper] readyToCompress];
 }
@@ -690,9 +692,20 @@ didFinishItemAtIndex:(NSUInteger)index {
 - (NSArray *)shouldIgnoreFiles {
     NSMutableArray *ignoredFiles = [[[self applicationSettings] objectForKey:kIdentifierForSettingsExcludedFiles] mutableCopy];
     if ([[[self applicationSettings] objectForKey:kIdentifierForSettingsExcludeHidden] boolValue]) {
-        [ignoredFiles addObjectsFromArray:[Constants kHiddenFiles]];
+        [ignoredFiles addObjectsFromArray:[Constants kHiddenRegEx]];
+    }
+    if ([[[self applicationSettings] objectForKey:kIdentifierForSettingsExcludeThumbs] boolValue]) {
+        [ignoredFiles addObjectsFromArray:[Constants kThumbsRegEx]];
     }
     return ignoredFiles;
+}
+
+- (BOOL)shouldIgnoreEmptyFiles {
+    return [[[self applicationSettings] objectForKey:kIdentifierForSettingsExcludeEmptyFiles] boolValue];
+}
+
+- (BOOL)shouldIgnoreEmptyFolders {
+    return [[[self applicationSettings] objectForKey:kIdentifierForSettingsExcludeEmptyFolders] boolValue];
 }
 
 - (BOOL)shouldDeleteFolder {

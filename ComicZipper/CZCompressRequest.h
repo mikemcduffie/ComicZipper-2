@@ -11,5 +11,7 @@
 @interface CZCompressRequest : NOZCompressRequest
 
 @property (nonatomic) NSArray *ignoreFiles;
+@property (nonatomic) BOOL ignoreEmptyFiles;
+@property (nonatomic) BOOL ignoreEmptyFolders;
 
 @end

@@ -68,16 +68,28 @@ static NSArray<NOZFileZipEntry *> * __nonnull NOZEntriesFromDirectory(NSString *
     }
 }
 
-- (BOOL)doesFileHaveLength:(NSString *)fileName inDirectoryPath:(NSString *)directoryPath {
-    // Check if the file is not zero byte
-    NSString *filePath = [NSString stringWithFormat:@"%@/%@", directoryPath, fileName];
-    NSDictionary *fileAttributes = [[NSFileManager defaultManager] attributesOfItemAtPath:filePath
-                                                                                    error:nil];
-    if (fileAttributes && [fileAttributes fileSize] == 0) {
-        return NO;
-    } else {
-        return YES;
+- (BOOL)doesFileHaveLength:(NSString *)fileName
+           inDirectoryPath:(NSString *)directoryPath {
+    if ([self ignoreEmptyFiles] || [self ignoreEmptyFolders]) {
+        NSString *filePath = [NSString stringWithFormat:@"%@/%@", directoryPath, fileName];
+        NSDictionary *fileAttributes = [[NSFileManager defaultManager] attributesOfItemAtPath:filePath
+                                                                                        error:nil];
+        if ([fileAttributes fileType] == NSFileTypeDirectory) {
+            if ([self ignoreEmptyFolders] && [fileAttributes fileSize] == 0) {
+                return NO;
+            } else {
+                return YES;
+            }
+        } else {
+            if ([self ignoreEmptyFiles] && [fileAttributes fileSize] == 0) {
+                return NO;
+            } else {
+                return YES;
+            }
+        }
     }
+    
+    return YES;
 }
 
 @end

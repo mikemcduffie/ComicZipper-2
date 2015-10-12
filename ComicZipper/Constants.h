@@ -93,6 +93,10 @@ extern NSString *const kIdentifierForSettingsDeleteFolders;
  *  @brief Exclude hidden files and other meta data.
  */
 extern NSString *const kIdentifierForSettingsExcludeHidden;
+
+extern NSString *const kIdentifierForSettingsExcludeThumbs;
+extern NSString *const kIdentifierForSettingsExcludeEmptyFolders;
+extern NSString *const kIdentifierForSettingsExcludeEmptyFiles;
 /*!
  *  @brief Identifier for the file exclusion settings option.
  */
@@ -140,6 +144,8 @@ extern NSArray *kValidFileExtensions;
 /*!
  *  @brief Regular expression patterns for hidden files and meta files.
  */
-+ (NSArray *)kHiddenFiles;
++ (NSArray *)kHiddenRegEx;
+
++ (NSArray *)kThumbsRegEx;
 
 @end

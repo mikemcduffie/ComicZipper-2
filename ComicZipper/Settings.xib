@@ -10,9 +10,13 @@
                 <outlet property="checkBoxAutoStart" destination="5RI-FX-068" id="Gnn-0B-6SS"/>
                 <outlet property="checkBoxBadge" destination="uWm-wv-M50" id="5Tj-83-y9a"/>
                 <outlet property="checkBoxDelete" destination="HRd-eW-fEs" id="rE9-Fz-yus"/>
-                <outlet property="checkBoxExcludeHiddenFiles" destination="b5o-hN-RBK" id="pMQ-CM-dZe"/>
+                <outlet property="checkBoxExcludeEmptyFiles" destination="M5b-7d-B3V" id="R4s-Gz-NYb"/>
+                <outlet property="checkBoxExcludeEmptyFolders" destination="bdj-NB-DEr" id="9iA-wi-1eG"/>
+                <outlet property="checkBoxExcludeHiddenFiles" destination="JBd-7L-NNQ" id="GGE-TT-8jd"/>
+                <outlet property="checkBoxExcludeThumbs" destination="kt0-rX-AFe" id="XA7-X9-R6q"/>
                 <outlet property="checkBoxNotify" destination="hRb-Jp-uEF" id="FSG-vR-Fwu"/>
                 <outlet property="checkBoxSoundAlert" destination="p8M-Vx-a0b" id="kIz-eV-bE7"/>
+                <outlet property="checkBoxToggleExclusions" destination="b5o-hN-RBK" id="ga0-N2-oOa"/>
                 <outlet property="checkBoxToggleNotification" destination="zRa-bT-Esy" id="2U7-jh-zHi"/>
                 <outlet property="tableViewExclusion" destination="WLX-DZ-hkh" id="8Us-di-JFV"/>
                 <outlet property="textFieldNotify" destination="62T-gE-d1D" id="j3h-iR-Mdp"/>
@@ -32,7 +36,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="513" y="301" width="294" height="304"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
             <value key="minSize" type="size" width="294" height="304"/>
             <view key="contentView" id="se5-gp-TjO">
                 <rect key="frame" x="0.0" y="0.0" width="294" height="304"/>
@@ -104,17 +108,6 @@
                         <action selector="removeExclusion:" target="-2" id="flx-wR-Gqw"/>
                     </connections>
                 </button>
-                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="b5o-hN-RBK">
-                    <rect key="frame" x="18" y="255" width="258" height="60"/>
-                    <animations/>
-                    <buttonCell key="cell" type="check" title="Exclude nonstandard files and subfolders" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="y2O-Xp-dst">
-                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                        <font key="font" size="13" name="HelveticaNeue-Light"/>
-                    </buttonCell>
-                    <connections>
-                        <action selector="checkBoxClicked:" target="-2" id="SV3-Pl-hgd"/>
-                    </connections>
-                </button>
                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2BA-Oc-oBi">
                     <rect key="frame" x="18" y="127" width="256" height="57"/>
                     <animations/>
@@ -125,36 +118,48 @@
                     </textFieldCell>
                 </textField>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kt0-rX-AFe">
-                    <rect key="frame" x="36" y="253" width="138" height="18"/>
+                    <rect key="frame" x="38" y="253" width="236" height="18"/>
                     <animations/>
                     <buttonCell key="cell" type="check" title="Exclude thumbs.db" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="Zii-V8-MDt">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" size="12" name="HelveticaNeue-Light"/>
                     </buttonCell>
+                    <connections>
+                        <action selector="checkBoxClicked:" target="-2" id="05U-jD-elw"/>
+                    </connections>
                 </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JBd-7L-NNQ">
-                    <rect key="frame" x="36" y="232" width="215" height="19"/>
+                    <rect key="frame" x="38" y="232" width="238" height="19"/>
                     <animations/>
                     <buttonCell key="cell" type="check" title="Exclude hidden files and subfolders" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="agL-2Y-Jjt">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" size="12" name="HelveticaNeue-Light"/>
                     </buttonCell>
+                    <connections>
+                        <action selector="checkBoxClicked:" target="-2" id="LEn-2a-pZp"/>
+                    </connections>
                 </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bdj-NB-DEr">
-                    <rect key="frame" x="36" y="212" width="157" height="19"/>
+                    <rect key="frame" x="38" y="211" width="236" height="19"/>
                     <animations/>
                     <buttonCell key="cell" type="check" title="Exclude empty subfolders" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="G2O-Oz-YOc">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" size="12" name="HelveticaNeue-Light"/>
                     </buttonCell>
+                    <connections>
+                        <action selector="checkBoxClicked:" target="-2" id="FFc-Hv-BMu"/>
+                    </connections>
                 </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="M5b-7d-B3V">
-                    <rect key="frame" x="36" y="193" width="140" height="18"/>
+                    <rect key="frame" x="38" y="190" width="236" height="19"/>
                     <animations/>
                     <buttonCell key="cell" type="check" title="Exclude empty files" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="s0b-ME-3eJ">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" size="12" name="HelveticaNeue-Light"/>
                     </buttonCell>
+                    <connections>
+                        <action selector="checkBoxClicked:" target="-2" id="G2G-0V-9MS"/>
+                    </connections>
                 </button>
                 <scrollView fixedFrame="YES" autohidesScrollers="YES" horizontalLineScroll="22" horizontalPageScroll="10" verticalLineScroll="22" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vUo-Cr-F0Y">
                     <rect key="frame" x="20" y="34" width="254" height="112"/>
@@ -225,6 +230,14 @@
                         <animations/>
                     </scroller>
                 </scrollView>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="b5o-hN-RBK">
+                    <rect key="frame" x="18" y="268" width="258" height="32"/>
+                    <animations/>
+                    <buttonCell key="cell" type="check" title="Exclude non-standard files and subfolders" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="y2O-Xp-dst">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" size="13" name="HelveticaNeue-Light"/>
+                    </buttonCell>
+                </button>
             </subviews>
             <animations/>
             <point key="canvasLocation" x="177" y="693"/>
@@ -261,7 +274,7 @@
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uWm-wv-M50">
                     <rect key="frame" x="18" y="135" width="258" height="36"/>
                     <animations/>
-                    <buttonCell key="cell" type="check" title="Enable App Icon Notification Badge" bezelStyle="regularSquare" imagePosition="left" inset="2" id="s8e-kf-lzP">
+                    <buttonCell key="cell" type="check" title="Enable badge notifications" bezelStyle="regularSquare" imagePosition="left" inset="2" id="s8e-kf-lzP">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" size="13" name="HelveticaNeue-Light"/>
                     </buttonCell>
@@ -281,7 +294,7 @@
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="p8M-Vx-a0b">
                     <rect key="frame" x="38" y="181" width="236" height="30"/>
                     <animations/>
-                    <buttonCell key="cell" type="check" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="7Xv-NF-nK2">
+                    <buttonCell key="cell" type="check" bezelStyle="regularSquare" imagePosition="left" inset="2" id="7Xv-NF-nK2">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" size="12" name="HelveticaNeue-Light"/>
                     </buttonCell>
@@ -301,15 +314,12 @@
                     </connections>
                 </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zRa-bT-Esy">
-                    <rect key="frame" x="18" y="256" width="256" height="30"/>
+                    <rect key="frame" x="18" y="257" width="256" height="32"/>
                     <animations/>
-                    <buttonCell key="cell" type="check" title="Notify when all items are completed." bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="DmC-oB-tZY">
+                    <buttonCell key="cell" type="check" title="Notify when all items are completed." bezelStyle="regularSquare" imagePosition="left" inset="2" id="DmC-oB-tZY">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" size="13" name="HelveticaNeue-Light"/>
                     </buttonCell>
-                    <connections>
-                        <action selector="toggleNotifications:" target="-2" id="LSs-Eq-1NJ"/>
-                    </connections>
                 </button>
             </subviews>
             <animations/>

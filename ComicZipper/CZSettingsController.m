@@ -24,18 +24,25 @@
 @property (strong) IBOutlet NSButton *checkBoxSoundAlert;
 @property (strong) IBOutlet NSButton *checkBoxAutoStart;
 @property (strong) IBOutlet NSButton *buttonRemoveExclusion;
+@property (strong) IBOutlet NSButton *checkBoxToggleExclusions;
 @property (strong) IBOutlet NSButton *checkBoxExcludeHiddenFiles;
+@property (strong) IBOutlet NSButton *checkBoxExcludeThumbs;
+@property (strong) IBOutlet NSButton *checkBoxExcludeEmptyFolders;
+@property (strong) IBOutlet NSButton *checkBoxExcludeEmptyFiles;
 @property (strong) IBOutlet NSTextField *textFieldNotify;
 @property (strong) IBOutlet NSTextField *textFieldSoundAlert;
-
 @property (strong) IBOutlet NSTableView *tableViewExclusion;
+@property (nonatomic) NSDictionary *checkBoxCollection;
 @property (nonatomic) NSMutableDictionary *settings;
 @property (nonatomic) NSMutableArray *excludedFiles;
-
+@property (nonatomic) NSArray *excludeCheckBoxArray;
+@property (nonatomic) NSArray *notifyCheckBoxArray;
 @end
 
 @implementation CZSettingsController
 
+NSString *const keyNotify = @"checkBoxToggleNotification.cell.state";
+NSString *const keyFilter = @"checkBoxToggleExclusions.cell.state";
 const int kTableCellViewHeight = 20;
 
 #pragma mark STARTUP METHODS
@@ -63,27 +70,96 @@ const int kTableCellViewHeight = 20;
     [super windowDidLoad];
     [[self tableViewExclusion] setDelegate:self];
     [[self tableViewExclusion] setDataSource:self];
-    [self setCheckBox:@"checkBoxDelete" identifierAndStateTo:kIdentifierForSettingsDeleteFolders];
-    [self setCheckBox:@"checkBoxNotify" identifierAndStateTo:kIdentifierForSettingsUserNotification];
-    [self setCheckBox:@"checkBoxBadge" identifierAndStateTo:kIdentifierForSettingsDockBadge];
-    [self setCheckBox:@"checkBoxSoundAlert" identifierAndStateTo:kIdentifierForSettingsAlertSound];
-    [self setCheckBox:@"checkBoxAutoStart" identifierAndStateTo:kIdentifierForSettingsAutoStart];
-    [self setCheckBox:@"checkBoxExcludeHiddenFiles" identifierAndStateTo:kIdentifierForSettingsExcludeHidden];
+    // Set up the check boxes states
+    [self setCheckBox:@"checkBoxDelete"
+ stateAndIdentifierTo:kIdentifierForSettingsDeleteFolders];
+    [self setCheckBox:@"checkBoxNotify"
+ stateAndIdentifierTo:kIdentifierForSettingsUserNotification];
+    [self setCheckBox:@"checkBoxBadge"
+ stateAndIdentifierTo:kIdentifierForSettingsDockBadge];
+    [self setCheckBox:@"checkBoxSoundAlert"
+ stateAndIdentifierTo:kIdentifierForSettingsAlertSound];
+    [self setCheckBox:@"checkBoxAutoStart"
+ stateAndIdentifierTo:kIdentifierForSettingsAutoStart];
+    [self setCheckBox:@"checkBoxExcludeThumbs"
+ stateAndIdentifierTo:kIdentifierForSettingsExcludeThumbs];
+    [self setCheckBox:@"checkBoxExcludeHiddenFiles"
+ stateAndIdentifierTo:kIdentifierForSettingsExcludeHidden];
+    [self setCheckBox:@"checkBoxExcludeEmptyFolders"
+ stateAndIdentifierTo:kIdentifierForSettingsExcludeEmptyFolders];
+    [self setCheckBox:@"checkBoxExcludeEmptyFiles"
+ stateAndIdentifierTo:kIdentifierForSettingsExcludeEmptyFiles];
+    
     [[[self toolbarItemGeneral] toolbar] setSelectedItemIdentifier:[[self toolbarItemGeneral] itemIdentifier]];
     
-    if ([[self checkBoxSoundAlert] state] == NSOnState || [[self checkBoxNotify] state] == NSOnState) {
-        [[self checkBoxToggleNotification] setState:1];
-    } else {
-        [[self checkBoxToggleNotification] setState:0];
+    NSDictionary *checkBoxCollection = @{ keyNotify : @[ [self checkBoxSoundAlert],
+                                                         [self checkBoxNotify] ],
+                                          keyFilter : @[ [self checkBoxExcludeThumbs],
+                                                         [self checkBoxExcludeHiddenFiles],
+                                                         [self checkBoxExcludeEmptyFolders],
+                                                         [self checkBoxExcludeEmptyFiles] ]
+                                          };
+    [self setCheckBoxCollection:checkBoxCollection];
+    [self setStateofParentCheckBox:[self checkBoxToggleNotification]
+                       forChildren:[checkBoxCollection objectForKey:keyNotify]];
+    [self setStateofParentCheckBox:[self checkBoxToggleExclusions]
+                       forChildren:[checkBoxCollection objectForKey:keyFilter]];
+    [self addObserver:self
+           forKeyPath:keyNotify
+              options:NSKeyValueObservingOptionNew
+              context:nil];
+    [self addObserver:self
+           forKeyPath:keyFilter
+              options:NSKeyValueObservingOptionNew
+              context:nil];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary<NSString *,id> *)change
+                       context:(void *)context {
+    NSInteger state = [[change objectForKey:NSKeyValueChangeNewKey] integerValue];
+    for (NSButton *checkBox in [[self checkBoxCollection] objectForKey:keyPath]) {
+        [checkBox setState:state];
+        [self checkBoxClicked:checkBox];
     }
-    [self setStateOfNotificationCheckBoxes:[self checkBoxToggleNotification]];
+    
+    if ([keyPath isEqualToString:keyNotify]) {
+        NSColor *color = (state) ? [NSColor blackColor] : [NSColor grayColor];;
+        [[self textFieldNotify] setTextColor:color];
+        [[self textFieldSoundAlert] setTextColor:color];
+    }
+}
+
+- (void)setStateOfCheckBox:(NSString *)checkBox
+            withIdentifier:(NSString *)identifier {
     
 }
 
-- (void)setCheckBox:(NSString *)checkBoxName identifierAndStateTo:(NSString *)identifier {
+- (void)setCheckBox:(NSString *)checkBoxName stateAndIdentifierTo:(NSString *)identifier {
     int state = [[[self settings] objectForKey:identifier] intValue];
     [[self valueForKey:checkBoxName] setIdentifier:identifier];
     [[self valueForKey:checkBoxName] setState:state];
+}
+
+- (void)setStateofParentCheckBox:(id)parent forChildren:(NSArray *)children {
+    int count = 0;
+    for (NSButton *child in children) {
+        [child bind:@"enabled"
+           toObject:parent
+        withKeyPath:@"cell.state"
+            options:[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:YES]
+                                                forKey:@"NSConditionallySetsEnabledBindingOption"]];
+        if ([child state] == NSOnState) {
+            count++;
+        }
+    }
+    
+    if (count > 0) {
+        [parent setState:NSOnState];
+    } else {
+        [parent setState:NSOffState];
+    }
 }
 
 #pragma mark USER INTERFACE METHODS
@@ -101,34 +177,8 @@ const int kTableCellViewHeight = 20;
 }
 
 - (IBAction)checkBoxClicked:(id)sender {
-    NSNumber *checkValue = [NSNumber numberWithBool:YES];
-    if ([sender state] != NSOnState) {
-        checkValue = @NO;
-    }
+    NSNumber *checkValue = ([sender state] != NSOnState) ? @NO : @YES;
     [[self settings] setObject:checkValue forKey:[sender identifier]];
-}
-
-- (IBAction)toggleNotifications:(id)sender {
-    [[self checkBoxNotify] setState:[sender state]];
-    [[self checkBoxSoundAlert] setState:[sender state]];
-    [self checkBoxClicked:[self checkBoxNotify]];
-    [self checkBoxClicked:[self checkBoxSoundAlert]];
-    [self setStateOfNotificationCheckBoxes:sender];
-}
-
-- (void)setStateOfNotificationCheckBoxes:(id)sender {
-    NSNumber *checkValue = [NSNumber numberWithBool:YES];
-    NSColor *fieldColor = [NSColor blackColor];
-    if ([sender state] != NSOnState) {
-        checkValue = @NO;
-        fieldColor = [NSColor grayColor];
-    }
-    
-    [[self checkBoxNotify] setEnabled:[checkValue boolValue]];
-    [[self checkBoxSoundAlert] setEnabled:[checkValue boolValue]];
-    // Disable/enable their respective boxes too
-    [[self textFieldNotify] setTextColor:fieldColor];
-    [[self textFieldSoundAlert] setTextColor:fieldColor];
 }
 
 - (IBAction)addExclusion:(id)sender {

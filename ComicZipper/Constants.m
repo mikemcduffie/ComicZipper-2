@@ -22,29 +22,45 @@ float const kSubviewNormalHeight = kTableColumnHeight/2;
 float const kSubviewDetailheight = kTableColumnHeight/2-3;
 NSString *const kApplicationName = @"ComicZipper";
 NSString *const kCZFileExtension = @"cbz";
+
 NSString *const kImageNameForNoHighlight = @"DropFolderNormal";
 NSString *const kImageNameForHighlight = @"DropFolderHighlighted";
+
 NSString *const kDefaultNotifySoundName = @"Glass";
+
 NSString *const kStatusIconError = @"statusError";
 NSString *const kStatusIconSuccess = @"statusSuccess";
 NSString *const kStatusIconCloseNormal = @"statusCloseNormal";
 NSString *const kStatusIconCloseHover = @"statusCloseHover";
-NSString *const kIdentifierForSettingsDeleteFolders = @"CZDeleteFolders";
-NSString *const kIdentifierForSettingsExcludeHidden = @"CZExcludeHidden";
-NSString *const kIdentifierForSettingsExcludedFiles = @"CZExcludedFiles";
-NSString *const kIdentifierForSettingsUserNotification = @"CZUserNotify";
-NSString *const kIdentifierForSettingsDockBadge = @"CZBadgeDockIcon";
+
 NSString *const kIdentifierForSettingsAlertSound = @"CZAlertSound";
 NSString *const kIdentifierForSettingsAutoStart = @"CZAutoStart";
+NSString *const kIdentifierForSettingsDockBadge = @"CZBadgeDockIcon";
+NSString *const kIdentifierForSettingsDeleteFolders = @"CZDeleteFolders";
+NSString *const kIdentifierForSettingsExcludeHidden = @"CZExcludeHidden";
+NSString *const kIdentifierForSettingsExcludeThumbs = @"CZExcludeThumbs";
+NSString *const kIdentifierForSettingsExcludeEmptyFolders = @"CZExcludeEmptyFolders";
+NSString *const kIdentifierForSettingsExcludeEmptyFiles = @"CZExcludeEmptyFiles";
+NSString *const kIdentifierForSettingsExcludedFiles = @"CZExcludedFiles";
+NSString *const kIdentifierForSettingsUserNotification = @"CZUserNotify";
+
 NSString *const kidentifierForSettingsWindowState = @"CZWindowState";
 NSString *const kApplicationSettingsFileName = @"CZSettings.plist";
+
 NSString *kApplicationSupportPath;
 NSString *kApplicationCachePath;
 NSString *kApplicationSettingsPath;
+
 NSArray *kValidFileExtensions;
 
-+ (NSArray *)kHiddenFiles {
-    return @[@"^\\.\\w+", @"thumbs.db$", @"__MACOS"];
+
++ (NSArray *)kHiddenRegEx {
+    return @[@"^\\.\\w+"];
 }
+
++ (NSArray *)kThumbsRegEx {
+    return @[@"thumbs.db$"];
+}
+
 
 @end
