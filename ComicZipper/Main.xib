@@ -17,7 +17,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" texturedBackground="YES"/>
             <windowCollectionBehavior key="collectionBehavior" fullScreenAuxiliary="YES"/>
             <rect key="contentRect" x="0.0" y="0.0" width="400" height="322"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
             <value key="minSize" type="size" width="400" height="322"/>
             <view key="contentView" id="se5-gp-TjO">
                 <rect key="frame" x="0.0" y="0.0" width="400" height="322"/>
@@ -30,17 +30,17 @@
                             <constraint firstAttribute="height" constant="119" id="Zll-Ub-vdf"/>
                         </constraints>
                         <animations/>
-                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="DropFolderWhite" id="lMp-qY-pT3"/>
+                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="DropFolderNormal" id="lMp-qY-pT3"/>
                     </imageView>
-                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XsK-PG-3qi">
-                        <rect key="frame" x="96" y="69" width="210" height="37"/>
+                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" misplaced="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XsK-PG-3qi">
+                        <rect key="frame" x="97" y="69" width="210" height="37"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="37" id="Bb9-Tl-y6k"/>
                             <constraint firstAttribute="width" constant="206" id="dfU-2v-t2s"/>
                         </constraints>
                         <animations/>
-                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="Drop folders here" id="eH0-Vn-6Sm">
-                            <font key="font" size="26" name="HelveticaNeue-Light"/>
+                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="Drop folders here." id="eH0-Vn-6Sm">
+                            <font key="font" size="24" name="HelveticaNeue-Thin"/>
                             <color key="textColor" red="0.046077388743455461" green="0.046077388743455461" blue="0.046077388743455461" alpha="1" colorSpace="calibratedRGB"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
@@ -73,6 +73,6 @@
         </window>
     </objects>
     <resources>
-        <image name="DropFolderWhite" width="317" height="234"/>
+        <image name="DropFolderNormal" width="317" height="234"/>
     </resources>
 </document>
