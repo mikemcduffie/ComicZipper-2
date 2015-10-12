@@ -59,7 +59,7 @@ NSArray *kValidFileExtensions;
 }
 
 + (NSArray *)kThumbsRegEx {
-    return @[@"thumbs.db$"];
+    return @[@"thumbs.db$", @"__MACOSX"];
 }
 
 

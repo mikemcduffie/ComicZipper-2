@@ -86,8 +86,6 @@ int const kLabelTag = 101;
 }
 
 - (void)windowDidLoad {
-    [[self window] setTitleVisibility:NSWindowTitleHidden];
-    [[self window] setBackgroundColor:[NSColor controlHighlightColor]];
     [[self window] setDelegate:self];
     // Load the last saved state of application window
     NSRect frame = NSRectFromString([[self applicationSettings] objectForKey:kidentifierForSettingsWindowState]);
@@ -111,6 +109,7 @@ int const kLabelTag = 101;
 
 - (void)updateUI {
     if ([self applicationStateIs:kAppStateNoItemDropped]) {
+        [[self window] setBackgroundColor:[NSColor whiteColor]];
         if ([self scrollView]) {
             [[self scrollView] removeFromSuperview];
             [self setScrollView:nil];
@@ -122,6 +121,7 @@ int const kLabelTag = 101;
             [self resetCount];
         }
     } else if ([self applicationStateIs:kAppStateFirstItemDrop]) {
+        [[self window] setBackgroundColor:[NSColor controlHighlightColor]];
         [self addCompressButton];
         [self addLabelForTableView];
         [self addScrollView];

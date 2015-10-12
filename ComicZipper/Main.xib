@@ -14,10 +14,10 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="CZApplication"/>
         <window title="ComicZipper" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" animationBehavior="default" id="F0z-JX-Cv5">
-            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" texturedBackground="YES"/>
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowCollectionBehavior key="collectionBehavior" fullScreenAuxiliary="YES"/>
             <rect key="contentRect" x="0.0" y="0.0" width="400" height="322"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
             <value key="minSize" type="size" width="400" height="322"/>
             <view key="contentView" id="se5-gp-TjO">
                 <rect key="frame" x="0.0" y="0.0" width="400" height="322"/>
@@ -32,7 +32,7 @@
                         <animations/>
                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="DropFolderNormal" id="lMp-qY-pT3"/>
                     </imageView>
-                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" misplaced="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XsK-PG-3qi">
+                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XsK-PG-3qi">
                         <rect key="frame" x="97" y="69" width="210" height="37"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="37" id="Bb9-Tl-y6k"/>
@@ -52,7 +52,7 @@
                 </subviews>
                 <constraints>
                     <constraint firstItem="3x7-LV-4ti" firstAttribute="top" secondItem="se5-gp-TjO" secondAttribute="top" id="0Ta-NV-ylE"/>
-                    <constraint firstItem="XsK-PG-3qi" firstAttribute="centerX" secondItem="Tk4-cA-RkM" secondAttribute="centerX" id="DvG-h2-Fna"/>
+                    <constraint firstItem="XsK-PG-3qi" firstAttribute="centerX" secondItem="Tk4-cA-RkM" secondAttribute="centerX" constant="1.5" id="DvG-h2-Fna"/>
                     <constraint firstItem="Tk4-cA-RkM" firstAttribute="centerX" secondItem="se5-gp-TjO" secondAttribute="centerX" id="Lhc-bw-Ohb"/>
                     <constraint firstAttribute="bottom" secondItem="3x7-LV-4ti" secondAttribute="bottom" id="OjN-Mm-aqY"/>
                     <constraint firstItem="Tk4-cA-RkM" firstAttribute="centerY" secondItem="se5-gp-TjO" secondAttribute="centerY" constant="-16.5" id="Y18-WU-f88"/>

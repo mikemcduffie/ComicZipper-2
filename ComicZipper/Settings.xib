@@ -118,9 +118,9 @@
                     </textFieldCell>
                 </textField>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kt0-rX-AFe">
-                    <rect key="frame" x="38" y="253" width="236" height="18"/>
+                    <rect key="frame" x="38" y="252" width="236" height="19"/>
                     <animations/>
-                    <buttonCell key="cell" type="check" title="Exclude thumbs.db" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="Zii-V8-MDt">
+                    <buttonCell key="cell" type="check" title="Exclude thumbs.db and __MACOSX" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="Zii-V8-MDt">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" size="12" name="HelveticaNeue-Light"/>
                     </buttonCell>
