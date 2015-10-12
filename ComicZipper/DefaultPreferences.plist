@@ -2,17 +2,25 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CZDeleteFolders</key>
-	<false/>
-	<key>CZUserNotify</key>
+	<key>CZAlertSound</key>
+	<true/>
+	<key>CZAutoStart</key>
 	<false/>
 	<key>CZBadgeDockIcon</key>
+	<true/>
+	<key>CZDeleteFolders</key>
 	<false/>
+	<key>CZExcludeHidden</key>
+	<true/>
+	<key>CZExcludeThumbs</key>
+	<true/>
+	<key>CZExcludeEmptyFolders</key>
+	<true/>
+	<key>CZExcludeEmptyFiles</key>
+	<true/>
 	<key>CZExcludedFiles</key>
-	<array>
-		<string>^\.\w+</string>
-		<string>thumbs.db$</string>
-		<string>__MACOS</string>
-	</array>
+	<array/>
+	<key>CZUserNotify</key>
+	<true/>
 </dict>
 </plist>

@@ -32,7 +32,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="513" y="301" width="294" height="304"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
             <value key="minSize" type="size" width="294" height="304"/>
             <view key="contentView" id="se5-gp-TjO">
                 <rect key="frame" x="0.0" y="0.0" width="294" height="304"/>
@@ -46,7 +46,7 @@
                             <action selector="switchView:" target="-2" id="NOG-67-CBf"/>
                         </connections>
                     </toolbarItem>
-                    <toolbarItem implicitItemIdentifier="08BA412D-C5A0-45F5-8D93-972B8839A15D" explicitItemIdentifier="NSToolbarShowFiltersItem" label="Exclude list" paletteLabel="Exclude list" tag="-1" image="PreferencesExcludeFiles" selectable="YES" id="9SS-C7-pJq">
+                    <toolbarItem implicitItemIdentifier="08BA412D-C5A0-45F5-8D93-972B8839A15D" explicitItemIdentifier="NSToolbarShowFiltersItem" label="Exclude List" paletteLabel="Exclude List" tag="-1" image="PreferencesExcludeFiles" selectable="YES" id="9SS-C7-pJq">
                         <connections>
                             <action selector="switchView:" target="-2" id="9J4-aV-KcH"/>
                         </connections>
@@ -73,7 +73,7 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <segmentedControl verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2af-18-aGw">
-                    <rect key="frame" x="20" y="19" width="254" height="23"/>
+                    <rect key="frame" x="20" y="13" width="254" height="23"/>
                     <animations/>
                     <segmentedCell key="cell" borderStyle="border" alignment="left" style="smallSquare" trackingMode="momentary" id="S0U-ZM-5PR">
                         <font key="font" metaFont="system"/>
@@ -83,7 +83,7 @@
                     </segmentedCell>
                 </segmentedControl>
                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="m3X-M6-sDV" userLabel="Button Add Exclusion">
-                    <rect key="frame" x="20" y="19" width="30" height="23"/>
+                    <rect key="frame" x="20" y="13" width="30" height="23"/>
                     <animations/>
                     <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSAddTemplate" imagePosition="overlaps" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ZCi-xz-9iM">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -94,7 +94,7 @@
                     </connections>
                 </button>
                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Hml-9V-9ul" userLabel="Button Remove Exclusion">
-                    <rect key="frame" x="49" y="19" width="30" height="23"/>
+                    <rect key="frame" x="49" y="13" width="30" height="23"/>
                     <animations/>
                     <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSRemoveTemplate" imagePosition="overlaps" alignment="center" lineBreakMode="truncatingTail" enabled="NO" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Dbh-O8-Txj">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -104,14 +104,66 @@
                         <action selector="removeExclusion:" target="-2" id="flx-wR-Gqw"/>
                     </connections>
                 </button>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="b5o-hN-RBK">
+                    <rect key="frame" x="18" y="255" width="258" height="60"/>
+                    <animations/>
+                    <buttonCell key="cell" type="check" title="Exclude nonstandard files and subfolders" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="y2O-Xp-dst">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" size="13" name="HelveticaNeue-Light"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="checkBoxClicked:" target="-2" id="SV3-Pl-hgd"/>
+                    </connections>
+                </button>
+                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2BA-Oc-oBi">
+                    <rect key="frame" x="18" y="127" width="256" height="57"/>
+                    <animations/>
+                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Add filenames (or optionally regex expressions) below to exclude from the comic book archive." id="GPj-T6-ewI">
+                        <font key="font" size="12" name="HelveticaNeue-Light"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kt0-rX-AFe">
+                    <rect key="frame" x="36" y="253" width="138" height="18"/>
+                    <animations/>
+                    <buttonCell key="cell" type="check" title="Exclude thumbs.db" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="Zii-V8-MDt">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" size="12" name="HelveticaNeue-Light"/>
+                    </buttonCell>
+                </button>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JBd-7L-NNQ">
+                    <rect key="frame" x="36" y="232" width="215" height="19"/>
+                    <animations/>
+                    <buttonCell key="cell" type="check" title="Exclude hidden files and subfolders" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="agL-2Y-Jjt">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" size="12" name="HelveticaNeue-Light"/>
+                    </buttonCell>
+                </button>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bdj-NB-DEr">
+                    <rect key="frame" x="36" y="212" width="157" height="19"/>
+                    <animations/>
+                    <buttonCell key="cell" type="check" title="Exclude empty subfolders" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="G2O-Oz-YOc">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" size="12" name="HelveticaNeue-Light"/>
+                    </buttonCell>
+                </button>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="M5b-7d-B3V">
+                    <rect key="frame" x="36" y="193" width="140" height="18"/>
+                    <animations/>
+                    <buttonCell key="cell" type="check" title="Exclude empty files" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="s0b-ME-3eJ">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" size="12" name="HelveticaNeue-Light"/>
+                    </buttonCell>
+                </button>
                 <scrollView fixedFrame="YES" autohidesScrollers="YES" horizontalLineScroll="22" horizontalPageScroll="10" verticalLineScroll="22" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vUo-Cr-F0Y">
-                    <rect key="frame" x="20" y="40" width="254" height="118"/>
+                    <rect key="frame" x="20" y="34" width="254" height="112"/>
                     <clipView key="contentView" ambiguous="YES" id="Hdz-uV-6CT">
-                        <rect key="frame" x="1" y="1" width="252" height="116"/>
+                        <rect key="frame" x="1" y="1" width="252" height="110"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" columnSelection="YES" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" rowHeight="20" rowSizeStyle="automatic" viewBased="YES" id="WLX-DZ-hkh">
-                                <rect key="frame" x="0.0" y="0.0" width="252" height="116"/>
+                                <rect key="frame" x="0.0" y="0.0" width="252" height="110"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <animations/>
                                 <size key="intercellSpacing" width="3" height="2"/>
@@ -173,38 +225,9 @@
                         <animations/>
                     </scroller>
                 </scrollView>
-                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="b5o-hN-RBK">
-                    <rect key="frame" x="18" y="256" width="256" height="30"/>
-                    <animations/>
-                    <buttonCell key="cell" type="check" title="Exclude hidden and other meta files" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="y2O-Xp-dst">
-                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                        <font key="font" size="13" name="HelveticaNeue-Light"/>
-                    </buttonCell>
-                    <connections>
-                        <action selector="checkBoxClicked:" target="-2" id="SV3-Pl-hgd"/>
-                    </connections>
-                </button>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ccF-Rc-jvg">
-                    <rect key="frame" x="38" y="221" width="236" height="40"/>
-                    <animations/>
-                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="Filters out hidden files, empty folders and zero length files from the resulting archive." id="Y47-od-XMF">
-                        <font key="font" size="11" name="HelveticaNeue-Thin"/>
-                        <color key="textColor" name="windowFrameColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
-                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2BA-Oc-oBi">
-                    <rect key="frame" x="18" y="161" width="256" height="57"/>
-                    <animations/>
-                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Add filenames (or optionally regex expressions) below to exclude them from being added to the comic book archive." id="GPj-T6-ewI">
-                        <font key="font" size="12" name="HelveticaNeue-Light"/>
-                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
             </subviews>
             <animations/>
-            <point key="canvasLocation" x="188" y="696"/>
+            <point key="canvasLocation" x="177" y="693"/>
         </customView>
         <customView id="GDn-Rs-Uq1">
             <rect key="frame" x="0.0" y="0.0" width="294" height="304"/>
@@ -229,7 +252,7 @@
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wpD-9G-l6D">
                     <rect key="frame" x="59" y="177" width="215" height="38"/>
                     <animations/>
-                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="Play a sound when ComicZipper is active." id="Jd6-80-EkL">
+                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="Play a sound when ComicZipper is the front app." id="Jd6-80-EkL">
                         <font key="font" size="12" name="HelveticaNeue-Light"/>
                         <color key="textColor" name="windowFrameTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -238,7 +261,7 @@
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uWm-wv-M50">
                     <rect key="frame" x="18" y="135" width="258" height="36"/>
                     <animations/>
-                    <buttonCell key="cell" type="check" title="Dock badge icon" bezelStyle="regularSquare" imagePosition="left" inset="2" id="s8e-kf-lzP">
+                    <buttonCell key="cell" type="check" title="Enable App Icon Notification Badge" bezelStyle="regularSquare" imagePosition="left" inset="2" id="s8e-kf-lzP">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" size="13" name="HelveticaNeue-Light"/>
                     </buttonCell>
@@ -249,7 +272,7 @@
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="g9I-oq-1dJ">
                     <rect key="frame" x="38" y="106" width="236" height="37"/>
                     <animations/>
-                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="The Dock icon will display the number of items still being processed." id="zVy-XF-WXj">
+                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="The ComicZipper icon will display the number of remaining items to be processed." id="zVy-XF-WXj">
                         <font key="font" size="11" name="HelveticaNeue-Thin"/>
                         <color key="textColor" name="windowFrameColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -260,7 +283,7 @@
                     <animations/>
                     <buttonCell key="cell" type="check" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="7Xv-NF-nK2">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                        <font key="font" metaFont="system" size="15"/>
+                        <font key="font" size="12" name="HelveticaNeue-Light"/>
                     </buttonCell>
                     <connections>
                         <action selector="checkBoxClicked:" target="-2" id="ujA-JA-6By"/>
@@ -271,7 +294,7 @@
                     <animations/>
                     <buttonCell key="cell" type="check" bezelStyle="regularSquare" imagePosition="left" inset="2" id="SeM-nU-IU7">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                        <font key="font" metaFont="system"/>
+                        <font key="font" size="12" name="HelveticaNeue-Light"/>
                     </buttonCell>
                     <connections>
                         <action selector="checkBoxClicked:" target="-2" id="uFn-E7-yYM"/>
@@ -280,7 +303,7 @@
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zRa-bT-Esy">
                     <rect key="frame" x="18" y="256" width="256" height="30"/>
                     <animations/>
-                    <buttonCell key="cell" type="check" title="Notify when compression is done" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="DmC-oB-tZY">
+                    <buttonCell key="cell" type="check" title="Notify when all items are completed." bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="DmC-oB-tZY">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" size="13" name="HelveticaNeue-Light"/>
                     </buttonCell>
@@ -299,7 +322,7 @@
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5RI-FX-068">
                     <rect key="frame" x="18" y="193" width="256" height="30"/>
                     <animations/>
-                    <buttonCell key="cell" type="check" title="Start compression automatically" bezelStyle="regularSquare" imagePosition="left" inset="2" id="ABG-g1-KKp">
+                    <buttonCell key="cell" type="check" title="Start processing items automatically" bezelStyle="regularSquare" imagePosition="left" inset="2" id="ABG-g1-KKp">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" size="13" name="HelveticaNeue-Light"/>
                     </buttonCell>
@@ -321,7 +344,7 @@
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="x4t-E1-3c7">
                     <rect key="frame" x="38" y="221" width="236" height="40"/>
                     <animations/>
-                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="Compressed folders will be moved to the trash after the compression process has finished." id="b0F-zb-Mqh">
+                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="Folders will be moved to the trash after comic book archive is complete." id="b0F-zb-Mqh">
                         <font key="font" size="11" name="HelveticaNeue-Thin"/>
                         <color key="textColor" name="windowFrameColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -330,7 +353,7 @@
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hGi-H0-ynT">
                     <rect key="frame" x="38" y="159" width="236" height="40"/>
                     <animations/>
-                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="Items dropped onto the application icon or window will start compressing automatically." id="7Ln-4q-Aqi">
+                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="Folders dropped onto the application icon or window will start compressing automatically." id="7Ln-4q-Aqi">
                         <font key="font" size="11" name="HelveticaNeue-Thin"/>
                         <color key="textColor" name="windowFrameColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -362,7 +385,7 @@
                 </textField>
             </subviews>
             <animations/>
-            <point key="canvasLocation" x="535" y="696"/>
+            <point key="canvasLocation" x="535" y="693"/>
         </customView>
     </objects>
     <resources>
