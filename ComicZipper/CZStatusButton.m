@@ -11,11 +11,11 @@
 @implementation CZStatusButton
 
 - (void)mouseEntered:(NSEvent *)theEvent{
-    [self setImage:[NSImage imageNamed:kStatusIconCloseHover]];
+    [self setImage:[NSImage imageNamed:CZStatusIconAbortHover]];
 }
 
 - (void)mouseExited:(NSEvent *)theEvent {
-    [self setImage:[NSImage imageNamed:kStatusIconCloseNormal]];
+    [self setImage:[NSImage imageNamed:CZStatusIconAbortNormal]];
 }
 
 @end

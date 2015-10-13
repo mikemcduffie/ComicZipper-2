@@ -17,4 +17,6 @@
 - (void)updateApplicationSettings:(NSDictionary *)applicationSettings;
 - (void)addItemsDraggedToDock:(NSArray *)items;
 
+- (IBAction)clearList:(id)sender;
+
 @end

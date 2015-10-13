@@ -10,27 +10,29 @@
 
 @interface Constants : NSObject
 /*!
- *  @brief A constant representing an application state.
+ *  @brief Application has no items to process.
+ *  @discussion Represents either the initial state of the application or when the items have been removed.
  */
-extern int const kAppStateNoItemDropped;
+extern int const CZApplicationStateNoItemDropped;
 /*!
- *  @brief A constant representing an application state.
+ *  @brief Application receives items for the first time.
+ *  @discussion Use this key when the application goes from the initial state to a dropped state.
  */
-extern int const kAppStateFirstItemDrop;
+extern int const CZApplicationStateFirstItemDrop;
 /*!
- *  @brief A constant representing an application state.
+ *  @brief Application already has loaded items to process.
  */
-extern int const kAppStatePopulatedList;
+extern int const CZApplicationStatePopulatedList;
 /*!
- *  @brief Delete key keycode.
+ *  @brief Delete key.
  */
 extern int const kDeleteKey;
 /*!
- *  @brief Arrow up keycode.
+ *  @brief Arrow up key.
  */
 extern int const kArrowUpKey;
 /*!
- *  @brief Arrow down keycode.
+ *  @brief Arrow down key.
  */
 extern int const kArrowDownKey;
 /*!
@@ -52,100 +54,106 @@ extern float const kSubviewDetailheight;
 /*!
  *  @brief Name of the application.
  */
-extern NSString *const kApplicationName;
+extern NSString *const CZApplicationName;
 /*!
  *  @description The file extension of the archive.
  */
-extern NSString *const kCZFileExtension;
+extern NSString *const CZFileExtension;
 /*!
  *  @brief Name of the image representing normal state of drop view.
  */
-extern NSString *const kImageNameForNoHighlight;
+extern NSString *const CZImageNameForNoHighlight;
 /*!
  *  @brief Name of the image representing highlighted state of drop view.
  */
-extern NSString *const kImageNameForHighlight;
+extern NSString *const CZImageNameForHighlight;
 /*!
- *  @brief The application's default notification sound name.
+ *  @brief The default notification sound.
  */
-extern NSString *const kDefaultNotifySoundName;
+extern NSString *const CZDefaultNotifySoundName;
 /*!
- *  @brief Icon for error statuses.
+ *  @brief Resource name for error status icon.
  */
-extern NSString *const kStatusIconError;
+extern NSString *const CZStatusIconError;
 /*!
- *  @brief Icon for success statuses.
+ *  @brief Resource name for success status icon
  */
-extern NSString *const kStatusIconSuccess;
+extern NSString *const CZStatusIconSuccess;
 /*!
- *  @brief Icon for normal state statuses and close/remove items.
+ *  @brief Resource name for abort icon.
  */
-extern NSString *const kStatusIconCloseNormal;
+extern NSString *const CZStatusIconAbortNormal;
 /*!
- *  @brief Icon for when normal state status button is hovered.
+ *  @brief Resource name for abort icon when hovered over.
  */
-extern NSString *const kStatusIconCloseHover;
+extern NSString *const CZStatusIconAbortHover;
 /*!
- *  @brief Delete folders after compression has finished.
+ *  @brief Key for settings Delete folders after compression.
  */
-extern NSString *const kIdentifierForSettingsDeleteFolders;
+extern NSString *const CZSettingsDeleteFolders;
 /*!
- *  @brief Exclude hidden files and other meta data.
+ *  @brief Key for settings Exclude hidden files and folders.
  */
-extern NSString *const kIdentifierForSettingsExcludeHidden;
-
-extern NSString *const kIdentifierForSettingsExcludeThumbs;
-extern NSString *const kIdentifierForSettingsExcludeEmptyFolders;
-extern NSString *const kIdentifierForSettingsExcludeEmptyFiles;
+extern NSString *const CZSettingsFilterHidden;
 /*!
- *  @brief Identifier for the file exclusion settings option.
+ *  @brief Key for settings Exclude meta files.
  */
-extern NSString *const kIdentifierForSettingsExcludedFiles;
+extern NSString *const CZSettingsFilterMeta;
 /*!
- *  @brief Identifier for the user notification settings option.
+ *  @brief Key for settings Exclude empty files and folders.
  */
-extern NSString *const kIdentifierForSettingsUserNotification;
+extern NSString *const CZSettingsFilterEmptyData;
 /*!
- *  @brief Identifier for the badge dock icon settings option.
+ *  @brief Key for settings custom exclusions.
  */
-extern NSString *const kIdentifierForSettingsDockBadge;
+extern NSString *const CZSettingsCustomFilter;
 /*!
- *  @brief Identifier for the alert sound settings option.
+ *  @brief Key for user notifications settings.
  */
-extern NSString *const kIdentifierForSettingsAlertSound;
+extern NSString *const CZSettingsNotifications;
 /*!
- *  @brief Identifier for the auto start settings option.
+ *  @brief Key for badge dock icon settings.
  */
-extern NSString *const kIdentifierForSettingsAutoStart;
+extern NSString *const CZSettingsBadgeDockIcon;
 /*!
- *  @brief Identifier for the last window size.
+ *  @brief Key for alert sound settings.
  */
-extern NSString *const kidentifierForSettingsWindowState;
+extern NSString *const CZSettingsAlertSound;
+/*!
+ *  @brief Key for auto start settings.
+ */
+extern NSString *const CZSettingsAutoStart;
+/*!
+ *  @brief Key for window state setting.
+ */
+extern NSString *const CZSettingsWindowState;
 /*!
  *  @brief The name of the application settings file.
  */
-extern NSString *const kApplicationSettingsFileName;
+extern NSString *const CZApplicationSettingsFileName;
 /*!
- *  @brief Global variable pointing to the application's Application support directory.
+ *  @brief The application's Application support directory.
  */
-extern NSString *kApplicationSupportPath;
++ (NSString *)CZApplicationSupportPath;
 /*!
- *  @brief Global variable pointing to the application's cache directory.
+ *  @brief The application's cache directory.
  */
-extern NSString *kApplicationCachePath;
++ (NSString *)CZApplicationCachePath;
 /*!
- *  @brief Global variable pointing to the application's settings file.
+ *  @brief The application's settings file.
  */
-extern NSString *kApplicationSettingsPath;
++ (NSString *)CZApplicationSettingsPath;
 /*!
- *  @brief Global variable containing the valid file extensions.
+ *  @brief The valid file extensions.
  */
-extern NSArray *kValidFileExtensions;
++ (NSArray *)CZValidFileExtensions;
 /*!
- *  @brief Regular expression patterns for hidden files and meta files.
+ *  @brief The regular expression patterns for hidden files.
  */
-+ (NSArray *)kHiddenRegEx;
-
-+ (NSArray *)kThumbsRegEx;
++ (NSArray *)CZFilterHidden;
+/*!
+ *  @brief The regular expression patterns for meta files and folders.
+ */
++ (NSArray *)CZFilterMeta;
 
 @end

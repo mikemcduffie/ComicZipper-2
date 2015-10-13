@@ -18,8 +18,7 @@
 @property (nonatomic) NSOperationQueue *operations;
 @property (nonatomic) NSMutableArray *foldersToDelete;
 @property (nonatomic) NSArray *ignoredFiles;
-@property (nonatomic) BOOL ignoreEmptyFiles;
-@property (nonatomic) BOOL ignoreEmptyFolders;
+@property (nonatomic) BOOL ignoreEmptyData;
 
 @end
 
@@ -124,12 +123,12 @@
     [self setIgnoredFiles:list];
 }
 
-- (void)shouldIgnoreEmptyFiles:(BOOL)value {
-    [self setIgnoreEmptyFiles:value];
+- (void)shouldIgnoreEmptyData:(BOOL)value {
+    [self setIgnoreEmptyData:value];
 }
 
-- (void)shouldIgnoreEmptyFolders:(BOOL)value {
-    [self setIgnoreEmptyFolders:value];
+- (void)clear {
+    [self setArchiveItems:nil];
 }
 
 #pragma mark COMPRESSION METHODS
@@ -142,8 +141,7 @@
     // Solved the issue with excluding files by extending the NOZCompressRequest class.
     CZCompressRequest *compRequest = [[CZCompressRequest alloc] initWithDestinationPath:targetPath];
     [compRequest setIgnoreFiles:[self ignoredFiles]];
-    [compRequest setIgnoreEmptyFiles:[self ignoreEmptyFiles]];
-    [compRequest setIgnoreEmptyFolders:[self ignoreEmptyFolders]];
+    [compRequest setIgnoreEmptyData:[self ignoreEmptyData]];
     [compRequest addEntriesInDirectory:sourcePath
              compressionSelectionBlock:NULL];
     // Create the operation that will perform the request.

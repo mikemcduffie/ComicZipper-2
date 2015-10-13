@@ -58,7 +58,7 @@ static NSString *const kCZRegExTemplate = @" #$1";
         _folderName = [self getFolderNameFromURL:url];
         _parentFolder = [self getParentFolderName];
         _archivePath = [self getArchivePath];
-        _validExtensions = kValidFileExtensions;
+        _validExtensions = [Constants CZValidFileExtensions];
         _fileSizeInBytes = [self calculateFileSize];
         // Empty folders should not be added
         if (_fileSizeInBytes == 0) {
@@ -101,7 +101,7 @@ static NSString *const kCZRegExTemplate = @" #$1";
 - (NSString *)temporaryPath {
     if (!_temporaryPath) {
         NSString *uniqueID = [[NSProcessInfo processInfo] globallyUniqueString];
-        _temporaryPath = [NSString stringWithFormat:@"%@/%@.tmp", kApplicationCachePath, uniqueID];
+        _temporaryPath = [NSString stringWithFormat:@"%@/%@.tmp", [Constants CZApplicationCachePath], uniqueID];
     }
     
     return _temporaryPath;
@@ -139,12 +139,12 @@ static NSString *const kCZRegExTemplate = @" #$1";
                                                          options:0
                                                            range:rangeForRegEx
                                                     withTemplate:kCZRegExTemplate];
-    NSString *filePath = [NSString stringWithFormat:@"%@%@.%@", _parentFolder, fileName, kCZFileExtension];
+    NSString *filePath = [NSString stringWithFormat:@"%@%@.%@", _parentFolder, fileName, CZFileExtension];
     // Make sure the file name is not already taken.
     int i = 1;
     NSFileManager *fileManager = [NSFileManager alloc];
     while ([fileManager fileExistsAtPath:filePath]) {
-        filePath = [NSString stringWithFormat:@"%@%@-%d.%@", _parentFolder, fileName, i++, kCZFileExtension];
+        filePath = [NSString stringWithFormat:@"%@%@-%d.%@", _parentFolder, fileName, i++, CZFileExtension];
     }
     
     return filePath;

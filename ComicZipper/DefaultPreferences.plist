@@ -12,11 +12,9 @@
 	<false/>
 	<key>CZExcludeHidden</key>
 	<true/>
-	<key>CZExcludeThumbs</key>
+	<key>CZExcludeMeta</key>
 	<true/>
-	<key>CZExcludeEmptyFolders</key>
-	<true/>
-	<key>CZExcludeEmptyFiles</key>
+	<key>CZExcludeEmpty</key>
 	<true/>
 	<key>CZExcludedFiles</key>
 	<array/>

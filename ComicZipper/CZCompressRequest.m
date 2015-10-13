@@ -70,22 +70,14 @@ static NSArray<NOZFileZipEntry *> * __nonnull NOZEntriesFromDirectory(NSString *
 
 - (BOOL)doesFileHaveLength:(NSString *)fileName
            inDirectoryPath:(NSString *)directoryPath {
-    if ([self ignoreEmptyFiles] || [self ignoreEmptyFolders]) {
+    if ([self ignoreEmptyData]) {
         NSString *filePath = [NSString stringWithFormat:@"%@/%@", directoryPath, fileName];
         NSDictionary *fileAttributes = [[NSFileManager defaultManager] attributesOfItemAtPath:filePath
                                                                                         error:nil];
-        if ([fileAttributes fileType] == NSFileTypeDirectory) {
-            if ([self ignoreEmptyFolders] && [fileAttributes fileSize] == 0) {
-                return NO;
-            } else {
-                return YES;
-            }
+        if (fileAttributes && [fileAttributes fileSize] == 0) {
+            return NO;
         } else {
-            if ([self ignoreEmptyFiles] && [fileAttributes fileSize] == 0) {
-                return NO;
-            } else {
-                return YES;
-            }
+            return YES;
         }
     }
     

@@ -25,6 +25,8 @@
 @property (weak) CZScrollView *scrollView;
 @property (weak) CZTableView *tableView;
 @property (weak) NSButton *compressButton;
+@property (strong) IBOutlet NSToolbarItem *toolbarClear;
+@property (strong) IBOutlet NSToolbar *toolbar;
 @property (nonatomic, weak) NSUserNotificationCenter *notificationCenter;
 @property (nonatomic) long numberOfItemsToCompress, numberOfItemsCompressed;
 @property (nonatomic) NSDictionary *applicationSettings;
@@ -35,6 +37,12 @@
 int const kLabelTag = 101;
 
 @implementation CZMainController
+
+- (void)clearList:(id)sender {
+    [[self comicZipper] clear];
+    [self setApplicationState:CZApplicationStateNoItemDropped];
+    [self updateUI];
+}
 
 - (instancetype)initWithWindowNibName:(NSString *)windowNibName
                           ComicZipper:(CZComicZipper *)comicZipper
@@ -88,7 +96,7 @@ int const kLabelTag = 101;
 - (void)windowDidLoad {
     [[self window] setDelegate:self];
     // Load the last saved state of application window
-    NSRect frame = NSRectFromString([[self applicationSettings] objectForKey:kidentifierForSettingsWindowState]);
+    NSRect frame = NSRectFromString([[self applicationSettings] objectForKey:CZSettingsWindowState]);
     if (!NSIsEmptyRect(frame)) {
         [[self window] setFrame:frame
                         display:YES];
@@ -108,7 +116,7 @@ int const kLabelTag = 101;
 }
 
 - (void)updateUI {
-    if ([self applicationStateIs:kAppStateNoItemDropped]) {
+    if ([self applicationStateIs:CZApplicationStateNoItemDropped]) {
         [[self window] setBackgroundColor:[NSColor whiteColor]];
         if ([self scrollView]) {
             [[self scrollView] removeFromSuperview];
@@ -118,15 +126,17 @@ int const kLabelTag = 101;
             [[self compressButton] removeFromSuperview];
             [self setCompressButton:nil];
             [[[self dropView] viewWithTag:kLabelTag] removeFromSuperview];
+            [[self toolbar] removeItemAtIndex:1];
             [self resetCount];
         }
-    } else if ([self applicationStateIs:kAppStateFirstItemDrop]) {
+    } else if ([self applicationStateIs:CZApplicationStateFirstItemDrop]) {
         [[self window] setBackgroundColor:[NSColor controlHighlightColor]];
         [self addCompressButton];
         [self addLabelForTableView];
         [self addScrollView];
         [self addTableView];
-    } else if ([self applicationStateIs:kAppStatePopulatedList]) {
+        [[self toolbar] insertItemWithItemIdentifier:[[self toolbarClear] itemIdentifier] atIndex:1];
+    } else if ([self applicationStateIs:CZApplicationStatePopulatedList]) {
         [[self tableView] reloadData];
     }
 }
@@ -135,9 +145,9 @@ int const kLabelTag = 101;
 
 - (void)dropView:(CZDropView *)dropView shouldToggleHighlight:(BOOL)highlight {
     if (highlight) {
-        [[self imageView] setImage:[NSImage imageNamed:kImageNameForHighlight]];
+        [[self imageView] setImage:[NSImage imageNamed:CZImageNameForHighlight]];
     } else {
-        [[self imageView] setImage:[NSImage imageNamed:kImageNameForNoHighlight]];
+        [[self imageView] setImage:[NSImage imageNamed:CZImageNameForNoHighlight]];
     }
 }
 
@@ -146,10 +156,10 @@ int const kLabelTag = 101;
     [[self comicZipper] addItems:items];
     [self setNumberOfItemsToCompress:[[self comicZipper] count]];
     // First time drop should create the table.
-    if ([self applicationStateIs:kAppStateNoItemDropped]) {
-        [self setApplicationState:kAppStateFirstItemDrop];
+    if ([self applicationStateIs:CZApplicationStateNoItemDropped]) {
+        [self setApplicationState:CZApplicationStateFirstItemDrop];
     } else {
-        [self setApplicationState:kAppStatePopulatedList];
+        [self setApplicationState:CZApplicationStatePopulatedList];
     }
     
     [self updateUI];
@@ -160,7 +170,7 @@ int const kLabelTag = 101;
 }
 
 - (BOOL)isDropViewFront {
-    if ([self applicationStateIs:kAppStateNoItemDropped]) {
+    if ([self applicationStateIs:CZApplicationStateNoItemDropped]) {
         return YES;
     }
     // If the table is loaded, the drop view should not highlight. But the scrollview should!
@@ -194,7 +204,7 @@ int const kLabelTag = 101;
                 [self updateLabelForTableView:[NSString stringWithFormat:@"%li item(s) to compress", count]];                
             }
         } else {
-            [self setApplicationState:kAppStateNoItemDropped];
+            [self setApplicationState:CZApplicationStateNoItemDropped];
             [self updateUI];
         }
     } else if (keyCode == 0 && commandState) {
@@ -337,9 +347,7 @@ didFinishItemAtIndex:(NSUInteger)index {
     // Add the ignored files before compressing
     NSArray *ignoredFiles = [self shouldIgnoreFiles];
     [[self comicZipper] ignoreFiles:ignoredFiles];
-    [[self comicZipper] shouldIgnoreEmptyFiles:[self shouldIgnoreEmptyFiles]];
-    [[self comicZipper] shouldIgnoreEmptyFolders:[self shouldIgnoreEmptyFolders]];
-    [[self comicZipper] setShouldDeleteFolder:[self shouldDeleteFolder]];
+    [[self comicZipper] shouldIgnoreEmptyData:[self shouldIgnoreEmptyData]];
     [[self comicZipper] readyToCompress];
 }
 
@@ -578,9 +586,9 @@ didFinishItemAtIndex:(NSUInteger)index {
 - (void)notifyUser:(NSString *)message {
     if ([self shouldNotifyUser]) {
         NSUserNotification *notification = [[NSUserNotification alloc] init];
-        [notification setTitle:kApplicationName];
+        [notification setTitle:CZApplicationName];
         [notification setInformativeText:message];
-        [notification setSoundName:kDefaultNotifySoundName];
+        [notification setSoundName:CZDefaultNotifySoundName];
         [[self notificationCenter] deliverNotification:notification];
     }
 }
@@ -597,7 +605,7 @@ didFinishItemAtIndex:(NSUInteger)index {
 }
 
 - (void)playSound {
-    [[NSSound soundNamed:kDefaultNotifySoundName] play];
+    [[NSSound soundNamed:CZDefaultNotifySoundName] play];
 }
 
 - (void)setApplicationBadge:(NSString *)badgeLabel {
@@ -674,7 +682,7 @@ didFinishItemAtIndex:(NSUInteger)index {
                                                                                     errorHandler:nil];
     NSString *imagePath;
     for (NSURL *file in directoryEnumerator) {
-        if ([kValidFileExtensions containsObject:[[file pathExtension] lowercaseString]]) {
+        if ([[Constants CZValidFileExtensions] containsObject:[[file pathExtension] lowercaseString]]) {
             imagePath = [file path];
             break;
         }
@@ -690,42 +698,38 @@ didFinishItemAtIndex:(NSUInteger)index {
 #pragma mark PREFERENCES METHODS
 
 - (NSArray *)shouldIgnoreFiles {
-    NSMutableArray *ignoredFiles = [[[self applicationSettings] objectForKey:kIdentifierForSettingsExcludedFiles] mutableCopy];
-    if ([[[self applicationSettings] objectForKey:kIdentifierForSettingsExcludeHidden] boolValue]) {
-        [ignoredFiles addObjectsFromArray:[Constants kHiddenRegEx]];
+    NSMutableArray *ignoredFiles = [[[self applicationSettings] objectForKey:CZSettingsCustomFilter] mutableCopy];
+    if ([[[self applicationSettings] objectForKey:CZSettingsFilterHidden] boolValue]) {
+        [ignoredFiles addObjectsFromArray:[Constants CZFilterHidden]];
     }
-    if ([[[self applicationSettings] objectForKey:kIdentifierForSettingsExcludeThumbs] boolValue]) {
-        [ignoredFiles addObjectsFromArray:[Constants kThumbsRegEx]];
+    if ([[[self applicationSettings] objectForKey:CZSettingsFilterMeta] boolValue]) {
+        [ignoredFiles addObjectsFromArray:[Constants CZFilterMeta]];
     }
     return ignoredFiles;
 }
 
-- (BOOL)shouldIgnoreEmptyFiles {
-    return [[[self applicationSettings] objectForKey:kIdentifierForSettingsExcludeEmptyFiles] boolValue];
-}
-
-- (BOOL)shouldIgnoreEmptyFolders {
-    return [[[self applicationSettings] objectForKey:kIdentifierForSettingsExcludeEmptyFolders] boolValue];
+- (BOOL)shouldIgnoreEmptyData {
+    return [[[self applicationSettings] objectForKey:CZSettingsFilterEmptyData] boolValue];
 }
 
 - (BOOL)shouldDeleteFolder {
-    return [[[self applicationSettings] objectForKey:kIdentifierForSettingsDeleteFolders] boolValue];
+    return [[[self applicationSettings] objectForKey:CZSettingsDeleteFolders] boolValue];
 }
 
 - (BOOL)shouldNotifyUser {
-    return [[[self applicationSettings] objectForKey:kIdentifierForSettingsUserNotification] boolValue];
+    return [[[self applicationSettings] objectForKey:CZSettingsNotifications] boolValue];
 }
 
 - (BOOL)shouldBadgeDockIcon {
-    return [[[self applicationSettings] objectForKey:kIdentifierForSettingsDockBadge] boolValue];
+    return [[[self applicationSettings] objectForKey:CZSettingsBadgeDockIcon] boolValue];
 }
 
 - (BOOL)shouldPlaySound {
-    return [[[self applicationSettings] objectForKey:kIdentifierForSettingsAlertSound] boolValue];
+    return [[[self applicationSettings] objectForKey:CZSettingsAlertSound] boolValue];
 }
 
 - (BOOL)shouldAutoStartCompression {
-    return [[[self applicationSettings] objectForKey:kIdentifierForSettingsAutoStart] boolValue];
+    return [[[self applicationSettings] objectForKey:CZSettingsAutoStart] boolValue];
 }
 
 #pragma mark MISC METHODS

@@ -34,7 +34,7 @@
 - (void)removeItemsWithIndexes:(NSIndexSet *)indexes;
 - (void)readyToCompress;
 - (void)ignoreFiles:(NSArray *)list;
-- (void)shouldIgnoreEmptyFiles:(BOOL)value;
-- (void)shouldIgnoreEmptyFolders:(BOOL)value;
+- (void)shouldIgnoreEmptyData:(BOOL)value;
+- (void)clear;
 
 @end

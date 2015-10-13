@@ -24,11 +24,10 @@
 @property (strong) IBOutlet NSButton *checkBoxSoundAlert;
 @property (strong) IBOutlet NSButton *checkBoxAutoStart;
 @property (strong) IBOutlet NSButton *buttonRemoveExclusion;
-@property (strong) IBOutlet NSButton *checkBoxToggleExclusions;
-@property (strong) IBOutlet NSButton *checkBoxExcludeHiddenFiles;
-@property (strong) IBOutlet NSButton *checkBoxExcludeThumbs;
-@property (strong) IBOutlet NSButton *checkBoxExcludeEmptyFolders;
-@property (strong) IBOutlet NSButton *checkBoxExcludeEmptyFiles;
+@property (strong) IBOutlet NSButton *checkBoxToggleFilters;
+@property (strong) IBOutlet NSButton *checkBoxFilterMeta;
+@property (strong) IBOutlet NSButton *checkBoxFilterHidden;
+@property (strong) IBOutlet NSButton *checkBoxFilterEmpty;
 @property (strong) IBOutlet NSTextField *textFieldNotify;
 @property (strong) IBOutlet NSTextField *textFieldSoundAlert;
 @property (strong) IBOutlet NSTableView *tableViewExclusion;
@@ -42,7 +41,7 @@
 @implementation CZSettingsController
 
 NSString *const keyNotify = @"checkBoxToggleNotification.cell.state";
-NSString *const keyFilter = @"checkBoxToggleExclusions.cell.state";
+NSString *const keyFilter = @"checkBoxToggleFilters.cell.state";
 const int kTableCellViewHeight = 20;
 
 #pragma mark STARTUP METHODS
@@ -62,7 +61,7 @@ const int kTableCellViewHeight = 20;
 
 - (void)windowWillLoad {
     // Load the excluded files settings
-    NSArray *excludedFiles = [[self settings] objectForKey:kIdentifierForSettingsExcludedFiles];
+    NSArray *excludedFiles = [[self settings] objectForKey:CZSettingsCustomFilter];
     [self setExcludedFiles:[excludedFiles mutableCopy]];
 }
 
@@ -71,38 +70,27 @@ const int kTableCellViewHeight = 20;
     [[self tableViewExclusion] setDelegate:self];
     [[self tableViewExclusion] setDataSource:self];
     // Set up the check boxes states
-    [self setCheckBox:@"checkBoxDelete"
- stateAndIdentifierTo:kIdentifierForSettingsDeleteFolders];
-    [self setCheckBox:@"checkBoxNotify"
- stateAndIdentifierTo:kIdentifierForSettingsUserNotification];
-    [self setCheckBox:@"checkBoxBadge"
- stateAndIdentifierTo:kIdentifierForSettingsDockBadge];
-    [self setCheckBox:@"checkBoxSoundAlert"
- stateAndIdentifierTo:kIdentifierForSettingsAlertSound];
-    [self setCheckBox:@"checkBoxAutoStart"
- stateAndIdentifierTo:kIdentifierForSettingsAutoStart];
-    [self setCheckBox:@"checkBoxExcludeThumbs"
- stateAndIdentifierTo:kIdentifierForSettingsExcludeThumbs];
-    [self setCheckBox:@"checkBoxExcludeHiddenFiles"
- stateAndIdentifierTo:kIdentifierForSettingsExcludeHidden];
-    [self setCheckBox:@"checkBoxExcludeEmptyFolders"
- stateAndIdentifierTo:kIdentifierForSettingsExcludeEmptyFolders];
-    [self setCheckBox:@"checkBoxExcludeEmptyFiles"
- stateAndIdentifierTo:kIdentifierForSettingsExcludeEmptyFiles];
+    [self setCheckBox:@"checkBoxDelete" stateAndIdentifierTo:CZSettingsDeleteFolders];
+    [self setCheckBox:@"checkBoxNotify" stateAndIdentifierTo:CZSettingsNotifications];
+    [self setCheckBox:@"checkBoxBadge" stateAndIdentifierTo:CZSettingsBadgeDockIcon];
+    [self setCheckBox:@"checkBoxSoundAlert" stateAndIdentifierTo:CZSettingsAlertSound];
+    [self setCheckBox:@"checkBoxAutoStart" stateAndIdentifierTo:CZSettingsAutoStart];
+    [self setCheckBox:@"checkBoxFilterMeta" stateAndIdentifierTo:CZSettingsFilterMeta];
+    [self setCheckBox:@"checkBoxFilterHidden" stateAndIdentifierTo:CZSettingsFilterHidden];
+    [self setCheckBox:@"checkBoxFilterEmpty" stateAndIdentifierTo:CZSettingsFilterEmptyData];
     
     [[[self toolbarItemGeneral] toolbar] setSelectedItemIdentifier:[[self toolbarItemGeneral] itemIdentifier]];
     
     NSDictionary *checkBoxCollection = @{ keyNotify : @[ [self checkBoxSoundAlert],
                                                          [self checkBoxNotify] ],
-                                          keyFilter : @[ [self checkBoxExcludeThumbs],
-                                                         [self checkBoxExcludeHiddenFiles],
-                                                         [self checkBoxExcludeEmptyFolders],
-                                                         [self checkBoxExcludeEmptyFiles] ]
+                                          keyFilter : @[ [self checkBoxFilterMeta],
+                                                         [self checkBoxFilterHidden],
+                                                         [self checkBoxFilterEmpty] ]
                                           };
     [self setCheckBoxCollection:checkBoxCollection];
     [self setStateofParentCheckBox:[self checkBoxToggleNotification]
                        forChildren:[checkBoxCollection objectForKey:keyNotify]];
-    [self setStateofParentCheckBox:[self checkBoxToggleExclusions]
+    [self setStateofParentCheckBox:[self checkBoxToggleFilters]
                        forChildren:[checkBoxCollection objectForKey:keyFilter]];
     [self addObserver:self
            forKeyPath:keyNotify
@@ -196,7 +184,7 @@ const int kTableCellViewHeight = 20;
                                      withAnimation:NO];
     NSArray *objectsToRemove = [[self excludedFiles] objectsAtIndexes:indexes];
     [[self excludedFiles] removeObjectsAtIndexes:indexes];
-    [[[self settings] objectForKey:kIdentifierForSettingsExcludedFiles] removeObjectsInArray:objectsToRemove];
+    [[[self settings] objectForKey:CZSettingsCustomFilter] removeObjectsInArray:objectsToRemove];
     [[self tableViewExclusion] reloadData];
 }
 
@@ -244,7 +232,7 @@ const int kTableCellViewHeight = 20;
     if ([stringValue isNotEqualTo:@""]) {
         [[self excludedFiles] replaceObjectAtIndex:row
                                         withObject:stringValue];
-        [[self settings] setObject:[self excludedFiles] forKey:kIdentifierForSettingsExcludedFiles];
+        [[self settings] setObject:[self excludedFiles] forKey:CZSettingsCustomFilter];
     } else {
         [[self excludedFiles] removeObjectAtIndex:row];
         [[self tableViewExclusion] reloadData];

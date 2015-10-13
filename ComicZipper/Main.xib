@@ -8,6 +8,8 @@
             <connections>
                 <outlet property="dropView" destination="3x7-LV-4ti" id="XGt-Q2-JPQ"/>
                 <outlet property="imageView" destination="Tk4-cA-RkM" id="xTT-eq-EPS"/>
+                <outlet property="toolbar" destination="zQ5-rN-TdZ" id="M1h-De-U0O"/>
+                <outlet property="toolbarClear" destination="TlH-r1-aWI" id="ANw-MH-LjK"/>
                 <outlet property="window" destination="F0z-JX-Cv5" id="ngW-S6-C7U"/>
             </connections>
         </customObject>
@@ -62,9 +64,19 @@
                 </constraints>
                 <animations/>
             </view>
-            <toolbar key="toolbar" implicitIdentifier="B920CF63-A5D4-46A3-9992-1F8FD8D8C4B9" autosavesConfiguration="NO" displayMode="iconAndLabel" sizeMode="regular" id="zQ5-rN-TdZ">
-                <allowedToolbarItems/>
-                <defaultToolbarItems/>
+            <toolbar key="toolbar" implicitIdentifier="B920CF63-A5D4-46A3-9992-1F8FD8D8C4B9" autosavesConfiguration="NO" allowsUserCustomization="NO" displayMode="iconAndLabel" sizeMode="small" id="zQ5-rN-TdZ">
+                <allowedToolbarItems>
+                    <toolbarItem implicitItemIdentifier="6003A446-FBFE-493D-87B8-28392FF02820" label="Clear list" paletteLabel="Clear list" tag="-1" image="NSStopProgressFreestandingTemplate" id="TlH-r1-aWI">
+                        <connections>
+                            <action selector="clearList:" target="-2" id="PeH-3h-7Ow"/>
+                        </connections>
+                    </toolbarItem>
+                    <toolbarItem implicitItemIdentifier="6EFF854D-8F1D-4D5A-93D0-28C5972355AE" label="Toolbar Item" paletteLabel="Toolbar Item" tag="-1" image="NSLeftFacingTriangleTemplate" id="bTu-bi-sbc"/>
+                    <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="0Xi-JB-ink"/>
+                </allowedToolbarItems>
+                <defaultToolbarItems>
+                    <toolbarItem reference="0Xi-JB-ink"/>
+                </defaultToolbarItems>
             </toolbar>
             <connections>
                 <outlet property="delegate" destination="-2" id="0bl-1N-AYu"/>
@@ -74,5 +86,7 @@
     </objects>
     <resources>
         <image name="DropFolderNormal" width="317" height="234"/>
+        <image name="NSLeftFacingTriangleTemplate" width="9" height="12"/>
+        <image name="NSStopProgressFreestandingTemplate" width="14" height="14"/>
     </resources>
 </document>

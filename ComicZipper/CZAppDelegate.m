@@ -38,7 +38,7 @@
         CZComicZipper *comicZipper = [[CZComicZipper alloc] init];
         CZMainController *mainController = [[CZMainController alloc] initWithWindowNibName:@"Main"
                                                                                ComicZipper:comicZipper
-                                                                          applicationState:kAppStateNoItemDropped
+                                                                          applicationState:CZApplicationStateNoItemDropped
                                                                        applicationSettings:[[self applicationSettings] copy]];
         [mainController showWindow:nil];
         [[mainController window] makeKeyAndOrderFront:nil];
@@ -52,32 +52,27 @@
  *  @discussion The Application Support folder and the path to the application settings file in that folder will be set up. If there is no application specific folder in the Application Support directory, one will be created.
  */
 - (void)setUpPaths {
-    NSString *applicationSupportPath = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) firstObject];
-    kApplicationSupportPath = [NSString stringWithFormat:@"%@/%@", applicationSupportPath, kApplicationName];
     BOOL isDirectory;
-    if (![[NSFileManager defaultManager] fileExistsAtPath:kApplicationSupportPath
+    NSString *path = [Constants CZApplicationSupportPath];
+    if (![[NSFileManager defaultManager] fileExistsAtPath:path
                                               isDirectory:&isDirectory] && !isDirectory) {
         // Create the Application Support directory if it does not exist.
-        [[NSFileManager defaultManager] createDirectoryAtPath:kApplicationSupportPath
+        [[NSFileManager defaultManager] createDirectoryAtPath:path
                                   withIntermediateDirectories:YES
                                                    attributes:NULL
                                                         error:NULL];
     }
-    kApplicationSettingsPath = [NSString stringWithFormat:@"%@/%@", kApplicationSupportPath, kApplicationSettingsFileName];
-    
-    NSString *cacheDirectoryPath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    cacheDirectoryPath = [cacheDirectoryPath stringByAppendingPathComponent:kApplicationName];
     isDirectory = NO;
-    if (![[NSFileManager defaultManager] fileExistsAtPath:cacheDirectoryPath
+    path = [Constants CZApplicationCachePath];
+    if (![[NSFileManager defaultManager] fileExistsAtPath:path
                                               isDirectory:&isDirectory] && !isDirectory) {
         NSError *error = nil;
         // Create the cache directory if it does not exist.
-        [[NSFileManager defaultManager] createDirectoryAtPath:cacheDirectoryPath
+        [[NSFileManager defaultManager] createDirectoryAtPath:path
                                   withIntermediateDirectories:YES
                                                    attributes:NULL
                                                         error:&error];
     }
-    kApplicationCachePath = cacheDirectoryPath;
 }
 
 #pragma mark CACHE DIRECTORY SETTINGS
@@ -88,10 +83,11 @@
  */
 - (void)clearCacheDirectory {
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSError *error;
-    for (NSString *file in [fileManager contentsOfDirectoryAtPath:kApplicationCachePath
+    NSString *path = [Constants CZApplicationCachePath];
+    NSError *error = nil;
+    for (NSString *file in [fileManager contentsOfDirectoryAtPath:path
                                                             error:nil]) {
-        [fileManager removeItemAtPath:[NSString stringWithFormat:@"%@/%@", kApplicationCachePath, file]
+        [fileManager removeItemAtPath:[NSString stringWithFormat:@"%@/%@", path, file]
                                 error:&error];
     }
 }
@@ -104,9 +100,10 @@
  */
 - (void)loadApplicationSettings {
     [self setUpPaths];
-    if ([[NSFileManager defaultManager] fileExistsAtPath:kApplicationSettingsPath
+    NSString *path = [Constants CZApplicationSettingsPath];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:path
                                              isDirectory:nil]) {
-        _applicationSettings = [[NSMutableDictionary alloc] initWithContentsOfFile:kApplicationSettingsPath];
+        _applicationSettings = [[NSMutableDictionary alloc] initWithContentsOfFile:path];
     } else {
         NSString *defaultSettingsPath = [[NSBundle mainBundle] pathForResource:@"DefaultPreferences"
                                                                         ofType:@"plist"];
@@ -127,8 +124,8 @@
 - (void)saveApplicationSettings {
     NSRect frame = [[[self mainController] window] frame];
     [[self applicationSettings] setObject:NSStringFromRect(frame)
-                                   forKey:kidentifierForSettingsWindowState];
-    [[self applicationSettings] writeToFile:kApplicationSettingsPath
+                                   forKey:CZSettingsWindowState];
+    [[self applicationSettings] writeToFile:[Constants CZApplicationSettingsPath]
                                  atomically:YES];
 }
 
@@ -179,7 +176,6 @@
  */
 - (void)applicationWillFinishLaunching:(NSNotification *)notification {
     [self loadApplicationSettings];
-    kValidFileExtensions = @[@"jpg", @"jpeg", @"png", @"gif", @"tiff", @"tif", @"bmp"];
 }
 /*!
  *  @brief Sent by the default notification center after the application has been launched and initialized but before it has received its first event.

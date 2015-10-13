@@ -10,9 +10,9 @@
 
 @implementation Constants
 
-int const kAppStateNoItemDropped = 1;
-int const kAppStateFirstItemDrop = 2;
-int const kAppStatePopulatedList = 3;
+int const CZApplicationStateNoItemDropped = 1;
+int const CZApplicationStateFirstItemDrop = 2;
+int const CZApplicationStatePopulatedList = 3;
 int const kDeleteKey = 51;
 int const kArrowUpKey = 125;
 int const kArrowDownKey = 126;
@@ -20,47 +20,51 @@ float const kTableColumnWidth = 50;
 float const kTableColumnHeight = 40.0;
 float const kSubviewNormalHeight = kTableColumnHeight/2;
 float const kSubviewDetailheight = kTableColumnHeight/2-3;
-NSString *const kApplicationName = @"ComicZipper";
-NSString *const kCZFileExtension = @"cbz";
+NSString *const CZApplicationName = @"ComicZipper";
+NSString *const CZFileExtension = @"cbz";
+NSString *const CZImageNameForNoHighlight = @"DropFolderNormal";
+NSString *const CZImageNameForHighlight = @"DropFolderHighlighted";
+NSString *const CZDefaultNotifySoundName = @"Glass";
+NSString *const CZStatusIconError = @"statusError";
+NSString *const CZStatusIconSuccess = @"statusSuccess";
+NSString *const CZStatusIconAbortNormal = @"statusCloseNormal";
+NSString *const CZStatusIconAbortHover = @"statusCloseHover";
+NSString *const CZSettingsDeleteFolders = @"CZDeleteFolders";
+NSString *const CZSettingsFilterHidden = @"CZExcludeHidden";
+NSString *const CZSettingsFilterMeta = @"CZExcludeMeta";
+NSString *const CZSettingsFilterEmptyData = @"CZExcludeEmpty";
+NSString *const CZSettingsCustomFilter = @"CZExcludedFiles";
+NSString *const CZSettingsNotifications = @"CZUserNotify";
+NSString *const CZSettingsBadgeDockIcon = @"CZBadgeDockIcon";
+NSString *const CZSettingsAlertSound = @"CZAlertSound";
+NSString *const CZSettingsAutoStart = @"CZAutoStart";
+NSString *const CZSettingsWindowState = @"CZWindowState";
+NSString *const CZApplicationSettingsFileName = @"CZSettings.plist";
 
-NSString *const kImageNameForNoHighlight = @"DropFolderNormal";
-NSString *const kImageNameForHighlight = @"DropFolderHighlighted";
-
-NSString *const kDefaultNotifySoundName = @"Glass";
-
-NSString *const kStatusIconError = @"statusError";
-NSString *const kStatusIconSuccess = @"statusSuccess";
-NSString *const kStatusIconCloseNormal = @"statusCloseNormal";
-NSString *const kStatusIconCloseHover = @"statusCloseHover";
-
-NSString *const kIdentifierForSettingsAlertSound = @"CZAlertSound";
-NSString *const kIdentifierForSettingsAutoStart = @"CZAutoStart";
-NSString *const kIdentifierForSettingsDockBadge = @"CZBadgeDockIcon";
-NSString *const kIdentifierForSettingsDeleteFolders = @"CZDeleteFolders";
-NSString *const kIdentifierForSettingsExcludeHidden = @"CZExcludeHidden";
-NSString *const kIdentifierForSettingsExcludeThumbs = @"CZExcludeThumbs";
-NSString *const kIdentifierForSettingsExcludeEmptyFolders = @"CZExcludeEmptyFolders";
-NSString *const kIdentifierForSettingsExcludeEmptyFiles = @"CZExcludeEmptyFiles";
-NSString *const kIdentifierForSettingsExcludedFiles = @"CZExcludedFiles";
-NSString *const kIdentifierForSettingsUserNotification = @"CZUserNotify";
-
-NSString *const kidentifierForSettingsWindowState = @"CZWindowState";
-NSString *const kApplicationSettingsFileName = @"CZSettings.plist";
-
-NSString *kApplicationSupportPath;
-NSString *kApplicationCachePath;
-NSString *kApplicationSettingsPath;
-
-NSArray *kValidFileExtensions;
-
-
-+ (NSArray *)kHiddenRegEx {
-    return @[@"^\\.\\w+"];
++ (NSString *)CZApplicationSupportPath {
+    NSString *applicationSupportPath = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) firstObject];
+    return [NSString stringWithFormat:@"%@/%@", applicationSupportPath, CZApplicationName];
 }
 
-+ (NSArray *)kThumbsRegEx {
-    return @[@"Thumbs.db$", @"__MACOSX"];
++ (NSString *)CZApplicationCachePath {
+    NSString *cacheDirectoryPath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    return [cacheDirectoryPath stringByAppendingPathComponent:CZApplicationName];
 }
 
++ (NSString *)CZApplicationSettingsPath {
+     return [NSString stringWithFormat:@"%@/%@", [Constants CZApplicationSupportPath], CZApplicationSettingsFileName];
+}
+
++ (NSArray *)CZValidFileExtensions {
+    return @[@"jpg", @"jpeg", @"png", @"gif", @"tiff", @"tif", @"bmp"];
+}
+
++ (NSArray *)CZFilterHidden {
+    return @[@"^\\.(?!DS_Store|_)\\w+"];
+}
+
++ (NSArray *)CZFilterMeta {
+    return @[@"Thumbs.db$", @"__MACOSX", @".DS_Store", @"^\\._\\w+"];
+}
 
 @end

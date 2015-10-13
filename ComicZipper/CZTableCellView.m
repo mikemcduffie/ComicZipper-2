@@ -60,7 +60,7 @@
 }
 
 - (void)setStatus:(NSString *)status {
-    if ([status isEqual:kStatusIconSuccess]) {
+    if ([status isEqual:CZStatusIconSuccess]) {
         [[self statusIconView] setImage:[NSImage imageNamed:status]];
     } else {
         [[self statusButton] setImage:[NSImage imageNamed:status]];
