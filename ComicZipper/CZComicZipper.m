@@ -162,7 +162,7 @@
 - (void)readyToCompress {
     for (CZDropItem *item in [self archiveItems]) {
         // Do not compress already archived items.
-        if (![item isArchived]) {
+        if (![item isArchived] && ![item isRunning]) {
             [[self operations] addOperation:[self compressItem:item]];
         }
     }
