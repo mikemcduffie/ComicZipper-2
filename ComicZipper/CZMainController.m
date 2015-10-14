@@ -252,12 +252,14 @@ int const kLabelTag = 101;
             [cellView setDetailText:[item fileSize]];
         }
     } else if ([[column identifier] isEqualToString:@"ColumnRight"]) {
+        [cellView setIdentifier:[NSString stringWithFormat:@"%li", row]];
         if ([item isArchived]) {
-            [cellView setStatus:@"statusSuccess"];
-        } else if ([item isRunning]) {
-            [cellView setStatus:@"statusCloseNormal"];
+            [cellView setStatus:CZStatusIconSuccess];
+        } else if ([item isCancelled]) {
+            [cellView setStatus:CZStatusIconError];
         } else {
-            [cellView setStatus:@"statusCloseNormal"];
+            [cellView setStatus:CZStatusIconAbortNormal];
+            [cellView setAction:@selector(cancelCompression:) forTarget:self];
         }
     }
         
@@ -311,6 +313,13 @@ didFinishItemAtIndex:(NSUInteger)index {
 
 }
 
+- (void)ComicZipper:(CZComicZipper *)comicZipper didCancelItemAtIndex:(NSUInteger)index {
+    NSIndexSet *rowIndexes = [[NSIndexSet alloc] initWithIndex:index];
+    NSIndexSet *colIndexes = [[NSIndexSet alloc] initWithIndexesInRange:NSMakeRange(0,3)];
+    [[self tableView] reloadDataForRowIndexes:rowIndexes
+                                columnIndexes:colIndexes];
+}
+
 #pragma mark DELEGATE AND DATA SOURCE METHODS FOR QUICKLOOK
 
 - (BOOL)acceptsPreviewPanelControl:(QLPreviewPanel *)panel {
@@ -339,6 +348,16 @@ didFinishItemAtIndex:(NSUInteger)index {
 }
 
 #pragma mark USER INTERACTION METHODS
+
+- (void)cancelCompression:(id)sender {
+    NSInteger index = [[sender identifier] integerValue];
+    CZDropItem *item = [[self comicZipper] itemWithIndex:index];
+    [item setCancelled:YES];
+    if (![item isRunning]) {
+        CZTableCellView *cellView = (CZTableCellView *)[sender superview];
+        [cellView setStatus:@"NSRefreshFreestandingTemplate"];
+    }
+}
 
 - (void)compressButton:(id)sender {
     [sender setEnabled:NO];

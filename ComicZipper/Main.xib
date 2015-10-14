@@ -71,7 +71,6 @@
                             <action selector="clearList:" target="-2" id="PeH-3h-7Ow"/>
                         </connections>
                     </toolbarItem>
-                    <toolbarItem implicitItemIdentifier="6EFF854D-8F1D-4D5A-93D0-28C5972355AE" label="Toolbar Item" paletteLabel="Toolbar Item" tag="-1" image="NSLeftFacingTriangleTemplate" id="bTu-bi-sbc"/>
                     <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="0Xi-JB-ink"/>
                 </allowedToolbarItems>
                 <defaultToolbarItems>
@@ -86,7 +85,6 @@
     </objects>
     <resources>
         <image name="DropFolderNormal" width="317" height="234"/>
-        <image name="NSLeftFacingTriangleTemplate" width="9" height="12"/>
         <image name="NSStopProgressFreestandingTemplate" width="14" height="14"/>
     </resources>
 </document>

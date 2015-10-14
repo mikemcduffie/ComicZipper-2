@@ -42,6 +42,8 @@
  */
 - (void)setProgress:(double)progress;
 
+- (void)setAction:(SEL)selector forTarget:(id)sender;
+
 - (NSTextField *)textFieldTitle;
 
 @end

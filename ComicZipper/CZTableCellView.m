@@ -60,11 +60,17 @@
 }
 
 - (void)setStatus:(NSString *)status {
-    if ([status isEqual:CZStatusIconSuccess]) {
-        [[self statusIconView] setImage:[NSImage imageNamed:status]];
-    } else {
+    if ([status isEqual:CZStatusIconAbortNormal]) {
         [[self statusButton] setImage:[NSImage imageNamed:status]];
+    } else {
+        [[self statusIconView] setImage:[NSImage imageNamed:status]];
     }
+}
+
+- (void)setAction:(SEL)selector forTarget:(id)sender {
+    [[self statusButton] setTarget:sender];
+    [[self statusButton] setAction:selector];
+    [[self statusButton] setIdentifier:[self identifier]];
 }
 
 - (void)setProgress:(double)progress {

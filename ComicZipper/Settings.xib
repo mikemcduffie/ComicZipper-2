@@ -210,7 +210,7 @@
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bdj-NB-DEr">
                     <rect key="frame" x="38" y="195" width="236" height="19"/>
                     <animations/>
-                    <buttonCell key="cell" type="check" title="Exclude empty files and folders" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="G2O-Oz-YOc">
+                    <buttonCell key="cell" type="check" title="Exclude empty files" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="G2O-Oz-YOc">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" size="12" name="HelveticaNeue-Light"/>
                     </buttonCell>

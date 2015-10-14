@@ -72,6 +72,17 @@
     [self menuItemRemove];
 }
 
+- (void)mouseDown:(NSEvent *)event {
+    if ([event clickCount] > 1) {
+        NSPoint point = [self convertPoint:[event locationInWindow] fromView:nil];
+        NSInteger row = [self rowAtPoint:point];
+        NSIndexSet *i = [NSIndexSet indexSetWithIndex:row];
+        [[self delegate] openItemInFinder:i];
+    }
+    
+    [super mouseDown:event];
+}
+
 - (NSMenu *)menuForEvent:(NSEvent *)event {
     NSPoint point = [self convertPoint:[event locationInWindow] fromView:nil];
     NSInteger row = [self rowAtPoint:point];

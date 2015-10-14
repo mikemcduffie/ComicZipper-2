@@ -13,6 +13,7 @@
 @required
 - (void)ComicZipper:(CZComicZipper *)comicZipper didStartItemAtIndex:(NSUInteger)index;
 - (void)ComicZipper:(CZComicZipper *)comicZipper didFinishItemAtIndex:(NSUInteger)index;
+- (void)ComicZipper:(CZComicZipper *)comicZipper didCancelItemAtIndex:(NSUInteger)index;
 - (void)ComicZipper:(CZComicZipper *)comicZipper didUpdateProgress:(float)progress ofItemAtIndex:(NSUInteger)index;
 
 @end
@@ -31,6 +32,7 @@
 - (BOOL)isItemInList:(NSString *)description;
 - (CZDropItem *)itemWithIndex:(NSInteger)index;
 - (NSArray *)itemsWithIndex:(NSIndexSet *)indexes;
+- (void)removeItemWithIndex:(NSInteger)index;
 - (void)removeItemsWithIndexes:(NSIndexSet *)indexes;
 - (void)readyToCompress;
 - (void)ignoreFiles:(NSArray *)list;

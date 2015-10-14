@@ -110,6 +110,11 @@
 - (NSArray *)itemsWithIndex:(NSIndexSet *)indexes {
     return [[self archiveItems] objectsAtIndexes:indexes];
 }
+
+- (void)removeItemWithIndex:(NSInteger)index {
+    NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:index];
+    [self removeItemsWithIndexes:indexSet];
+}
 /*!
  *  @brief Remove items from the array.
  *  @discussion Remove CZDropItem objects from the archive items array, specified by their indexes.
@@ -160,12 +165,15 @@
 }
 
 - (void)readyToCompress {
+    [[self operations] addOperationWithBlock:^{
     for (CZDropItem *item in [self archiveItems]) {
         // Do not compress already archived items.
-        if (![item isArchived] && ![item isRunning]) {
-            [[self operations] addOperation:[self compressItem:item]];
+        if (![item isArchived] && ![item isRunning] && ![item isCancelled]) {
+            NSOperation *operation = [self compressItem:item];
+            [operation start];
         }
     }
+    }];
 }
 
 - (void)compressOperation:(NOZCompressOperation *)operation didCompleteWithResult:(NOZCompressResult *)result {
@@ -173,18 +181,23 @@
         NSUInteger index = [[operation name] integerValue];
         CZDropItem *item = [[self archiveItems] objectAtIndex:index];
         [item setRunning:NO];
-        [item setArchived:YES];
-        [self moveItem:item];
-        [[self delegate] ComicZipper:self
-                didFinishItemAtIndex:index];
-        if ([self shouldDeleteFolder]) {
-            [[self foldersToDelete] addObject:[NSURL fileURLWithPath:[item folderPath]]];
-            if ([[self operations] operationCount] == 0) {
-                [self deleteFolders];
+        
+        if ([operation isCancelled]) {
+            [[self delegate] ComicZipper:self
+                    didCancelItemAtIndex:index];
+        } else {
+            [item setArchived:YES];
+            [self moveItem:item];
+            [[self delegate] ComicZipper:self
+                    didFinishItemAtIndex:index];
+            if ([self shouldDeleteFolder]) {
+                [[self foldersToDelete] addObject:[NSURL fileURLWithPath:[item folderPath]]];
             }
         }
+        
         if ([[self operations] operationCount] == 0) {
             [self setRunning:NO];
+            [self deleteFolders];
         }
     });
     result = nil;
@@ -194,7 +207,15 @@
 - (void)compressOperation:(NOZCompressOperation *)operation didUpdateProgress:(float)progress {
     dispatch_async(dispatch_get_main_queue(), ^{
         NSUInteger index = [[operation name] integerValue];
-        if ([[[self archiveItems] objectAtIndex:index] isRunning]) {
+        CZDropItem *item = [[self archiveItems] objectAtIndex:index];
+        if ([item isCancelled] && ![operation isCancelled]) {
+            [operation cancel];
+            if ([operation isCancelled]) {
+                [[self delegate] ComicZipper:self
+                        didCancelItemAtIndex:index];
+            }
+        }
+        if ([item isRunning]) {
             [[self delegate] ComicZipper:self
                        didUpdateProgress:progress
                            ofItemAtIndex:index];
@@ -211,9 +232,11 @@
 }
 
 - (void)deleteFolders {
-    [[NSWorkspace sharedWorkspace] recycleURLs:[self foldersToDelete]
-                             completionHandler:nil];
-    [self setFoldersToDelete:nil];
+    if (_foldersToDelete != nil) {
+        [[NSWorkspace sharedWorkspace] recycleURLs:[self foldersToDelete]
+                                 completionHandler:nil];
+        [self setFoldersToDelete:nil];
+    }
 }
 
 - (NSOperationQueue *)operations {

@@ -98,7 +98,7 @@
     if ([self numberOfValidItemsForDrop]) {
         return NSDragOperationCopy;
     }
-    
+    [self setViewHighlight:NO];
     return NSDragOperationNone;
 }
 

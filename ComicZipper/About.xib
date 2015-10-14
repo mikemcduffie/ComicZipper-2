@@ -51,7 +51,7 @@
                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="J3k-hx-JAM">
                         <rect key="frame" x="158" y="66" width="239" height="44"/>
                         <animations/>
-                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="Code by Ardalan Samimi. Icon and images created by Mike McDuffie." id="MYp-8U-Vnu">
+                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="Code by Ardalan Samimi. Icon, images &amp; help book by Mike McDuffie." id="MYp-8U-Vnu">
                             <font key="font" size="12" name="HelveticaNeue-Light"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
