@@ -26,6 +26,7 @@
 @property (weak) CZTableView *tableView;
 @property (weak) NSButton *compressButton;
 @property (strong) IBOutlet NSToolbarItem *toolbarClear;
+@property (strong) IBOutlet NSToolbarItem *toolbarCancel;
 @property (strong) IBOutlet NSToolbar *toolbar;
 @property (nonatomic, weak) NSUserNotificationCenter *notificationCenter;
 @property (nonatomic) long numberOfItemsToCompress, numberOfItemsCompressed;
@@ -37,6 +38,10 @@
 int const kLabelTag = 101;
 
 @implementation CZMainController
+
+- (void)cancelAll:(id)sender {
+    [[self comicZipper] cancelAll];
+}
 
 - (void)clearList:(id)sender {
     [[self comicZipper] clear];
@@ -248,6 +253,8 @@ int const kLabelTag = 101;
         [cellView setTitleText:[item description]];
         if ([item isArchived]) {
             [cellView setDetailText:[item archivePath]];
+        } else if ([item isCancelled]) {
+            [cellView setDetailText:@"Cancelled by user."];
         } else {
             [cellView setDetailText:[item fileSize]];
         }
@@ -283,8 +290,7 @@ int const kLabelTag = 101;
     }
 }
 
-- (void)ComicZipper:(CZComicZipper *)comicZipper
-didStartItemAtIndex:(NSUInteger)index {
+- (void)ComicZipper:(CZComicZipper *)comicZipper didStartItemAtIndex:(NSUInteger)index {
     // For performance issues reload only the specific row that needs updating.
     NSIndexSet *rowIndexes = [[NSIndexSet alloc] initWithIndex:index];
     NSIndexSet *colIndexes = [[NSIndexSet alloc] initWithIndexesInRange:NSMakeRange(0,3)];
@@ -293,17 +299,14 @@ didStartItemAtIndex:(NSUInteger)index {
     [self updateBadgeLabel];
 }
 
-- (void)ComicZipper:(CZComicZipper *)comicZipper
-  didUpdateProgress:(float)progress
-      ofItemAtIndex:(NSUInteger)index {
+- (void)ComicZipper:(CZComicZipper *)comicZipper didUpdateProgress:(float)progress ofItemAtIndex:(NSUInteger)index {
     CZTableCellView *cellView = [[self tableView] viewAtColumn:1
                                                            row:index
                                                makeIfNecessary:YES];
     [cellView setProgress:progress];
 }
 
-- (void)ComicZipper:(CZComicZipper *)comicZipper
-didFinishItemAtIndex:(NSUInteger)index {
+- (void)ComicZipper:(CZComicZipper *)comicZipper didFinishItemAtIndex:(NSUInteger)index {
     // For performance issues reload only the specific row that needs updating.
     NSIndexSet *rowIndexes = [[NSIndexSet alloc] initWithIndex:index];
     NSIndexSet *colIndexes = [[NSIndexSet alloc] initWithIndexesInRange:NSMakeRange(0,3)];
@@ -318,6 +321,7 @@ didFinishItemAtIndex:(NSUInteger)index {
     NSIndexSet *colIndexes = [[NSIndexSet alloc] initWithIndexesInRange:NSMakeRange(0,3)];
     [[self tableView] reloadDataForRowIndexes:rowIndexes
                                 columnIndexes:colIndexes];
+    [self updateCountWithCancel:YES];
 }
 
 #pragma mark DELEGATE AND DATA SOURCE METHODS FOR QUICKLOOK
@@ -354,8 +358,15 @@ didFinishItemAtIndex:(NSUInteger)index {
     CZDropItem *item = [[self comicZipper] itemWithIndex:index];
     [item setCancelled:YES];
     if (![item isRunning]) {
-        CZTableCellView *cellView = (CZTableCellView *)[sender superview];
-        [cellView setStatus:@"NSRefreshFreestandingTemplate"];
+        NSIndexSet *rowIndexes = [[NSIndexSet alloc] initWithIndex:index];
+        NSIndexSet *colIndexes = [[NSIndexSet alloc] initWithIndexesInRange:NSMakeRange(0,3)];
+        [[self tableView] reloadDataForRowIndexes:rowIndexes
+                                    columnIndexes:colIndexes];
+        if ([self numberOfItemsToCompress] > 0) {
+            [self setNumberOfItemsToCompress:[self numberOfItemsToCompress]-1];
+            NSInteger count = [self numberOfItemsToCompress];
+            [self updateLabelForTableView:[NSString stringWithFormat:@"%li item(s) to compress", count]];
+        }
     }
 }
 
@@ -368,6 +379,8 @@ didFinishItemAtIndex:(NSUInteger)index {
     [[self comicZipper] ignoreFiles:ignoredFiles];
     [[self comicZipper] shouldIgnoreEmptyData:[self shouldIgnoreEmptyData]];
     [[self comicZipper] readyToCompress];
+    [[self toolbar] removeItemAtIndex:1];
+    [[self toolbar] insertItemWithItemIdentifier:[[self toolbarCancel] itemIdentifier]  atIndex:1];
 }
 
 - (void)updateLabelForTableView:(NSString *)stringValue {
@@ -376,7 +389,16 @@ didFinishItemAtIndex:(NSUInteger)index {
 }
 
 - (void)updateCount {
-    [self setNumberOfItemsCompressed:[self numberOfItemsCompressed]+1];
+    [self updateCountWithCancel:NO];
+}
+
+- (void)updateCountWithCancel:(BOOL)cancelled {
+    if (cancelled) {
+        [self setNumberOfItemsToCompress:[self numberOfItemsToCompress]-1];
+    } else {
+        [self setNumberOfItemsCompressed:[self numberOfItemsCompressed]+1];
+    }
+    
     NSInteger totalCount = [self numberOfItemsToCompress];
     NSInteger readyCount = [self numberOfItemsCompressed];
     NSString *labelCount;
@@ -390,6 +412,8 @@ didFinishItemAtIndex:(NSUInteger)index {
         } else {
             [self notifyUser:labelCount];
         }
+        [[self toolbar] removeItemAtIndex:1];
+        [[self toolbar] insertItemWithItemIdentifier:[[self toolbarClear] itemIdentifier]  atIndex:1];
     } else {
         labelCount = [NSString stringWithFormat:@"%li of %li item(s) compressed...", readyCount, totalCount];
     }

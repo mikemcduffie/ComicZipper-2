@@ -136,6 +136,16 @@
     [self setArchiveItems:nil];
 }
 
+- (void)cancelAll {
+    if (_operations) {
+        [[self operations] cancelAllOperations];
+        
+        for (CZDropItem *item in [self archiveItems]) {
+            [item setCancelled:YES];
+        }
+    }
+}
+
 #pragma mark COMPRESSION METHODS
 
 - (NSOperation *)compressItem:(CZDropItem *)item {
@@ -165,15 +175,12 @@
 }
 
 - (void)readyToCompress {
-    [[self operations] addOperationWithBlock:^{
     for (CZDropItem *item in [self archiveItems]) {
         // Do not compress already archived items.
         if (![item isArchived] && ![item isRunning] && ![item isCancelled]) {
-            NSOperation *operation = [self compressItem:item];
-            [operation start];
+            [[self operations] addOperation:[self compressItem:item]];
         }
     }
-    }];
 }
 
 - (void)compressOperation:(NOZCompressOperation *)operation didCompleteWithResult:(NOZCompressResult *)result {
@@ -210,10 +217,6 @@
         CZDropItem *item = [[self archiveItems] objectAtIndex:index];
         if ([item isCancelled] && ![operation isCancelled]) {
             [operation cancel];
-            if ([operation isCancelled]) {
-                [[self delegate] ComicZipper:self
-                        didCancelItemAtIndex:index];
-            }
         }
         if ([item isRunning]) {
             [[self delegate] ComicZipper:self

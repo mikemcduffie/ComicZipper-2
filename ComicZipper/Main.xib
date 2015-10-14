@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="8191" systemVersion="14E46" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="8191"/>
     </dependencies>
@@ -9,6 +9,7 @@
                 <outlet property="dropView" destination="3x7-LV-4ti" id="XGt-Q2-JPQ"/>
                 <outlet property="imageView" destination="Tk4-cA-RkM" id="xTT-eq-EPS"/>
                 <outlet property="toolbar" destination="zQ5-rN-TdZ" id="M1h-De-U0O"/>
+                <outlet property="toolbarCancel" destination="Vny-6e-HdN" id="FMW-l4-814"/>
                 <outlet property="toolbarClear" destination="TlH-r1-aWI" id="ANw-MH-LjK"/>
                 <outlet property="window" destination="F0z-JX-Cv5" id="ngW-S6-C7U"/>
             </connections>
@@ -19,7 +20,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowCollectionBehavior key="collectionBehavior" fullScreenAuxiliary="YES"/>
             <rect key="contentRect" x="0.0" y="0.0" width="400" height="322"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
             <value key="minSize" type="size" width="400" height="322"/>
             <view key="contentView" id="se5-gp-TjO">
                 <rect key="frame" x="0.0" y="0.0" width="400" height="322"/>
@@ -69,6 +70,11 @@
                     <toolbarItem implicitItemIdentifier="6003A446-FBFE-493D-87B8-28392FF02820" label="Clear list" paletteLabel="Clear list" tag="-1" image="NSStopProgressFreestandingTemplate" id="TlH-r1-aWI">
                         <connections>
                             <action selector="clearList:" target="-2" id="PeH-3h-7Ow"/>
+                        </connections>
+                    </toolbarItem>
+                    <toolbarItem implicitItemIdentifier="FEB7093F-A13B-42C7-AC6C-205F5EC1C972" label="Cancel all" paletteLabel="Cancel all" tag="-1" image="NSStopProgressFreestandingTemplate" id="Vny-6e-HdN">
+                        <connections>
+                            <action selector="cancelAll:" target="-2" id="sPf-QH-i8l"/>
                         </connections>
                     </toolbarItem>
                     <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="0Xi-JB-ink"/>

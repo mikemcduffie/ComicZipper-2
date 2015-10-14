@@ -37,6 +37,8 @@
 - (void)readyToCompress;
 - (void)ignoreFiles:(NSArray *)list;
 - (void)shouldIgnoreEmptyData:(BOOL)value;
+
+- (void)cancelAll;
 - (void)clear;
 
 @end

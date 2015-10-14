@@ -18,5 +18,5 @@
 - (void)addItemsDraggedToDock:(NSArray *)items;
 
 - (IBAction)clearList:(id)sender;
-
+- (IBAction)cancelAll:(id)sender;
 @end
