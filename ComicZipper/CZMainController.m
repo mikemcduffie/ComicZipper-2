@@ -189,22 +189,24 @@ int const kLabelTag = 101;
      atRowIndexes:(NSIndexSet *)indexes
       withCommand:(BOOL)commandState {
     if (keyCode == kDeleteKey) {
-        [[self comicZipper] removeItemsWithIndexes:indexes];
-        [[self tableView] removeRowsAtIndexes:indexes
-                                withAnimation:NO];
-        if ([[self comicZipper] countAll]) {
-            NSUInteger firstIndex = [indexes firstIndex];
-            if (firstIndex >= [[self comicZipper] countAll]) {
-                firstIndex--;
-            }
-            [[self tableView] selectRowIndexes:[NSIndexSet indexSetWithIndex:firstIndex]
-                          byExtendingSelection:NO];
+        if ([[self comicZipper] isRunning] == NO) {
+            [[self comicZipper] removeItemsWithIndexes:indexes];
+            [[self tableView] removeRowsAtIndexes:indexes
+                                    withAnimation:NO];
             if ([[self comicZipper] countAll]) {
-                [self updateCount];
+                NSUInteger firstIndex = [indexes firstIndex];
+                if (firstIndex >= [[self comicZipper] countAll]) {
+                    firstIndex--;
+                }
+                [[self tableView] selectRowIndexes:[NSIndexSet indexSetWithIndex:firstIndex]
+                              byExtendingSelection:NO];
+                if ([[self comicZipper] countAll]) {
+                    [self updateCount];
+                }
+            } else {
+                [self setApplicationState:CZApplicationStateNoItemDropped];
+                [self updateUI];
             }
-        } else {
-            [self setApplicationState:CZApplicationStateNoItemDropped];
-            [self updateUI];
         }
     } else if (keyCode == 0 && commandState) {
         NSRange range = NSMakeRange(0, [[self tableView] numberOfRows]);
@@ -376,45 +378,32 @@ int const kLabelTag = 101;
     [label setStringValue:stringValue];
 }
 
-- (BOOL)isApplicationActive {
-    return [[NSApplication sharedApplication] isActive];
-}
-
-- (BOOL)isToolbarItemVisible:(NSToolbarItem *)toolbarItem {
-    return [[[self toolbar] items] containsObject:[self toolbarClear]];
-}
-
-- (void)switchToolbarItems {
-    if ([self isToolbarItemVisible:[self toolbarCancel]]) {
-        [[self toolbar] removeItemAtIndex:1];
-        [[self toolbar] insertItemWithItemIdentifier:[[self toolbarClear] itemIdentifier]  atIndex:1];
-    } else {
-        [[self toolbar] removeItemAtIndex:1];
-        [[self toolbar] insertItemWithItemIdentifier:[[self toolbarCancel] itemIdentifier]  atIndex:1];
-    }
-}
-
 - (void)updateCount {
     // Get the correct number of items in queue
     NSInteger numberOfItemsToCompress = [[self comicZipper] countAll] - [[self comicZipper] countCancelled];
     NSInteger numberOfItemsCompressed = [[self comicZipper] countArchived];
-    NSString *countLabel;
-    if (numberOfItemsCompressed == numberOfItemsToCompress) {
-        // If the compression has finished
-        countLabel = [NSString stringWithFormat:@"%li item(s) compressed!", numberOfItemsCompressed];
-        if ([self isApplicationActive]) {
-            [self playSound];
+    NSInteger countActive = 0;
+    NSString *countLabel = @"";
+    if ([[self comicZipper] isRunning]) {
+        if (numberOfItemsCompressed == numberOfItemsToCompress) {
+            // If the compression has finished
+            countLabel = [NSString stringWithFormat:@"%li item(s) compressed!", numberOfItemsCompressed];
+            if ([self isApplicationActive]) {
+                [self playSound];
+            } else {
+                [self notifyUser:countLabel];
+            }
+            // Switch the toolbar items
+            [self switchToolbarItems];
         } else {
-            [self notifyUser:countLabel];
+            countLabel = [NSString stringWithFormat:@"%li of %li item(s) compressed...", numberOfItemsCompressed, numberOfItemsToCompress];
         }
-        // Switch the toolbar items
-        [self switchToolbarItems];
+        countActive = [[self comicZipper] countActive];
+        [self updateLabelForTableView:countLabel];
     } else {
-        countLabel = [NSString stringWithFormat:@"%li of %li item(s) compressed...", numberOfItemsCompressed, numberOfItemsToCompress];
+        [self updateLabelForTableView:[NSString stringWithFormat:@"%li item(s) to compress", numberOfItemsToCompress]];
     }
-    [self updateBadgeLabel:[[self comicZipper] countActive]];
-    [self updateLabelForTableView:countLabel];
-    
+    [self updateBadgeLabel:countActive];
 }
 
 #pragma mark USER INTERFACE METHODS
@@ -519,6 +508,26 @@ int const kLabelTag = 101;
                          toItem:label
                   withAttribute:NSLayoutAttributeCenterX
                     andConstant:0];
+    
+    NSButton *button = [[NSButton alloc] initWithFrame:NSMakeRect(0, frameSize.height, 100, 50)];
+    [button setBordered:NO];
+    [button setEnabled:NO];
+    //    [button setAction:@selector(compressButton:)];
+    [button setButtonType:NSMomentaryChangeButton];
+    [button setBezelStyle:NSThickerSquareBezelStyle];
+    [button setHighlighted:NO];
+    [button setImage:[NSImage imageNamed:@"NSStopProgressFreestandingTemplate"]];
+    [button setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [[self dropView] addSubview:button];
+    [self setConstraintWithItem:[[self window] contentView]
+                         toItem:button
+                  withAttribute:NSLayoutAttributeTop
+                    andConstant:-10];
+    [self setConstraintWithItem:[[self window] contentView]
+                         toItem:button
+                  withAttribute:NSLayoutAttributeTrailing
+                    andConstant:10];
+    [self setButton:button];
 }
 
 /*!
@@ -649,6 +658,20 @@ int const kLabelTag = 101;
 
 - (BOOL)isApplicationBadgeSet {
     return (![[NSApp dockTile] badgeLabel]) ? NO : YES;
+}
+
+- (BOOL)isApplicationActive {
+    return [[NSApplication sharedApplication] isActive];
+}
+
+- (void)switchToolbarItems {
+    if ([[self comicZipper] isRunning]) {
+        [[self toolbar] removeItemAtIndex:1];
+        [[self toolbar] insertItemWithItemIdentifier:[[self toolbarClear] itemIdentifier]  atIndex:1];
+    } else {
+        [[self toolbar] removeItemAtIndex:1];
+        [[self toolbar] insertItemWithItemIdentifier:[[self toolbarCancel] itemIdentifier]  atIndex:1];
+    }
 }
 /*!
  *  @brief Creates an animation simulating a shake.
