@@ -81,11 +81,23 @@
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isArchived == NO"];
     return [[[self archiveItems] filteredArrayUsingPredicate:predicate] count];
 }
+
+- (NSInteger)countActive {
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isCancelled == NO && isArchived == NO"];
+    return [[[self archiveItems] filteredArrayUsingPredicate:predicate] count];
+}
+
+
 /*!
  *  @brief Returns the number of items archived in the list.
  */
 - (NSInteger)countArchived {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isArchived == YES"];
+    return [[[self archiveItems] filteredArrayUsingPredicate:predicate] count];
+}
+
+- (NSInteger)countCancelled {
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isCancelled == YES && isArchived == NO"];
     return [[[self archiveItems] filteredArrayUsingPredicate:predicate] count];
 }
 /*!
@@ -164,7 +176,7 @@
                                                                            delegate:self];
     [operation setName:processTag];
     dispatch_async(dispatch_get_main_queue(), ^{
-        [item setRunning:YES];
+//        [item setRunning:YES];
         [[self delegate] ComicZipper:self
                  didStartItemAtIndex:[processTag integerValue]];
         if (![self isRunning]) {
@@ -188,7 +200,6 @@
         NSUInteger index = [[operation name] integerValue];
         CZDropItem *item = [[self archiveItems] objectAtIndex:index];
         [item setRunning:NO];
-        
         if ([operation isCancelled]) {
             [[self delegate] ComicZipper:self
                     didCancelItemAtIndex:index];
@@ -215,13 +226,17 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         NSUInteger index = [[operation name] integerValue];
         CZDropItem *item = [[self archiveItems] objectAtIndex:index];
+        if (![item isRunning]) {
+            [item setRunning:YES];
+        }
         if ([item isCancelled] && ![operation isCancelled]) {
             [operation cancel];
-        }
-        if ([item isRunning]) {
-            [[self delegate] ComicZipper:self
-                       didUpdateProgress:progress
-                           ofItemAtIndex:index];
+        } else {
+            if ([item isRunning]) {
+                [[self delegate] ComicZipper:self
+                           didUpdateProgress:progress
+                               ofItemAtIndex:index];
+            }
         }
     });
 }

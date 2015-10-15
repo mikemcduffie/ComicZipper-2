@@ -25,7 +25,9 @@
 @property (nonatomic, readonly, getter = isRunning) BOOL running;
 
 - (NSInteger)count;
+- (NSInteger)countActive;
 - (NSInteger)countArchived;
+- (NSInteger)countCancelled;
 - (NSInteger)countAll;
 - (void)addItems:(NSArray *)items;
 - (void)addItem:(CZDropItem *)item;

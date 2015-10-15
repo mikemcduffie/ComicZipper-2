@@ -25,11 +25,11 @@
 @property (weak) CZScrollView *scrollView;
 @property (weak) CZTableView *tableView;
 @property (weak) NSButton *compressButton;
+@property (weak) NSButton *button;
 @property (strong) IBOutlet NSToolbarItem *toolbarClear;
 @property (strong) IBOutlet NSToolbarItem *toolbarCancel;
 @property (strong) IBOutlet NSToolbar *toolbar;
 @property (nonatomic, weak) NSUserNotificationCenter *notificationCenter;
-@property (nonatomic) long numberOfItemsToCompress, numberOfItemsCompressed;
 @property (nonatomic) NSDictionary *applicationSettings;
 @property (strong) IBOutlet NSImageView *imageView;
 
@@ -60,8 +60,6 @@ int const kLabelTag = 101;
         _comicZipper = comicZipper;
         _applicationState = applicationState;
         _applicationSettings = applicationSettings;
-        _numberOfItemsToCompress = 0;
-        _numberOfItemsCompressed = 0;
     }
     
     return self;
@@ -132,7 +130,6 @@ int const kLabelTag = 101;
             [self setCompressButton:nil];
             [[[self dropView] viewWithTag:kLabelTag] removeFromSuperview];
             [[self toolbar] removeItemAtIndex:1];
-            [self resetCount];
         }
     } else if ([self applicationStateIs:CZApplicationStateFirstItemDrop]) {
         [[self window] setBackgroundColor:[NSColor controlHighlightColor]];
@@ -159,7 +156,6 @@ int const kLabelTag = 101;
 - (void)dropView:(CZDropView *)dropView didReceiveFiles:(NSArray *)items {
     // Add dropped items to the array collection before updating user interface.
     [[self comicZipper] addItems:items];
-    [self setNumberOfItemsToCompress:[[self comicZipper] count]];
     // First time drop should create the table.
     if ([self applicationStateIs:CZApplicationStateNoItemDropped]) {
         [self setApplicationState:CZApplicationStateFirstItemDrop];
@@ -203,10 +199,8 @@ int const kLabelTag = 101;
             }
             [[self tableView] selectRowIndexes:[NSIndexSet indexSetWithIndex:firstIndex]
                           byExtendingSelection:NO];
-            if ([self numberOfItemsToCompress]) {
-                [self setNumberOfItemsToCompress:[self numberOfItemsToCompress]-[indexes count]];
-                NSInteger count = [self numberOfItemsToCompress];
-                [self updateLabelForTableView:[NSString stringWithFormat:@"%li item(s) to compress", count]];                
+            if ([[self comicZipper] countAll]) {
+                [self updateCount];
             }
         } else {
             [self setApplicationState:CZApplicationStateNoItemDropped];
@@ -279,9 +273,9 @@ int const kLabelTag = 101;
     didAddRowView:(NSTableRowView *)rowView
            forRow:(NSInteger)row {
     // When the last row is added, the top label should be updated and the compression, if set up that way, start automatically.
-    if ([self numberOfItemsToCompress] == row+1) {
-        NSInteger count = [self numberOfItemsToCompress];
-        [self updateLabelForTableView:[NSString stringWithFormat:@"%li item(s) to compress", count]];
+    NSInteger numberOfItemsToCompress = [[self comicZipper] count] - [[self comicZipper] countCancelled];
+    if (numberOfItemsToCompress == row+1) {
+        [self updateLabelForTableView:[NSString stringWithFormat:@"%li item(s) to compress", numberOfItemsToCompress]];
         if ([self shouldAutoStartCompression]) {
             [self compressButton:[self compressButton]];
         } else {
@@ -296,7 +290,7 @@ int const kLabelTag = 101;
     NSIndexSet *colIndexes = [[NSIndexSet alloc] initWithIndexesInRange:NSMakeRange(0,3)];
     [[self tableView] reloadDataForRowIndexes:rowIndexes
                                 columnIndexes:colIndexes];
-    [self updateBadgeLabel];
+    [self updateCount];
 }
 
 - (void)ComicZipper:(CZComicZipper *)comicZipper didUpdateProgress:(float)progress ofItemAtIndex:(NSUInteger)index {
@@ -321,7 +315,7 @@ int const kLabelTag = 101;
     NSIndexSet *colIndexes = [[NSIndexSet alloc] initWithIndexesInRange:NSMakeRange(0,3)];
     [[self tableView] reloadDataForRowIndexes:rowIndexes
                                 columnIndexes:colIndexes];
-    [self updateCountWithCancel:YES];
+    [self updateCount];
 }
 
 #pragma mark DELEGATE AND DATA SOURCE METHODS FOR QUICKLOOK
@@ -362,25 +356,19 @@ int const kLabelTag = 101;
         NSIndexSet *colIndexes = [[NSIndexSet alloc] initWithIndexesInRange:NSMakeRange(0,3)];
         [[self tableView] reloadDataForRowIndexes:rowIndexes
                                     columnIndexes:colIndexes];
-        if ([self numberOfItemsToCompress] > 0) {
-            [self setNumberOfItemsToCompress:[self numberOfItemsToCompress]-1];
-            NSInteger count = [self numberOfItemsToCompress];
-            [self updateLabelForTableView:[NSString stringWithFormat:@"%li item(s) to compress", count]];
-        }
+        [self updateCount];
     }
 }
 
 - (void)compressButton:(id)sender {
     [sender setEnabled:NO];
-    NSString *label = [NSString stringWithFormat:@"0 out of %li item(s) compressed...", [self numberOfItemsToCompress]];
-    [self updateLabelForTableView:label];
     // Add the ignored files before compressing
     NSArray *ignoredFiles = [self shouldIgnoreFiles];
     [[self comicZipper] ignoreFiles:ignoredFiles];
     [[self comicZipper] shouldIgnoreEmptyData:[self shouldIgnoreEmptyData]];
     [[self comicZipper] readyToCompress];
-    [[self toolbar] removeItemAtIndex:1];
-    [[self toolbar] insertItemWithItemIdentifier:[[self toolbarCancel] itemIdentifier]  atIndex:1];
+    [self switchToolbarItems];
+    [self updateCount];
 }
 
 - (void)updateLabelForTableView:(NSString *)stringValue {
@@ -388,42 +376,45 @@ int const kLabelTag = 101;
     [label setStringValue:stringValue];
 }
 
-- (void)updateCount {
-    [self updateCountWithCancel:NO];
+- (BOOL)isApplicationActive {
+    return [[NSApplication sharedApplication] isActive];
 }
 
-- (void)updateCountWithCancel:(BOOL)cancelled {
-    if (cancelled) {
-        [self setNumberOfItemsToCompress:[self numberOfItemsToCompress]-1];
-    } else {
-        [self setNumberOfItemsCompressed:[self numberOfItemsCompressed]+1];
-    }
-    
-    NSInteger totalCount = [self numberOfItemsToCompress];
-    NSInteger readyCount = [self numberOfItemsCompressed];
-    NSString *labelCount;
-    if (readyCount == totalCount) {
-        labelCount = [NSString stringWithFormat:@"%li item(s) compressed!", readyCount];
-        [self resetCount];
-        if ([[NSApplication sharedApplication] isActive]) {
-            if ([self shouldPlaySound]) {
-                [self playSound];
-            }
-        } else {
-            [self notifyUser:labelCount];
-        }
+- (BOOL)isToolbarItemVisible:(NSToolbarItem *)toolbarItem {
+    return [[[self toolbar] items] containsObject:[self toolbarClear]];
+}
+
+- (void)switchToolbarItems {
+    if ([self isToolbarItemVisible:[self toolbarCancel]]) {
         [[self toolbar] removeItemAtIndex:1];
         [[self toolbar] insertItemWithItemIdentifier:[[self toolbarClear] itemIdentifier]  atIndex:1];
     } else {
-        labelCount = [NSString stringWithFormat:@"%li of %li item(s) compressed...", readyCount, totalCount];
+        [[self toolbar] removeItemAtIndex:1];
+        [[self toolbar] insertItemWithItemIdentifier:[[self toolbarCancel] itemIdentifier]  atIndex:1];
     }
-    [self updateBadgeLabel];
-    [self updateLabelForTableView:labelCount];
 }
 
-- (void)resetCount {
-    [self setNumberOfItemsToCompress:0];
-    [self setNumberOfItemsCompressed:0];
+- (void)updateCount {
+    // Get the correct number of items in queue
+    NSInteger numberOfItemsToCompress = [[self comicZipper] countAll] - [[self comicZipper] countCancelled];
+    NSInteger numberOfItemsCompressed = [[self comicZipper] countArchived];
+    NSString *countLabel;
+    if (numberOfItemsCompressed == numberOfItemsToCompress) {
+        // If the compression has finished
+        countLabel = [NSString stringWithFormat:@"%li item(s) compressed!", numberOfItemsCompressed];
+        if ([self isApplicationActive]) {
+            [self playSound];
+        } else {
+            [self notifyUser:countLabel];
+        }
+        // Switch the toolbar items
+        [self switchToolbarItems];
+    } else {
+        countLabel = [NSString stringWithFormat:@"%li of %li item(s) compressed...", numberOfItemsCompressed, numberOfItemsToCompress];
+    }
+    [self updateBadgeLabel:[[self comicZipper] countActive]];
+    [self updateLabelForTableView:countLabel];
+    
 }
 
 #pragma mark USER INTERFACE METHODS
@@ -636,19 +627,20 @@ int const kLabelTag = 101;
     }
 }
 
-- (void)updateBadgeLabel {
+- (void)updateBadgeLabel:(NSInteger)label {
     if ([self shouldBadgeDockIcon]) {
-        NSInteger badgeLabel = [self numberOfItemsToCompress] - [self numberOfItemsCompressed];
-        if (badgeLabel == 0) {
+        if (label == 0) {
             [self setApplicationBadge:@""];
         } else {
-            [self setApplicationBadge:[NSString stringWithFormat:@"%li", badgeLabel]];
+            [self setApplicationBadge:[NSString stringWithFormat:@"%li", label]];
         }
     }
 }
 
 - (void)playSound {
-    [[NSSound soundNamed:CZDefaultNotifySoundName] play];
+    if ([self shouldPlaySound]) {
+        [[NSSound soundNamed:CZDefaultNotifySoundName] play];
+    }
 }
 
 - (void)setApplicationBadge:(NSString *)badgeLabel {
