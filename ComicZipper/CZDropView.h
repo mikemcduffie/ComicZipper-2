@@ -11,10 +11,9 @@
 @protocol CZDropViewDelegate <NSObject>
 
 @required
-- (BOOL)isDropViewInFront;
 - (BOOL)dropView:(CZDropView *)dropView isItemInList:(NSString *)item;
 - (void)dropView:(CZDropView *)dropView didReceiveFiles:(NSArray *)files;
-- (void)dropView:(CZDropView *)dropView didAbortHighlight:(BOOL)highlight;
+- (void)dropView:(CZDropView *)dropView viewShouldHighlight:(BOOL)highlight;
 
 @end
 

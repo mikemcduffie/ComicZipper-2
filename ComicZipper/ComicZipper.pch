@@ -1,5 +1,5 @@
 #ifndef ComicZipper_pch
 #define ComicZipper_pch
 #define kCZAppDelegate ((CZAppDelegate *)[[NSApplication sharedApplication] delegate])
-#import "Constants.h"
+#import "CZConstants.h"
 #endif

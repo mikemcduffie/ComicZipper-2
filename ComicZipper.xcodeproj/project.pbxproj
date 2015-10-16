@@ -23,7 +23,10 @@
 		6A43CA291BD02DF60061C121 /* CZDropView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A43CA281BD02DF60061C121 /* CZDropView.m */; settings = {ASSET_TAGS = (); }; };
 		6A43CA2D1BD033380061C121 /* CZArchiveItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A43CA2C1BD033380061C121 /* CZArchiveItem.m */; settings = {ASSET_TAGS = (); }; };
 		6A43CA301BD0334B0061C121 /* CZDropItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A43CA2F1BD0334B0061C121 /* CZDropItem.m */; settings = {ASSET_TAGS = (); }; };
-		6A8676E01BD0517C00C5069F /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A8676DF1BD0517C00C5069F /* Constants.m */; settings = {ASSET_TAGS = (); }; };
+		6A8676E01BD0517C00C5069F /* CZConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A8676DF1BD0517C00C5069F /* CZConstants.m */; settings = {ASSET_TAGS = (); }; };
+		6A9CE7ED1BD1979B002145CC /* CZScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A9CE7EC1BD1979B002145CC /* CZScrollView.m */; settings = {ASSET_TAGS = (); }; };
+		6A9CE7F01BD19FA4002145CC /* ComicZipper.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A9CE7EF1BD19FA4002145CC /* ComicZipper.m */; settings = {ASSET_TAGS = (); }; };
+		6A9CE7F61BD1A7A9002145CC /* CZTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A9CE7F51BD1A7A9002145CC /* CZTableView.m */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -66,9 +69,15 @@
 		6A43CA2C1BD033380061C121 /* CZArchiveItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZArchiveItem.m; sourceTree = "<group>"; };
 		6A43CA2E1BD0334B0061C121 /* CZDropItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZDropItem.h; sourceTree = "<group>"; };
 		6A43CA2F1BD0334B0061C121 /* CZDropItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZDropItem.m; sourceTree = "<group>"; };
-		6A8676DE1BD0517C00C5069F /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
-		6A8676DF1BD0517C00C5069F /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
+		6A8676DE1BD0517C00C5069F /* CZConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZConstants.h; sourceTree = "<group>"; };
+		6A8676DF1BD0517C00C5069F /* CZConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZConstants.m; sourceTree = "<group>"; };
 		6A8676E11BD051E100C5069F /* ComicZipper.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ComicZipper.pch; sourceTree = "<group>"; };
+		6A9CE7EB1BD1979B002145CC /* CZScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZScrollView.h; sourceTree = "<group>"; };
+		6A9CE7EC1BD1979B002145CC /* CZScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZScrollView.m; sourceTree = "<group>"; };
+		6A9CE7EE1BD19FA4002145CC /* ComicZipper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComicZipper.h; sourceTree = "<group>"; };
+		6A9CE7EF1BD19FA4002145CC /* ComicZipper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ComicZipper.m; sourceTree = "<group>"; };
+		6A9CE7F41BD1A7A9002145CC /* CZTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZTableView.h; sourceTree = "<group>"; };
+		6A9CE7F51BD1A7A9002145CC /* CZTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZTableView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,8 +112,8 @@
 		6A43CA091BD029600061C121 /* ComicZipper */ = {
 			isa = PBXGroup;
 			children = (
-				6A8676DE1BD0517C00C5069F /* Constants.h */,
-				6A8676DF1BD0517C00C5069F /* Constants.m */,
+				6A8676DE1BD0517C00C5069F /* CZConstants.h */,
+				6A8676DF1BD0517C00C5069F /* CZConstants.m */,
 				6A278C701BD12602006C5B22 /* CZApplication.h */,
 				6A278C711BD12602006C5B22 /* CZApplication.m */,
 				6A43CA0A1BD029600061C121 /* AppDelegate.h */,
@@ -158,6 +167,10 @@
 			children = (
 				6A43CA271BD02DF60061C121 /* CZDropView.h */,
 				6A43CA281BD02DF60061C121 /* CZDropView.m */,
+				6A9CE7EB1BD1979B002145CC /* CZScrollView.h */,
+				6A9CE7EC1BD1979B002145CC /* CZScrollView.m */,
+				6A9CE7F41BD1A7A9002145CC /* CZTableView.h */,
+				6A9CE7F51BD1A7A9002145CC /* CZTableView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -169,6 +182,8 @@
 				6A43CA2C1BD033380061C121 /* CZArchiveItem.m */,
 				6A43CA2E1BD0334B0061C121 /* CZDropItem.h */,
 				6A43CA2F1BD0334B0061C121 /* CZDropItem.m */,
+				6A9CE7EE1BD19FA4002145CC /* ComicZipper.h */,
+				6A9CE7EF1BD19FA4002145CC /* ComicZipper.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -264,14 +279,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				6A43CA301BD0334B0061C121 /* CZDropItem.m in Sources */,
+				6A9CE7F01BD19FA4002145CC /* ComicZipper.m in Sources */,
 				6A43CA291BD02DF60061C121 /* CZDropView.m in Sources */,
 				6A43CA0F1BD029600061C121 /* main.m in Sources */,
 				6A278C721BD12602006C5B22 /* CZApplication.m in Sources */,
 				6A43CA201BD029E00061C121 /* CZWindowController.m in Sources */,
+				6A9CE7F61BD1A7A9002145CC /* CZTableView.m in Sources */,
 				6A43CA2D1BD033380061C121 /* CZArchiveItem.m in Sources */,
 				6A278C691BD10ABB006C5B22 /* CZMainViewController.m in Sources */,
-				6A8676E01BD0517C00C5069F /* Constants.m in Sources */,
+				6A8676E01BD0517C00C5069F /* CZConstants.m in Sources */,
 				6A278C641BD0CDB8006C5B22 /* CZTableViewController.m in Sources */,
+				6A9CE7ED1BD1979B002145CC /* CZScrollView.m in Sources */,
 				6A43CA0C1BD029600061C121 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -382,6 +400,7 @@
 				);
 				INFOPLIST_FILE = ComicZipper/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_BUNDLE_IDENTIFIER = SaturnFive.ComicZipper;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -398,6 +417,7 @@
 				);
 				INFOPLIST_FILE = ComicZipper/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_BUNDLE_IDENTIFIER = SaturnFive.ComicZipper;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

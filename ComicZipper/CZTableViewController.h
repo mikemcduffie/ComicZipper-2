@@ -6,8 +6,8 @@
 //  Copyright © 2015 Saturn Five. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
-
 @interface CZTableViewController : NSViewController
+
+@property (weak) id delegate;
 
 @end

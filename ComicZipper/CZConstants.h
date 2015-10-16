@@ -8,7 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface Constants : NSObject
+@interface CZConstants : NSObject
 
 typedef enum {
     /*!
@@ -27,5 +27,11 @@ typedef enum {
     CZApplicationStatePopulatedList
 } ApplicationStates;
 
+extern NSString *const CZApplicationName;
+extern NSString *const CZFileExtension;
+extern NSString *const CZDropViewNoHighlightImage;
+extern NSString *const CZDropViewHighlightImage;
 
++ (NSArray *)validFileExtensions;
++ (NSString *)cacheDirectoryPath;
 @end

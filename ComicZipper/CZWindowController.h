@@ -6,9 +6,25 @@
 //  Copyright © 2015 Saturn Five. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
+@class CZWindowController;
+
+@protocol CZWindowControllerDelegate <NSObject>
+
+@required
+/*!
+ *  @brief 
+ */
+- (void)viewShouldHighlight:(BOOL)highlight;
+
+@optional
+- (BOOL)isItemInList:(NSString *)item;
+- (void)reloadData;
+
+@end
 
 @interface CZWindowController : NSWindowController
+
+@property (weak) id delegate;
 
 + (instancetype)initWithApplicationState:(NSInteger)applicationState;
 

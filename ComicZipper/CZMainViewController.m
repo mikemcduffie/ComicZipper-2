@@ -7,8 +7,11 @@
 //
 
 #import "CZMainViewController.h"
+#import "CZWindowController.h"
 
-@interface CZMainViewController ()
+@interface CZMainViewController () <CZWindowControllerDelegate>
+
+@property (strong) IBOutlet NSImageView *imageView;
 
 @end
 
@@ -16,7 +19,17 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do view setup here.
+    [self.imageView unregisterDraggedTypes];
+}
+
+#pragma mark WINDOW CONTROLLER DELEGATE METHODS
+
+- (void)viewShouldHighlight:(BOOL)highlight {
+    if (highlight) {
+        self.imageView.image = [NSImage imageNamed:CZDropViewHighlightImage];
+    } else {
+        self.imageView.image = [NSImage imageNamed:CZDropViewNoHighlightImage];
+    }
 }
 
 @end

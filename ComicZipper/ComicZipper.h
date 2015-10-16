@@ -1,13 +1,13 @@
 //
-//  CZViewController.h
+//  ComicZipper.h
 //  ComicZipper
 //
 //  Created by Ardalan Samimi on 16/10/15.
 //  Copyright © 2015 Saturn Five. All rights reserved.
 //
 
-@interface CZMainViewController : NSViewController
+@interface ComicZipper : NSObject <NSTableViewDataSource>
 
-@property (weak) id delegate;
+- (void)addItems:(NSArray *)items;
 
 @end

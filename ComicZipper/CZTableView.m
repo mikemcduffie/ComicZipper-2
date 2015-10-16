@@ -1,13 +1,13 @@
 //
-//  CZViewController.h
+//  CZTableView.m
 //  ComicZipper
 //
 //  Created by Ardalan Samimi on 16/10/15.
 //  Copyright © 2015 Saturn Five. All rights reserved.
 //
 
-@interface CZMainViewController : NSViewController
+#import "CZTableView.h"
 
-@property (weak) id delegate;
+@implementation CZTableView
 
 @end
