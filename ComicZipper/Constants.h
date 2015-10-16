@@ -6,7 +6,7 @@
 //  Copyright © 2015 Saturn Five. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <Cocoa/Cocoa.h>
 
 @interface Constants : NSObject
 

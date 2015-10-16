@@ -6,8 +6,12 @@
 //  Copyright © 2015 Saturn Five. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
 @interface CZArchiveItem : NSObject
+
+@property (nonatomic, getter = isRunning) BOOL running;
+@property (nonatomic, getter = isArchived) BOOL archived;
+@property (nonatomic, getter = isCancelled) BOOL cancelled;
+@property (nonatomic, readonly) NSString *temporaryPath;
+
 
 @end

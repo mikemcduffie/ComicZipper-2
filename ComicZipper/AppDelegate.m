@@ -20,7 +20,7 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     self.mainWindow = [CZWindowController initWithApplicationState:CZApplicationStateNoItemDropped];
     [self.mainWindow showWindow:self];
-    [self.mainWindow.window makeKeyAndOrderFront:nil];
+    [self.mainWindow.window makeKeyAndOrderFront:self];
     
 }
 

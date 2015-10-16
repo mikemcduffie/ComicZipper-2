@@ -24,8 +24,12 @@
 
 @implementation CZWindowController
 
+NSString *const windowNibName = @"Window";
+NSString *const mainViewNibName = @"MainView";
+NSString *const tableViewNibName = @"TableView";
+
 + (instancetype)initWithApplicationState:(NSInteger)applicationState {
-    return [[super alloc] initWithWindowNibName:@"Window"
+    return [[super alloc] initWithWindowNibName:windowNibName
                                applicationState:applicationState];
 }
 
@@ -53,6 +57,7 @@
             self.currentViewController = self.tableViewController;
             break;
         case CZApplicationStatePopulatedList:
+            // RELOAD TABLEVIEW
             break;
         default:
             break;
@@ -126,18 +131,19 @@
 
 #pragma mark GETTERS AND SETTERS METHODS
 
+- (CZMainViewController *)mainViewController {
+    if (!_mainViewController) {
+        _mainViewController = [[CZMainViewController alloc] initWithNibName:mainViewNibName bundle:nil];
+    }
+    return _mainViewController;
+}
+
 - (CZTableViewController *)tableViewController {
     if (!_tableViewController) {
-        _tableViewController = [[CZTableViewController alloc] initWithNibName:@"TableView" bundle:nil];
+        _tableViewController = [[CZTableViewController alloc] initWithNibName:tableViewNibName bundle:nil];
     }
     return _tableViewController;
 }
 
-- (CZMainViewController *)mainViewController {
-    if (!_mainViewController) {
-        _mainViewController = [[CZMainViewController alloc] initWithNibName:@"MainView" bundle:nil];
-    }
-    return _mainViewController;
-}
 
 @end
