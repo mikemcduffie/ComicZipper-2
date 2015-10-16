@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="8191"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="CZViewController">
+            <connections>
+                <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="Hz6-mo-xeY">
+            <rect key="frame" x="0.0" y="0.0" width="400" height="322"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="FMe-06-A7m">
+                    <rect key="frame" x="124" y="118" width="153" height="119"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="153" id="NlO-yi-gf7"/>
+                        <constraint firstAttribute="height" constant="119" id="kbN-e9-B3p"/>
+                    </constraints>
+                    <animations/>
+                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="DropFolderNormal" id="Ojo-X4-wal"/>
+                </imageView>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="MFg-kK-wrI">
+                    <rect key="frame" x="97" y="69" width="210" height="37"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="37" id="j97-an-Trn"/>
+                        <constraint firstAttribute="width" constant="206" id="pUz-9n-zpS"/>
+                    </constraints>
+                    <animations/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Drop Folders Here" id="hKI-S7-jbh">
+                        <font key="font" size="24" name="HelveticaNeue-Thin"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+            </subviews>
+            <constraints>
+                <constraint firstItem="MFg-kK-wrI" firstAttribute="centerY" secondItem="Hz6-mo-xeY" secondAttribute="centerY" constant="73.5" id="Qjr-Bn-dzJ"/>
+                <constraint firstItem="FMe-06-A7m" firstAttribute="centerY" secondItem="Hz6-mo-xeY" secondAttribute="centerY" constant="-16.5" id="Syb-YB-wPF"/>
+                <constraint firstItem="FMe-06-A7m" firstAttribute="centerX" secondItem="Hz6-mo-xeY" secondAttribute="centerX" id="edt-WX-bbi"/>
+                <constraint firstItem="MFg-kK-wrI" firstAttribute="centerX" secondItem="Hz6-mo-xeY" secondAttribute="centerX" constant="2" id="yDj-hd-jZp"/>
+            </constraints>
+            <animations/>
+        </customView>
+    </objects>
+    <resources>
+        <image name="DropFolderNormal" width="317" height="234"/>
+    </resources>
+</document>

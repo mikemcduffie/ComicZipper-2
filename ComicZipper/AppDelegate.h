@@ -1,13 +1,15 @@
 //
-//  CZDropItem.h
+//  AppDelegate.h
 //  ComicZipper
 //
 //  Created by Ardalan Samimi on 15/10/15.
 //  Copyright © 2015 Saturn Five. All rights reserved.
 //
 
-#import "CZArchiveItem.h"
+#import <Cocoa/Cocoa.h>
 
-@interface CZDropItem : CZArchiveItem
+@interface AppDelegate : NSObject <NSApplicationDelegate>
+
 
 @end
+

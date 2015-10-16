@@ -1,5 +1,5 @@
 //
-//  CZDropView.h
+//  CZWindowController.h
 //  ComicZipper
 //
 //  Created by Ardalan Samimi on 15/10/15.
@@ -8,6 +8,8 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface CZDropView : NSView
+@interface CZWindowController : NSWindowController
+
++ (instancetype)initWithApplicationState:(NSInteger)applicationState;
 
 @end

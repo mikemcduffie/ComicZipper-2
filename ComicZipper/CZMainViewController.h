@@ -1,5 +1,5 @@
 //
-//  CZApplication.h
+//  CZViewController.h
 //  ComicZipper
 //
 //  Created by Ardalan Samimi on 16/10/15.
@@ -8,6 +8,6 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface CZApplication : NSApplication
+@interface CZMainViewController : NSViewController
 
 @end

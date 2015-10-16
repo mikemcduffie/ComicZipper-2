@@ -1,5 +1,5 @@
 //
-//  ZipUtilities.h
+//  NOZUtils.h
 //  ZipUtilities
 //
 //  The MIT License (MIT)
@@ -25,27 +25,7 @@
 //  SOFTWARE.
 //
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 
-//! Project version number for ZipUtilities.
-FOUNDATION_EXPORT double ZipUtilitiesVersionNumber;
-
-//! Project version string for ZipUtilities.
-FOUNDATION_EXPORT const unsigned char ZipUtilitiesVersionString[];
-
-// In this header, you should import all the public headers of your framework using statements like #import "PublicHeader.h"
-
-#import "NOZCompress.h"
-#import "NOZCompression.h"
-#import "NOZDecoder.h"
-#import "NOZDecompress.h"
-#import "NOZEncoder.h"
-#import "NOZError.h"
-#import "NOZSyncStepOperation.h"
-#import "NOZUnzipper.h"
-#import "NOZUtils.h"
-#import "NOZZipEntry.h"
-#import "NOZZipper.h"
-
-#import "NSData+NOZAdditions.h"
-#import "NSStream+NOZAdditions.h"
+//! Block for providing progress to.  Used by `NOZCompressOperation` and `NOZDecompressOperation`.
+typedef void(^NOZProgressBlock)(int64_t totalBytes, int64_t bytesComplete, int64_t bytesCompletedThisPass, BOOL *abort);
