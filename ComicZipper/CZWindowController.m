@@ -71,21 +71,22 @@ NSString *const tableViewNibName = @"TableView";
             self.currentViewController = self.mainViewController;
             break;
     }
-    // Set the identifier of the current view to the nibname
-    self.currentViewController.identifier = self.currentViewController.nibName;
 
     if ([self applicationStateIs:CZApplicationStatePopulatedList]) {
-        
+        if ([self isCurrentViewController:tableViewNibName]) {
+            [self.delegate reloadData];
+        } else {
+            self.applicationState = CZApplicationStateFirstItemDrop;
+            [self loadView];
+        }
     } else {
+        // Set the identifier of the current view to the nibname
+        self.currentViewController.identifier = self.currentViewController.nibName;
         [self.dropView addSubview:self.currentViewController.view];
         [self.currentViewController.view setFrame:self.dropView.bounds];
         [self setConstraintsForView];
+        [self viewDidLoad];
     }
-    
-    [self viewDidLoad];
-}
-
-- (void)replaceSubview {
 }
 
 - (void)viewDidLoad {
@@ -119,7 +120,6 @@ NSString *const tableViewNibName = @"TableView";
 }
 
 - (void)dropView:(CZDropView *)dropView didReceiveFiles:(NSArray *)files {
-    self.droppedItems = files;
     if ([self isCurrentViewController:tableViewNibName]) {
         self.applicationState = CZApplicationStatePopulatedList;
     } else {
@@ -127,6 +127,7 @@ NSString *const tableViewNibName = @"TableView";
     }
     
     [self loadView];
+    [self.delegate addItemsFromArray:files];
 }
 
 #pragma mark GETTERS AND SETTERS METHODS

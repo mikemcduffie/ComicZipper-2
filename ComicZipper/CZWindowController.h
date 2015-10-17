@@ -18,6 +18,7 @@
 
 @optional
 - (BOOL)isItemInList:(NSString *)item;
+- (void)addItemsFromArray:(NSArray *)array;
 - (void)reloadData;
 
 @end

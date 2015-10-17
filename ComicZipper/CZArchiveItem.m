@@ -61,6 +61,10 @@ static NSString *const kRegExpTemplate = @" #$1";
 
 #pragma mark PUBLIC METHODS
 
+- (NSString *)name {
+    return self.folderName;
+}
+
 - (NSURL *)fileURL {
     return _fileURL;
 }
@@ -141,6 +145,7 @@ static NSString *const kRegExpTemplate = @" #$1";
             folderName = [self.folderPath stringByReplacingCharactersInRange:rangeOfFolderPath
                                                                   withString:@""];
         }
+        _folderName = folderName;
     }
     
     return _folderName;

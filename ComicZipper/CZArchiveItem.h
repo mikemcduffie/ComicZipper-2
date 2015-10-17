@@ -19,6 +19,7 @@
 + (instancetype)initWithURL:(NSURL *)url;
 - (instancetype)initWithURL:(NSURL *)url;
 
+- (NSString *)name;
 - (NSURL *)fileURL;
 - (NSString *)filePath;
 - (NSString *)folderPath;

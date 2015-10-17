@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6A1006721BD2EB4D00BEF987 /* CZTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A1006711BD2EB4D00BEF987 /* CZTableCellView.m */; settings = {ASSET_TAGS = (); }; };
+		6A1006751BD2EDA700BEF987 /* CZTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A1006741BD2EDA700BEF987 /* CZTextField.m */; settings = {ASSET_TAGS = (); }; };
+		6A1006781BD2EE5700BEF987 /* CZStatusButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A1006771BD2EE5700BEF987 /* CZStatusButton.m */; settings = {ASSET_TAGS = (); }; };
 		6A278C641BD0CDB8006C5B22 /* CZTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A278C621BD0CDB8006C5B22 /* CZTableViewController.m */; settings = {ASSET_TAGS = (); }; };
 		6A278C651BD0CDB8006C5B22 /* TableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A278C631BD0CDB8006C5B22 /* TableView.xib */; settings = {ASSET_TAGS = (); }; };
 		6A278C691BD10ABB006C5B22 /* CZMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A278C671BD10ABB006C5B22 /* CZMainViewController.m */; settings = {ASSET_TAGS = (); }; };
@@ -44,6 +47,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		6A1006701BD2EB4D00BEF987 /* CZTableCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZTableCellView.h; sourceTree = "<group>"; };
+		6A1006711BD2EB4D00BEF987 /* CZTableCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZTableCellView.m; sourceTree = "<group>"; };
+		6A1006731BD2EDA700BEF987 /* CZTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZTextField.h; sourceTree = "<group>"; };
+		6A1006741BD2EDA700BEF987 /* CZTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZTextField.m; sourceTree = "<group>"; };
+		6A1006761BD2EE5700BEF987 /* CZStatusButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZStatusButton.h; sourceTree = "<group>"; };
+		6A1006771BD2EE5700BEF987 /* CZStatusButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZStatusButton.m; sourceTree = "<group>"; };
 		6A278C611BD0CDB8006C5B22 /* CZTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZTableViewController.h; sourceTree = "<group>"; };
 		6A278C621BD0CDB8006C5B22 /* CZTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZTableViewController.m; sourceTree = "<group>"; };
 		6A278C631BD0CDB8006C5B22 /* TableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TableView.xib; sourceTree = "<group>"; };
@@ -171,6 +180,12 @@
 				6A9CE7EC1BD1979B002145CC /* CZScrollView.m */,
 				6A9CE7F41BD1A7A9002145CC /* CZTableView.h */,
 				6A9CE7F51BD1A7A9002145CC /* CZTableView.m */,
+				6A1006701BD2EB4D00BEF987 /* CZTableCellView.h */,
+				6A1006711BD2EB4D00BEF987 /* CZTableCellView.m */,
+				6A1006731BD2EDA700BEF987 /* CZTextField.h */,
+				6A1006741BD2EDA700BEF987 /* CZTextField.m */,
+				6A1006761BD2EE5700BEF987 /* CZStatusButton.h */,
+				6A1006771BD2EE5700BEF987 /* CZStatusButton.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -286,10 +301,13 @@
 				6A43CA201BD029E00061C121 /* CZWindowController.m in Sources */,
 				6A9CE7F61BD1A7A9002145CC /* CZTableView.m in Sources */,
 				6A43CA2D1BD033380061C121 /* CZArchiveItem.m in Sources */,
+				6A1006781BD2EE5700BEF987 /* CZStatusButton.m in Sources */,
+				6A1006751BD2EDA700BEF987 /* CZTextField.m in Sources */,
 				6A278C691BD10ABB006C5B22 /* CZMainViewController.m in Sources */,
 				6A8676E01BD0517C00C5069F /* CZConstants.m in Sources */,
 				6A278C641BD0CDB8006C5B22 /* CZTableViewController.m in Sources */,
 				6A9CE7ED1BD1979B002145CC /* CZScrollView.m in Sources */,
+				6A1006721BD2EB4D00BEF987 /* CZTableCellView.m in Sources */,
 				6A43CA0C1BD029600061C121 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

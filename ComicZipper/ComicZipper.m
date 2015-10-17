@@ -19,12 +19,22 @@
 
 @implementation ComicZipper
 
+#pragma mark PUBLIC METHODS
+
 - (void)addItem:(CZDropItem *)item {
     [self.archiveItems addObject:item];
 }
 
 - (void)addItems:(NSArray *)items {
-    [self.archiveItems addObjectsFromArray:items];
+    [self.archiveItems addObjectsFromArray:[items copy]];
+}
+
+- (CZDropItem *)itemAtIndex:(NSInteger)index {
+    return [self.archiveItems objectAtIndex:index];
+}
+
+- (NSArray *)itemsAtIndexes:(NSIndexSet *)indexes {
+    return [self.archiveItems objectsAtIndexes:indexes];
 }
 
 #pragma mark TABLE VIEW DATA SOURCE METHODS
