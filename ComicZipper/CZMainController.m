@@ -133,11 +133,11 @@ int const kLabelTag = 101;
         }
     } else if ([self applicationStateIs:CZApplicationStateFirstItemDrop]) {
         [[self window] setBackgroundColor:[NSColor controlHighlightColor]];
+        [[self toolbar] insertItemWithItemIdentifier:[[self toolbarClear] itemIdentifier] atIndex:1];
         [self addCompressButton];
         [self addLabelForTableView];
         [self addScrollView];
         [self addTableView];
-        [[self toolbar] insertItemWithItemIdentifier:[[self toolbarClear] itemIdentifier] atIndex:1];
     } else if ([self applicationStateIs:CZApplicationStatePopulatedList]) {
         [[self tableView] reloadData];
     }
@@ -383,7 +383,7 @@ int const kLabelTag = 101;
     NSInteger numberOfItemsToCompress = [[self comicZipper] countAll] - [[self comicZipper] countCancelled];
     NSInteger numberOfItemsCompressed = [[self comicZipper] countArchived];
     NSInteger countActive = 0;
-    NSString *countLabel = @"";
+    NSString *countLabel = @"Loading...";
     if ([[self comicZipper] isRunning]) {
         if (numberOfItemsCompressed == numberOfItemsToCompress) {
             // If the compression has finished
@@ -508,26 +508,6 @@ int const kLabelTag = 101;
                          toItem:label
                   withAttribute:NSLayoutAttributeCenterX
                     andConstant:0];
-    
-    NSButton *button = [[NSButton alloc] initWithFrame:NSMakeRect(0, frameSize.height, 100, 50)];
-    [button setBordered:NO];
-    [button setEnabled:NO];
-    //    [button setAction:@selector(compressButton:)];
-    [button setButtonType:NSMomentaryChangeButton];
-    [button setBezelStyle:NSThickerSquareBezelStyle];
-    [button setHighlighted:NO];
-    [button setImage:[NSImage imageNamed:@"NSStopProgressFreestandingTemplate"]];
-    [button setTranslatesAutoresizingMaskIntoConstraints:NO];
-    [[self dropView] addSubview:button];
-    [self setConstraintWithItem:[[self window] contentView]
-                         toItem:button
-                  withAttribute:NSLayoutAttributeTop
-                    andConstant:-10];
-    [self setConstraintWithItem:[[self window] contentView]
-                         toItem:button
-                  withAttribute:NSLayoutAttributeTrailing
-                    andConstant:10];
-    [self setButton:button];
 }
 
 /*!
@@ -666,11 +646,11 @@ int const kLabelTag = 101;
 
 - (void)switchToolbarItems {
     if ([[self comicZipper] isRunning]) {
-        [[self toolbar] removeItemAtIndex:1];
         [[self toolbar] insertItemWithItemIdentifier:[[self toolbarClear] itemIdentifier]  atIndex:1];
+        [[self toolbar] removeItemAtIndex:2];
     } else {
-        [[self toolbar] removeItemAtIndex:1];
         [[self toolbar] insertItemWithItemIdentifier:[[self toolbarCancel] itemIdentifier]  atIndex:1];
+        [[self toolbar] removeItemAtIndex:2];
     }
 }
 /*!
