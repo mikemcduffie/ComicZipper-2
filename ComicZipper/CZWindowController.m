@@ -104,7 +104,15 @@ NSString *const tableViewNibName = @"TableView";
 - (BOOL)isCurrentViewController:(NSString *)identifier {
     return (self.currentViewController.identifier == identifier);
 }
-        
+
+- (void)toggleDragMode:(id)sender {
+    if (self.dropView.isInDragMode) {
+        self.dropView.dragMode = NO;
+    } else {
+        self.dropView.dragMode = YES;
+    }
+}
+
 #pragma mark DROP VIEW DELEGATE METHODS
 
 - (void)dropView:(CZDropView *)dropView viewShouldHighlight:(BOOL)highlight {
@@ -136,6 +144,8 @@ NSString *const tableViewNibName = @"TableView";
     if (!_mainViewController) {
         _mainViewController = [[CZMainViewController alloc] initWithNibName:mainViewNibName bundle:nil];
         self.delegate = _mainViewController;
+        [self removeObserverForNotification:CZToggleDragModeNotification
+                                       view:_tableViewController];
     }
     return _mainViewController;
 }
@@ -144,8 +154,31 @@ NSString *const tableViewNibName = @"TableView";
     if (!_tableViewController) {
         _tableViewController = [[CZTableViewController alloc] initWithNibName:tableViewNibName bundle:nil];
         self.delegate = _tableViewController;
+        [self addObserverForNotification:CZToggleDragModeNotification
+                                selector:@selector(toggleDragMode:)
+                                    view:_tableViewController];
     }
     return _tableViewController;
+}
+
+#pragma mark NOTIFICATION METHODS
+
+- (void)addObserverForNotification:(NSString *)notificationName
+                          selector:(SEL)selector
+                              view:(id)view  {
+    [NSNotificationCenter.defaultCenter addObserver:self
+                                           selector:selector
+                                               name:notificationName
+                                             object:view];
+}
+
+- (void)removeObserverForNotification:(NSString *)notificationName
+                                 view:(id)view {
+    NSLog(@"> %@", notificationName);
+    NSLog(@"> %@", view);
+    [NSNotificationCenter.defaultCenter removeObserver:self
+                                                  name:notificationName
+                                                object:view];
 }
 
 #pragma mark PRIVATE METHODS

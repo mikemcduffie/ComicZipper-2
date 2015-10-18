@@ -20,6 +20,6 @@
 @interface CZDropView : NSView
 
 @property (weak) id delegate;
-- (void)setDragMode:(BOOL)dragMode;
+@property (nonatomic, getter = isInDragMode) BOOL dragMode;
 
 @end

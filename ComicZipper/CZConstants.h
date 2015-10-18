@@ -136,6 +136,10 @@ extern NSString *const CZSettingsWindowState;
  */
 extern NSString *const CZApplicationSettingsFileName;
 /*!
+ *  @brief Notification name for toggling drag mode.
+ */
+extern NSString *const CZToggleDragModeNotification;
+/*!
  *  @brief The application's Application support directory.
  */
 + (NSString *)applicationSupportPath;

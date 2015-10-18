@@ -10,6 +10,7 @@
                 <outlet property="buttonCompres" destination="v8Y-n9-QJk" id="NJv-se-v10"/>
                 <outlet property="scrollView" destination="6ey-aS-3lW" id="yHO-Xs-tla"/>
                 <outlet property="tableView" destination="FaD-th-sH9" id="S9K-8M-89j"/>
+                <outlet property="textLabel" destination="EGR-NG-Zfq" id="BgC-2U-Qdw"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
         </customObject>
@@ -19,13 +20,13 @@
             <rect key="frame" x="0.0" y="0.0" width="400" height="322"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <scrollView autohidesScrollers="YES" horizontalLineScroll="42" horizontalPageScroll="10" verticalLineScroll="42" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="6ey-aS-3lW" customClass="CZScrollView">
+                <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="6ey-aS-3lW" customClass="CZScrollView">
                     <rect key="frame" x="-1" y="36" width="402" height="236"/>
                     <clipView key="contentView" id="acB-QR-hHY">
                         <rect key="frame" x="1" y="1" width="400" height="234"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="reverseSequential" alternatingRowBackgroundColors="YES" columnReordering="NO" columnSelection="YES" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" rowHeight="40" rowSizeStyle="automatic" viewBased="YES" id="FaD-th-sH9" customClass="CZTableView">
+                            <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="reverseSequential" alternatingRowBackgroundColors="YES" columnReordering="NO" columnSelection="YES" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="FaD-th-sH9" customClass="CZTableView">
                                 <rect key="frame" x="0.0" y="0.0" width="405" height="0.0"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <animations/>
@@ -95,7 +96,7 @@
                         <constraint firstAttribute="width" constant="88" id="OSB-dX-xx7"/>
                     </constraints>
                     <animations/>
-                    <buttonCell key="cell" type="push" title="Compress" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="r4y-t2-Jkm">
+                    <buttonCell key="cell" type="push" title="Compress" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="r4y-t2-Jkm">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
@@ -109,7 +110,7 @@
                         <constraint firstAttribute="height" constant="28" id="kUN-uV-tZR"/>
                     </constraints>
                     <animations/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="5 item(s) to compress" id="NQn-3W-eaK">
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Loading" id="NQn-3W-eaK">
                         <font key="font" size="19" name="HelveticaNeue-Thin"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>

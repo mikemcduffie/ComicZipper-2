@@ -26,14 +26,17 @@
 
 - (BOOL)isItemInList:(NSString *)folderPath {
     NSUInteger index = [self.archiveItems indexOfObjectPassingTest:
-                        ^BOOL(CZDropItem*  _Nonnull item, NSUInteger idx, BOOL * _Nonnull stop) {
-                            // User should be able to add already archived items as the processed item in the list after the archive operation does not represent the folder anymore.
-                            if (item.isArchived) {
-                                *stop = YES;
+                        ^BOOL(CZDropItem * _Nonnull item, NSUInteger idx, BOOL * _Nonnull stop) {
+                            if ([item.folderPath isEqualToString:folderPath]) {
+                                // User should be able to add already archived items as the processed item in the list after the archive operation does not represent the folder anymore.
+                                if(item.isArchived == YES) {
+                                    return NO;
+                                } else {
+                                    return YES;
+                                }
+                            } else {
                                 return NO;
                             }
-                            BOOL found = [item.folderPath isEqualToString:folderPath];
-                            return found;
                         }];
     if (index == NSNotFound) {
         return NO;
@@ -171,13 +174,11 @@
         }
         // Remove the folders (if setting is on) after compression
         if (self.operations.operationCount == 0) {
-            self.running = NO;
             [self deleteFolders];
         }
     });
     result = nil;
     operation = nil;
-
 }
 
 #pragma mark OPERATIONS
@@ -200,9 +201,6 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.delegate ComicZipper:self
                  didStartItemAtIndex:[processTag integerValue]];
-        if (self.running == NO) {
-            self.running = YES;
-        }
     });
 
     return operation;
@@ -217,15 +215,15 @@
 #pragma mark PRIVATE METHODS
 
 - (void)moveItemAtPath:(NSString *)fromPath toPath:(NSString *)toPath {
-    [[NSFileManager defaultManager] moveItemAtPath:fromPath
-                                            toPath:toPath
-                                             error:nil];
+    [NSFileManager.defaultManager moveItemAtPath:fromPath
+                                          toPath:toPath
+                                           error:nil];
 }
 
 - (void)deleteFolders {
     if (_foldersToDelete != nil) {
-        [[NSWorkspace sharedWorkspace] recycleURLs:[self foldersToDelete]
-                                 completionHandler:nil];
+        [NSWorkspace.sharedWorkspace recycleURLs:[self foldersToDelete]
+                               completionHandler:nil];
         [self setFoldersToDelete:nil];
     }
 }
@@ -233,8 +231,9 @@
 
 #pragma mark SETTERS AND GETTERS
 
-- (void)setRunning:(BOOL)running {
-    _running = running;
+- (BOOL)isRunning {
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isRunning == YES"];
+    return ([[self.archiveItems filteredArrayUsingPredicate:predicate] count] > 0);
 }
 
 - (NSMutableArray *)archiveItems {
@@ -248,7 +247,7 @@
 - (NSOperationQueue *)operations {
     if (!_operations) {
         _operations = [[NSOperationQueue alloc] init];
-        [[self operations] setMaxConcurrentOperationCount:1];
+        [self.operations setMaxConcurrentOperationCount:1];
     }
     
     return _operations;

@@ -22,6 +22,10 @@
 
 @property (weak) id delegate;
 @property (nonatomic) BOOL shouldDeleteFolder;
+/*!
+ *  @brief State of compression.
+ *  @description This variable is set to TRUE when an item is compressing.
+ */
 @property (nonatomic, readonly, getter = isRunning) BOOL running;
 /*!
  *  @brief Check if an item is already in the list.

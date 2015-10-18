@@ -12,7 +12,6 @@
 @interface CZDropView () <NSDraggingDestination>
 
 @property (nonatomic, getter = isHighlighted) BOOL highlight;
-@property (nonatomic, getter = isInDragMode) BOOL dragMode;
 @property (nonatomic) NSInteger numberOfValidItemsForDrop;
 @property (nonatomic) NSMutableArray *droppedItems;
 @property (strong) IBOutlet NSImageView *imageView;
@@ -59,10 +58,12 @@
                                    usingBlock:
      ^(NSDraggingItem * _Nonnull draggingItem, NSInteger idx, BOOL * _Nonnull stop) {
          // Files already in the list should not be included in drag operation
-         BOOL isFileInList = [self.delegate dropView:self isItemInList:draggingItem.item];
+         BOOL isFileInList = [self.delegate dropView:self isItemInList:[draggingItem.item folderPath]];
          if (isFileInList == NO) {
              [self.droppedItems addObject:draggingItem.item];
              self.numberOfValidItemsForDrop++;
+         } else {
+             draggingItem.imageComponentsProvider = nil;
          }
     }];
     // Inform the sender of the number of valid items to drop, so that the drop manager can update the badge count.
@@ -109,10 +110,6 @@
 }
 
 #pragma mark GETTERS AND SETTERS METHODS
-
-- (void)setDragMode:(BOOL)dragMode {
-    _dragMode = dragMode;
-}
 
 - (NSMutableArray *)droppedItems {
     if (!_droppedItems) {

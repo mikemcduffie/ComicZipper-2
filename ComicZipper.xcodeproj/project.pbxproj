@@ -196,12 +196,12 @@
 		6A43CA311BD033550061C121 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				6A9CE7EE1BD19FA4002145CC /* ComicZipper.h */,
+				6A9CE7EF1BD19FA4002145CC /* ComicZipper.m */,
 				6A43CA2B1BD033380061C121 /* CZArchiveItem.h */,
 				6A43CA2C1BD033380061C121 /* CZArchiveItem.m */,
 				6A43CA2E1BD0334B0061C121 /* CZDropItem.h */,
 				6A43CA2F1BD0334B0061C121 /* CZDropItem.m */,
-				6A9CE7EE1BD19FA4002145CC /* ComicZipper.h */,
-				6A9CE7EF1BD19FA4002145CC /* ComicZipper.m */,
 				6A1006791BD3EFEE00BEF987 /* CZCompressRequest.h */,
 				6A10067A1BD3EFEE00BEF987 /* CZCompressRequest.m */,
 			);

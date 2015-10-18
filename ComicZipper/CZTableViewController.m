@@ -18,6 +18,7 @@
 
 @property (strong) IBOutlet CZScrollView *scrollView;
 @property (strong) IBOutlet CZTableView *tableView;
+@property (strong) IBOutlet NSTextField *textLabel;
 @property (strong) IBOutlet NSButton *buttonCompres;
 @property (strong) ComicZipper *comicZipper;
 
@@ -26,6 +27,10 @@
 @implementation CZTableViewController
 
 @synthesize comicZipper = _comicZipper;
+
+NSString *const kLabelStopped = @"%li item(s) to compress";
+NSString *const kLabelProgress = @"%li item(s) remaining";
+NSString *const kLabelFinished = @"%li item(s) compressed";
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -44,9 +49,20 @@
 
 #pragma mark USER INTERFACE METHODS
 
+- (void)postNotification:(NSString *)notificationName {
+    [[NSNotificationCenter defaultCenter] postNotificationName:notificationName
+                                                        object:self
+                                                      userInfo:nil];
+}
+
+- (void)setLabel:(NSString *)label {
+    self.textLabel.stringValue = label;
+}
+
 - (IBAction)compressButtonWasClicked:(id)sender {
     [sender setEnabled:NO];
     [self.comicZipper compressionStart];
+    [self postNotification:CZToggleDragModeNotification];
 }
 
 - (void)reloadDataForRow:(NSInteger)index {
@@ -55,7 +71,7 @@
     NSIndexSet *colIndexes = [[NSIndexSet alloc] initWithIndexesInRange:NSMakeRange(0,3)];
     [self.tableView reloadDataForRowIndexes:rowIndexes
                               columnIndexes:colIndexes];
-//    [self updateCount];
+    [self updateCount];
 }
 
 #pragma mark WINDOW CONTROLLER DELEGATE METHODS
@@ -136,7 +152,11 @@
     didAddRowView:(NSTableRowView *)rowView
            forRow:(NSInteger)row {
     // When the last row is added, the top label should be updated and the compression, if set up that way, start automatically.
-//    NSInteger numberOfItemsToCompress = [[self comicZipper] count] - [[self comicZipper] countCancelled];
+    NSInteger numberOfItemsToCompress = [self.comicZipper countActive];
+    if (numberOfItemsToCompress == row+1) {
+        [self updateCount];
+        self.buttonCompres.enabled = YES;
+    }
 //    if (numberOfItemsToCompress == row+1) {
 //        [self updateLabelForTableView:[NSString stringWithFormat:@"%li item(s) to compress", numberOfItemsToCompress]];
 //        if ([self shouldAutoStartCompression]) {
@@ -152,7 +172,25 @@
  DidRegisterKeyUp:(int)keyCode
      atRowIndexes:(NSIndexSet *)indexes
       withCommand:(BOOL)commandState {
-    
+    if (keyCode == kDeleteKey) {
+        if (self.comicZipper.running == NO) {
+            [self.comicZipper removeItemsAtIndexes:indexes];
+            [self.tableView removeRowsAtIndexes:indexes withAnimation:NO];
+            if (self.comicZipper.count > 0) {
+                NSUInteger firstIndex = [indexes firstIndex];
+                if (firstIndex >= self.comicZipper.count) {
+                    firstIndex--;
+                }
+                [self.tableView selectRowIndexes:[NSIndexSet indexSetWithIndex:firstIndex]
+                            byExtendingSelection:NO];
+                if (self.comicZipper.count > 0) {
+                    [self updateCount];
+                }
+            } else {
+                // REMOVE THIS VIEW
+            }
+        }
+    }
 }
 
 - (void)openItemInFinder:(NSIndexSet *)rows {
@@ -163,6 +201,11 @@
 
 - (void)ComicZipper:(ComicZipper *)comicZipper didStartItemAtIndex:(NSUInteger)index {
     [self reloadDataForRow:index];
+    if (self.comicZipper.isRunning == NO) {
+        NSInteger numberOfItemsToCompress = self.comicZipper.countActive;
+        NSString *label = [NSString stringWithFormat:kLabelProgress, numberOfItemsToCompress];
+        [self setLabel:label];
+    }
 }
 
 - (void)ComicZipper:(ComicZipper *)comicZipper didUpdateProgress:(float)progress ofItemAtIndex:(NSUInteger)index {
@@ -178,6 +221,28 @@
 
 - (void)ComicZipper:(ComicZipper *)comicZipper didCancelItemAtIndex:(NSUInteger)index {
     [self reloadDataForRow:index];
+}
+
+#pragma mark PRIVATE METHODS
+
+- (void)updateCount {
+    NSInteger numberOfItemsToCompress = self.comicZipper.countActive;
+    NSInteger numberOfItemsCompressed = self.comicZipper.countArchived;
+    NSString *label = @"Loading";
+    
+    if (self.comicZipper.isRunning) {
+        label = [NSString stringWithFormat:kLabelProgress, numberOfItemsToCompress];
+    } else {
+        if (numberOfItemsToCompress > 0) {
+            label = [NSString stringWithFormat:kLabelStopped, numberOfItemsToCompress];
+        } else {
+            label = [NSString stringWithFormat:kLabelFinished, numberOfItemsCompressed];
+            // Notify window controller to turn on drag mode
+            [self postNotification:CZToggleDragModeNotification];
+        }
+    }
+    
+    [self setLabel:label];
 }
 
 #pragma mark SETTERS AND GETTERS
