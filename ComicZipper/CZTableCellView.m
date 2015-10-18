@@ -13,11 +13,11 @@
 
 @interface CZTableCellView ()
 
-@property (nonatomic, strong) NSButton *buttonStatus;
 @property (nonatomic, strong) NSImageView *imageViewLeft;
 @property (nonatomic, strong) NSImageView *imageViewRight;
-@property (nonatomic, strong) NSTextField *textFieldTitle;
-@property (nonatomic, strong) NSTextField *textFieldDetail;
+@property (nonatomic, strong) CZTextField *textFieldTitle;
+@property (nonatomic, strong) CZTextField *textFieldDetail;
+@property (nonatomic, strong) CZStatusButton *buttonStatus;
 @property (nonatomic, strong) NSProgressIndicator *progressIndicator;
 @property (nonatomic, readonly) float width;
 
@@ -75,7 +75,7 @@
 - (void)setAction:(SEL)selector forTarget:(id)sender {
     [self.buttonStatus setTarget:sender];
     [self.buttonStatus setAction:selector];
-    [self.buttonStatus setIdentifier:[self identifier]];
+    [self.buttonStatus setRowIndex:self.rowIndex];
 }
 
 - (void)setProgress:(double)progress {

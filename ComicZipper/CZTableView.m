@@ -19,13 +19,13 @@
 
 #pragma mark SET UP METHODS
 
-- (void)setUpTable {
+- (void)awakeFromNib {
     NSTableColumn *columnLft = [self tableColumnWithIdentifier:@"ColumnLeft"];
     NSTableColumn *columnMdl = [self tableColumnWithIdentifier:@"ColumnMiddle"];
     NSTableColumn *columnRgt = [self tableColumnWithIdentifier:@"ColumnRight"];
-    [columnLft setWidth:50];
-    [columnMdl setWidth:50];
-    [columnRgt setWidth:50];
+    [columnLft setWidth:kTableColumnWidth];
+    [columnMdl setWidth:self.frame.size.width-(kTableColumnWidth*2)-10];
+    [columnRgt setWidth:kTableColumnWidth];
     [columnLft setResizingMask:NSTableColumnNoResizing];
     [columnMdl setResizingMask:NSTableColumnAutoresizingMask];
     [columnRgt setResizingMask:NSTableColumnNoResizing];
@@ -36,7 +36,8 @@
     [self setUsesAlternatingRowBackgroundColors:YES];
     [self setColumnAutoresizingStyle:NSTableViewReverseSequentialColumnAutoresizingStyle];
     
-    self.menu = [[NSMenu alloc] initWithTitle:@"Contextual Menu"];
+    NSMenu *menu = [[NSMenu alloc] initWithTitle:@"Contextual Menu"];
+    [self setMenu:menu];
     [self.menu insertItemWithTitle:@"Show in Finder"
                             action:@selector(menuItemOpenFinder)
                      keyEquivalent:@""
@@ -45,7 +46,6 @@
                             action:@selector(menuItemRemove)
                      keyEquivalent:@""
                            atIndex:1];
-
 }
 
 #pragma mark MENU METHODS
@@ -91,15 +91,15 @@
 }
 
 - (NSMenu *)menuForEvent:(NSEvent *)event {
-    NSPoint point = [self convertPoint:event.locationInWindow fromView:nil];
+    NSPoint point = [self convertPoint:event.locationInWindow
+                              fromView:nil];
     NSInteger row = [self rowAtPoint:point];
-    
-    if (row > -1 && row < [self numberOfRows]) {
+    if (row > -1 && row < self.numberOfRows) {
         if ([self.selectedRowIndexes containsIndex:row] == NO) {
             [self selectRowIndexes:[NSIndexSet indexSetWithIndex:row]
               byExtendingSelection:NO];
         }
-        
+
         return self.menu;
     }
     

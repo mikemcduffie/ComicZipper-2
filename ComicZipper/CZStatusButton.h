@@ -6,8 +6,8 @@
 //  Copyright © 2015 Saturn Five. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
-
 @interface CZStatusButton : NSButton
+
+@property (nonatomic) NSInteger rowIndex;
 
 @end

@@ -6,7 +6,7 @@
 //  Copyright © 2015 Saturn Five. All rights reserved.
 //
 
-@class CZTableView, CZTableViewDelegate;
+@class CZTableView;
 
 @protocol CZTableViewDelegate <NSTableViewDelegate>
 
@@ -22,7 +22,5 @@
 @interface CZTableView : NSTableView
 
 @property (nonatomic, assign) id<CZTableViewDelegate> delegate;
-
-- (void)setUpTable;
 
 @end

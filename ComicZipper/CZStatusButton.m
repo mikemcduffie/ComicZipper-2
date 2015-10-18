@@ -18,4 +18,8 @@
     [self setImage:[NSImage imageNamed:CZStatusIconAbortNormal]];
 }
 
+- (void)setRowIndex:(NSInteger)rowIndex {
+    _rowIndex = rowIndex;
+}
+
 @end

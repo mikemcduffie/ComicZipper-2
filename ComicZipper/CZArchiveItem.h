@@ -15,6 +15,7 @@
 @property (nonatomic, getter = isArchived) BOOL archived;
 @property (nonatomic, getter = isCancelled) BOOL cancelled;
 @property (nonatomic, readonly) NSString *temporaryPath;
+@property (nonatomic) NSInteger rowIndex;
 
 + (instancetype)initWithURL:(NSURL *)url;
 - (instancetype)initWithURL:(NSURL *)url;

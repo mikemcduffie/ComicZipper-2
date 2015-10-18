@@ -8,6 +8,10 @@
 
 @interface CZTableCellView : NSTableCellView
 /*!
+ *  @brief Index of cell view.
+ */
+@property (nonatomic) NSInteger rowIndex;
+/*!
  *  @brief Determines the width of the cell view.
  *  @discussion Must be set for the subviews to autoresize correctly.
  *  @param width The width of the cell view.

@@ -7,6 +7,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="CZTableViewController">
             <connections>
+                <outlet property="buttonCompres" destination="v8Y-n9-QJk" id="NJv-se-v10"/>
                 <outlet property="scrollView" destination="6ey-aS-3lW" id="yHO-Xs-tla"/>
                 <outlet property="tableView" destination="FaD-th-sH9" id="S9K-8M-89j"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
@@ -98,6 +99,9 @@
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
+                    <connections>
+                        <action selector="compressButtonWasClicked:" target="-2" id="Lbc-0W-LIG"/>
+                    </connections>
                 </button>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="EGR-NG-Zfq">
                     <rect key="frame" x="18" y="280" width="373" height="28"/>

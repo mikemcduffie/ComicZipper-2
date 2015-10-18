@@ -14,10 +14,11 @@
 #import "ComicZipper.h"
 #import "CZDropItem.h"
 
-@interface CZTableViewController () <CZWindowControllerDelegate, CZTableViewDelegate>
+@interface CZTableViewController () <CZWindowControllerDelegate, CZTableViewDelegate, ComicZipperDelegate>
 
 @property (strong) IBOutlet CZScrollView *scrollView;
 @property (strong) IBOutlet CZTableView *tableView;
+@property (strong) IBOutlet NSButton *buttonCompres;
 @property (strong) ComicZipper *comicZipper;
 
 @end
@@ -30,7 +31,6 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     
     if (self) {
-        [self.tableView setUpTable];
     }
     
     return self;
@@ -42,6 +42,22 @@
     [super viewDidLoad];
 }
 
+#pragma mark USER INTERFACE METHODS
+
+- (IBAction)compressButtonWasClicked:(id)sender {
+    [sender setEnabled:NO];
+    [self.comicZipper compressionStart];
+}
+
+- (void)reloadDataForRow:(NSInteger)index {
+    // For performance issues reload only the specific row that needs updating.
+    NSIndexSet *rowIndexes = [[NSIndexSet alloc] initWithIndex:index];
+    NSIndexSet *colIndexes = [[NSIndexSet alloc] initWithIndexesInRange:NSMakeRange(0,3)];
+    [self.tableView reloadDataForRowIndexes:rowIndexes
+                              columnIndexes:colIndexes];
+//    [self updateCount];
+}
+
 #pragma mark WINDOW CONTROLLER DELEGATE METHODS
 
 - (void)viewShouldHighlight:(BOOL)highlight {
@@ -49,7 +65,7 @@
 }
 
 - (BOOL)isItemInList:(NSString *)item {
-    return NO;
+    return [self.comicZipper isItemInList:item];
 }
 
 - (void)addItemsFromArray:(NSArray *)array {
@@ -75,14 +91,14 @@
     if (view == nil) {
         NSRect frame = NSMakeRect(0, 0, column.width, kTableRowHeight);
         view = [[CZTableCellView alloc] initWithFrame:frame];
-        [view setIdentifier:@"RightCell"];
+        [view setIdentifier:column.identifier];
     } else {
         [view setWidth:column.width];
     }
     
     CZDropItem *item = [self.comicZipper itemAtIndex:row];
-    
     if ([column.identifier isEqualToString:@"ColumnLeft"]) {
+        item.rowIndex = row;
         if (item.isArchived) {
             // Set the cover image
         } else {
@@ -98,7 +114,7 @@
             [view setDetailText:item.fileSize];
         }
     } else if ([column.identifier isEqualToString:@"ColumnRight"]) {
-        [view setIdentifier:[NSString stringWithFormat:@"%li", row]];
+        [view setRowIndex:row];
         if (item.isArchived) {
             [view setStatus:CZStatusIconSuccess];
         } else if (item.isCancelled) {
@@ -106,8 +122,8 @@
         } else {
             [view setStatus:CZStatusIconAbortNormal];
             // Set the abort button
-//            [view setAction:@selector(cancelCompression:)
-//                  forTarget:self];
+            [view setAction:@selector(compressionStop:)
+                  forTarget:self.comicZipper];
         }
     }
     
@@ -143,11 +159,33 @@
     
 }
 
+#pragma mark COMIC ZIPPER DELEGATE METHODS
+
+- (void)ComicZipper:(ComicZipper *)comicZipper didStartItemAtIndex:(NSUInteger)index {
+    [self reloadDataForRow:index];
+}
+
+- (void)ComicZipper:(ComicZipper *)comicZipper didUpdateProgress:(float)progress ofItemAtIndex:(NSUInteger)index {
+    CZTableCellView *cellView = [self.tableView viewAtColumn:1
+                                                         row:index
+                                             makeIfNecessary:YES];
+    [cellView setProgress:progress];
+}
+
+- (void)ComicZipper:(ComicZipper *)comicZipper didFinishItemAtIndex:(NSUInteger)index {
+    [self reloadDataForRow:index];
+}
+
+- (void)ComicZipper:(ComicZipper *)comicZipper didCancelItemAtIndex:(NSUInteger)index {
+    [self reloadDataForRow:index];
+}
+
 #pragma mark SETTERS AND GETTERS
 
 - (ComicZipper *)comicZipper {
     if (!_comicZipper) {
         _comicZipper = [[ComicZipper alloc] init];
+        _comicZipper.delegate = self;
     }
     
     return _comicZipper;
