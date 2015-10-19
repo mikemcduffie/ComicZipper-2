@@ -13,10 +13,11 @@
 
 @interface ComicZipper () <NOZCompressDelegate>
 
-@property (nonatomic) NSArray *filter;
+@property (nonatomic) NSArray *filters;
 @property (nonatomic) NSMutableArray *foldersToDelete;
 @property (nonatomic) NSMutableArray *archiveItems;
 @property (nonatomic) NSOperationQueue *operations;
+@property (nonatomic) BOOL shouldDeleteFolder;
 
 @end
 
@@ -111,7 +112,9 @@
 #pragma mark COMPRESSION METHODS
 
 - (void)compressionStart {
-    // Start the compression
+    // Store the settings temporarily so they don't get changed during compression
+    self.shouldDeleteFolder = [NSUserDefaults.standardUserDefaults boolForKey:CZSettingsDeleteFolders];
+    self.filters = [self setFilters];
     for (CZDropItem *item in self.archiveItems) {
         // Do not compress already archived, cancelled or running items.
         if (item.running == NO && item.cancelled == NO && item.archived == NO) {
@@ -190,8 +193,8 @@
     // Create the request and add the folder to it.
     // Solved the issue with excluding files by extending the NOZCompressRequest class.
     CZCompressRequest *request = [[CZCompressRequest alloc] initWithDestinationPath:targetPath];
-//    [request setIgnoreFiles:[self ignoredFiles]];
-//    [request setIgnoreEmptyData:[self ignoreEmptyData]];
+//    [request setIgnoreFiles:self.filters];
+//    [request setIgnoreEmptyData:self.shouldDeleteFolders];
     [request addEntriesInDirectory:sourcePath
          compressionSelectionBlock:NULL];
     // Create the operation that will perform the request.
@@ -228,6 +231,19 @@
     }
 }
 
+- (NSArray *)setFilters {
+    NSMutableArray *filters = [NSUserDefaults.standardUserDefaults valueForKey:CZSettingsCustomFilter];
+    
+    if ([NSUserDefaults.standardUserDefaults boolForKey:CZSettingsFilterHidden]) {
+        [filters addObjectsFromArray:[CZConstants filterForHiddenFiles]];
+    }
+    
+    if ([NSUserDefaults.standardUserDefaults boolForKey:CZSettingsFilterMeta]) {
+        [filters addObjectsFromArray:[CZConstants filterForMetaFiles]];
+    }
+
+    return filters;
+}
 
 #pragma mark SETTERS AND GETTERS
 
@@ -267,6 +283,5 @@
         _filter = filter;
     }
 }
-
 
 @end

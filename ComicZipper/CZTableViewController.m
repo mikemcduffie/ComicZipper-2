@@ -32,15 +32,6 @@ NSString *const kLabelStopped = @"%li item(s) to compress";
 NSString *const kLabelProgress = @"%li item(s) remaining";
 NSString *const kLabelFinished = @"%li item(s) compressed";
 
-- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    
-    if (self) {
-    }
-    
-    return self;
-}
-
 - (void)viewDidLoad {
     self.tableView.delegate = self;
     self.tableView.dataSource = self.comicZipper;

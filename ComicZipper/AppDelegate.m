@@ -19,6 +19,18 @@
 
 @implementation AppDelegate
 
+- (void)resetUserDefaults {
+    NSString *domainName = [[NSBundle mainBundle] bundleIdentifier];
+    [NSUserDefaults.standardUserDefaults removePersistentDomainForName:domainName];
+}
+
+- (void)setUserDefaults {
+    NSString *defaultsPath = [[NSBundle mainBundle] pathForResource:@"UserDefaults"
+                                                             ofType:@"plist"];
+    NSDictionary *defaults = [NSDictionary dictionaryWithContentsOfFile:defaultsPath];
+    [NSUserDefaults.standardUserDefaults registerDefaults:defaults];
+}
+
 - (IBAction)openPreferences:(id)sender {
     self.settingsWindow = [[CZSettingsController alloc] init];
     [self.settingsWindow showWindow:self];
@@ -28,6 +40,7 @@
     self.mainWindow = [CZWindowController initWithApplicationState:CZApplicationStateNoItemDropped];
     [self.mainWindow showWindow:self];
     [self.mainWindow.window makeKeyAndOrderFront:self];
+    [self setUserDefaults];
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {

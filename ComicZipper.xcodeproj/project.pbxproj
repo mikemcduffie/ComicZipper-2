@@ -33,6 +33,7 @@
 		6A9CE7F61BD1A7A9002145CC /* CZTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A9CE7F51BD1A7A9002145CC /* CZTableView.m */; settings = {ASSET_TAGS = (); }; };
 		6AD2A3881BD4E951001BB86E /* CZSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AD2A3861BD4E951001BB86E /* CZSettingsController.m */; settings = {ASSET_TAGS = (); }; };
 		6AD2A3891BD4E951001BB86E /* Settings.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6AD2A3871BD4E951001BB86E /* Settings.xib */; settings = {ASSET_TAGS = (); }; };
+		6AF24BAB1BD54ECC0004F52F /* UserDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6AF24BAA1BD54ECC0004F52F /* UserDefaults.plist */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -95,6 +96,7 @@
 		6AD2A3851BD4E951001BB86E /* CZSettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZSettingsController.h; sourceTree = "<group>"; };
 		6AD2A3861BD4E951001BB86E /* CZSettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZSettingsController.m; sourceTree = "<group>"; };
 		6AD2A3871BD4E951001BB86E /* Settings.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Settings.xib; sourceTree = "<group>"; };
+		6AF24BAA1BD54ECC0004F52F /* UserDefaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = UserDefaults.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,6 +151,7 @@
 			children = (
 				6A43CA101BD029600061C121 /* Assets.xcassets */,
 				6A43CA151BD029600061C121 /* Info.plist */,
+				6AF24BAA1BD54ECC0004F52F /* UserDefaults.plist */,
 				6A43CA0E1BD029600061C121 /* main.m */,
 				6A8676E11BD051E100C5069F /* ComicZipper.pch */,
 			);
@@ -280,6 +283,7 @@
 				6A43CA1C1BD0297F0061C121 /* Window.xib in Resources */,
 				6A278C651BD0CDB8006C5B22 /* TableView.xib in Resources */,
 				6A43CA141BD029600061C121 /* MainMenu.xib in Resources */,
+				6AF24BAB1BD54ECC0004F52F /* UserDefaults.plist in Resources */,
 				6AD2A3891BD4E951001BB86E /* Settings.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -435,7 +439,7 @@
 				INFOPLIST_FILE = ComicZipper/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				PRODUCT_BUNDLE_IDENTIFIER = SaturnFive.ComicZipper;
+				PRODUCT_BUNDLE_IDENTIFIER = com.SaturnFive.ComicZipper;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -452,7 +456,7 @@
 				INFOPLIST_FILE = ComicZipper/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				PRODUCT_BUNDLE_IDENTIFIER = SaturnFive.ComicZipper;
+				PRODUCT_BUNDLE_IDENTIFIER = com.SaturnFive.ComicZipper;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

@@ -21,7 +21,7 @@
 @interface ComicZipper : NSObject <NSTableViewDataSource>
 
 @property (weak) id delegate;
-@property (nonatomic) BOOL shouldDeleteFolder;
+
 /*!
  *  @brief State of compression.
  *  @description This variable is set to TRUE when an item is compressing.
@@ -97,9 +97,5 @@
  *  @brief Clear the ComicZipper list.
  */
 - (void)clearItems;
-
-- (NSMutableArray *)foldersToDelete;
-
-- (void)setFilter:(NSArray *)filter;
 
 @end
