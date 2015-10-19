@@ -8,14 +8,21 @@
 
 #import "AppDelegate.h"
 #import "CZWindowController.h"
+#import "CZSettingsController.h"
 
 @interface AppDelegate ()
 
 @property (strong) CZWindowController *mainWindow;
+@property (strong) CZSettingsController *settingsWindow;
 
 @end
 
 @implementation AppDelegate
+
+- (IBAction)openPreferences:(id)sender {
+    self.settingsWindow = [[CZSettingsController alloc] init];
+    [self.settingsWindow showWindow:self];
+}
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     self.mainWindow = [CZWindowController initWithApplicationState:CZApplicationStateNoItemDropped];

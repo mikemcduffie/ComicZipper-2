@@ -68,10 +68,13 @@
 }
 
 - (void)keyUp:(NSEvent *)theEvent {
-    [self.delegate tableView:self
-            DidRegisterKeyUp:theEvent.keyCode
-                atRowIndexes:self.selectedRowIndexes
-                 withCommand:self.commandKeyState];
+    // Filter out delete key, otherwise it will run twice ( as a key stroke event, and a menu item event)
+    if (theEvent.keyCode != kDeleteKey) {
+        [self.delegate tableView:self
+                DidRegisterKeyUp:theEvent.keyCode
+                    atRowIndexes:self.selectedRowIndexes
+                     withCommand:self.commandKeyState];
+    }
 }
 
 - (void)delete:(id)sender {

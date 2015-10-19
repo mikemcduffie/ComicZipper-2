@@ -113,6 +113,11 @@ NSString *const tableViewNibName = @"TableView";
     }
 }
 
+- (void)changeView:(id)sender {
+    self.applicationState = CZApplicationStateNoItemDropped;
+    [self loadView];
+}
+
 #pragma mark DROP VIEW DELEGATE METHODS
 
 - (void)dropView:(CZDropView *)dropView viewShouldHighlight:(BOOL)highlight {
@@ -144,8 +149,13 @@ NSString *const tableViewNibName = @"TableView";
     if (!_mainViewController) {
         _mainViewController = [[CZMainViewController alloc] initWithNibName:mainViewNibName bundle:nil];
         self.delegate = _mainViewController;
-        [self removeObserverForNotification:CZToggleDragModeNotification
-                                       view:_tableViewController];
+        if (_tableViewController != nil) {
+            [self removeObserverForNotification:CZToggleDragModeNotification
+                                           view:_tableViewController];
+            [self removeObserverForNotification:CZChangeViewNotification
+                                           view:_tableViewController];
+            _tableViewController = nil;
+        }
     }
     return _mainViewController;
 }
@@ -157,6 +167,12 @@ NSString *const tableViewNibName = @"TableView";
         [self addObserverForNotification:CZToggleDragModeNotification
                                 selector:@selector(toggleDragMode:)
                                     view:_tableViewController];
+        [self addObserverForNotification:CZChangeViewNotification
+                                selector:@selector(changeView:)
+                                    view:_tableViewController];
+        if (_mainViewController != nil) {
+            _mainViewController = nil;
+        }
     }
     return _tableViewController;
 }
@@ -174,8 +190,6 @@ NSString *const tableViewNibName = @"TableView";
 
 - (void)removeObserverForNotification:(NSString *)notificationName
                                  view:(id)view {
-    NSLog(@"> %@", notificationName);
-    NSLog(@"> %@", view);
     [NSNotificationCenter.defaultCenter removeObserver:self
                                                   name:notificationName
                                                 object:view];

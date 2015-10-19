@@ -187,14 +187,24 @@ NSString *const kLabelFinished = @"%li item(s) compressed";
                     [self updateCount];
                 }
             } else {
-                // REMOVE THIS VIEW
+                // Ask window controller to change view.
+                [self.view removeFromSuperview];
+                [self postNotification:CZChangeViewNotification];
             }
         }
+    } else if (keyCode == 0 && commandState) {
+        // Select all
+        NSRange range = NSMakeRange(0, [self.tableView numberOfRows]);
+        NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:range];
+        [self.tableView selectRowIndexes:indexSet byExtendingSelection:NO];
+    } else if (keyCode == 49) {
+        // open quickview
     }
 }
 
 - (void)openItemInFinder:(NSIndexSet *)rows {
-    
+    NSArray *items = [[self.comicZipper itemsAtIndexes:rows] valueForKey:@"fileURL"];
+    [NSWorkspace.sharedWorkspace activateFileViewerSelectingURLs:items];
 }
 
 #pragma mark COMIC ZIPPER DELEGATE METHODS

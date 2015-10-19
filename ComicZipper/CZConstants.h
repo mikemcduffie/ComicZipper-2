@@ -140,6 +140,10 @@ extern NSString *const CZApplicationSettingsFileName;
  */
 extern NSString *const CZToggleDragModeNotification;
 /*!
+ *  @brief Notify window controller of view change.
+ */
+extern NSString *const CZChangeViewNotification;
+/*!
  *  @brief The application's Application support directory.
  */
 + (NSString *)applicationSupportPath;

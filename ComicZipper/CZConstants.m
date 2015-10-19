@@ -37,6 +37,7 @@ NSString *const CZSettingsAlertSound = @"CZAlertSound";
 NSString *const CZSettingsAutoStart = @"CZAutoStart";
 NSString *const CZSettingsWindowState = @"CZWindowState";
 NSString *const CZApplicationSettingsFileName = @"CZSettings.plist";
+NSString *const CZChangeViewNotification = @"changeView";
 NSString *const CZToggleDragModeNotification = @"toggleDragMode";
 
 + (NSArray *)validFileExtensions {

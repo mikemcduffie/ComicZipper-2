@@ -31,6 +31,8 @@
 		6A9CE7ED1BD1979B002145CC /* CZScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A9CE7EC1BD1979B002145CC /* CZScrollView.m */; settings = {ASSET_TAGS = (); }; };
 		6A9CE7F01BD19FA4002145CC /* ComicZipper.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A9CE7EF1BD19FA4002145CC /* ComicZipper.m */; settings = {ASSET_TAGS = (); }; };
 		6A9CE7F61BD1A7A9002145CC /* CZTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A9CE7F51BD1A7A9002145CC /* CZTableView.m */; settings = {ASSET_TAGS = (); }; };
+		6AD2A3881BD4E951001BB86E /* CZSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AD2A3861BD4E951001BB86E /* CZSettingsController.m */; settings = {ASSET_TAGS = (); }; };
+		6AD2A3891BD4E951001BB86E /* Settings.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6AD2A3871BD4E951001BB86E /* Settings.xib */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -90,6 +92,9 @@
 		6A9CE7EF1BD19FA4002145CC /* ComicZipper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ComicZipper.m; sourceTree = "<group>"; };
 		6A9CE7F41BD1A7A9002145CC /* CZTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZTableView.h; sourceTree = "<group>"; };
 		6A9CE7F51BD1A7A9002145CC /* CZTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZTableView.m; sourceTree = "<group>"; };
+		6AD2A3851BD4E951001BB86E /* CZSettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZSettingsController.h; sourceTree = "<group>"; };
+		6AD2A3861BD4E951001BB86E /* CZSettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZSettingsController.m; sourceTree = "<group>"; };
+		6AD2A3871BD4E951001BB86E /* Settings.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Settings.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,6 +162,7 @@
 				6A43CA1B1BD0297F0061C121 /* Window.xib */,
 				6A278C681BD10ABB006C5B22 /* MainView.xib */,
 				6A278C631BD0CDB8006C5B22 /* TableView.xib */,
+				6AD2A3871BD4E951001BB86E /* Settings.xib */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -170,6 +176,8 @@
 				6A278C671BD10ABB006C5B22 /* CZMainViewController.m */,
 				6A278C611BD0CDB8006C5B22 /* CZTableViewController.h */,
 				6A278C621BD0CDB8006C5B22 /* CZTableViewController.m */,
+				6AD2A3851BD4E951001BB86E /* CZSettingsController.h */,
+				6AD2A3861BD4E951001BB86E /* CZSettingsController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -272,6 +280,7 @@
 				6A43CA1C1BD0297F0061C121 /* Window.xib in Resources */,
 				6A278C651BD0CDB8006C5B22 /* TableView.xib in Resources */,
 				6A43CA141BD029600061C121 /* MainMenu.xib in Resources */,
+				6AD2A3891BD4E951001BB86E /* Settings.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -309,6 +318,7 @@
 				6A43CA2D1BD033380061C121 /* CZArchiveItem.m in Sources */,
 				6A1006781BD2EE5700BEF987 /* CZStatusButton.m in Sources */,
 				6A1006751BD2EDA700BEF987 /* CZTextField.m in Sources */,
+				6AD2A3881BD4E951001BB86E /* CZSettingsController.m in Sources */,
 				6A278C691BD10ABB006C5B22 /* CZMainViewController.m in Sources */,
 				6A8676E01BD0517C00C5069F /* CZConstants.m in Sources */,
 				6A278C641BD0CDB8006C5B22 /* CZTableViewController.m in Sources */,
