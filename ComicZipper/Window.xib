@@ -36,7 +36,7 @@ AQQBFgEZAR4AAAAAAAACAQAAAAAAAAAoAAAAAAAAAAAAAAAAAAABIA
                     </caTransition>
                 </animations>
             </view>
-            <toolbar key="toolbar" implicitIdentifier="3C73CDCE-7C45-4D6F-A077-A1DC1435EC2E" autosavesConfiguration="NO" displayMode="iconAndLabel" sizeMode="regular" id="uQp-LK-dLG">
+            <toolbar key="toolbar" implicitIdentifier="125F992C-66E6-418D-B385-F691DFEEC0C8" autosavesConfiguration="NO" allowsUserCustomization="NO" displayMode="iconAndLabel" sizeMode="small" id="Ctu-v7-19d">
                 <allowedToolbarItems/>
                 <defaultToolbarItems/>
             </toolbar>

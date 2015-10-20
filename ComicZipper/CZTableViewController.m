@@ -50,6 +50,15 @@ NSString *const kLabelFinished = @"%li item(s) compressed!";
     self.textLabel.stringValue = label;
 }
 
+- (void)setApplicationBadge:(NSString *)badgeLabel {
+    // No zero for you.
+    if ([badgeLabel isEqualToString:@"0"]) {
+        badgeLabel = @"";
+    }
+    
+    NSApplication.sharedApplication.dockTile.badgeLabel = badgeLabel;
+}
+
 - (IBAction)compressButtonWasClicked:(id)sender {
     [sender setEnabled:NO];
     [self.comicZipper compressionStart];
@@ -82,6 +91,10 @@ NSString *const kLabelFinished = @"%li item(s) compressed!";
 
 - (void)reloadData {
     [self.tableView reloadData];
+}
+
+- (BOOL)hasProcessFinished {
+    return [self.comicZipper isRunning];
 }
 
 - (NSInteger)numberOfItemsCompressed {
@@ -184,7 +197,7 @@ NSString *const kLabelFinished = @"%li item(s) compressed!";
             }
         }
     } else if (keyCode == 49) {
-        // open quickview
+        // QUICKLOOK
     }
 }
 
@@ -239,7 +252,10 @@ NSString *const kLabelFinished = @"%li item(s) compressed!";
             [self postNotification:CZCompressionDoneNotification];
         }
     }
-    
+
+    if ([self shouldShowApplicationBadge]) {
+        [self setApplicationBadge:[NSString stringWithFormat:@"%li", numberOfItemsToCompress]];
+    }
     [self setLabel:label];
 }
 
@@ -255,6 +271,10 @@ NSString *const kLabelFinished = @"%li item(s) compressed!";
 
 - (BOOL)shouldAutoStart {
     return [NSUserDefaults.standardUserDefaults boolForKey:CZSettingsAutoStart];
+}
+
+- (BOOL)shouldShowApplicationBadge {
+    return [NSUserDefaults.standardUserDefaults boolForKey:CZSettingsBadgeDockIcon];
 }
 
 #pragma mark SETTERS AND GETTERS

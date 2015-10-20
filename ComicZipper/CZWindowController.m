@@ -105,6 +105,8 @@ NSString *const tableViewNibName = @"TableView";
     return (self.currentViewController.identifier == identifier);
 }
 
+#pragma mark NOTIFICATION METHODS
+
 - (void)didReceiveNotification:(NSNotification *)notification {
     NSString *notificationName = notification.name;
     if ([notificationName isEqualToString:CZToggleDragModeNotification]) {
@@ -130,6 +132,10 @@ NSString *const tableViewNibName = @"TableView";
         [self notifyByAlertSound];
     } else {
         [self notifyByNotification];
+    }
+    // Check if app should automatically quit after compression.
+    if ([self shouldQuitApplication]) {
+        [NSApplication.sharedApplication terminate:self];
     }
 }
 
@@ -213,6 +219,14 @@ NSString *const tableViewNibName = @"TableView";
     return _tableViewController;
 }
 
+- (BOOL)isRunning {
+    if (!_tableViewController) {
+        return NO;
+    }
+    
+    return [self.delegate hasProcessFinished];
+}
+
 #pragma mark NOTIFICATION METHODS
 
 - (void)addNotification:(NSString *)notificationName
@@ -247,6 +261,10 @@ NSString *const tableViewNibName = @"TableView";
 
 - (BOOL)shouldNotifyUser {
     return [NSUserDefaults.standardUserDefaults boolForKey:CZSettingsNotifications];
+}
+
+- (BOOL)shouldQuitApplication {
+    return [NSUserDefaults.standardUserDefaults boolForKey:CZSettingsAutoQuit];
 }
 
 #pragma mark CONSTRAINT VIEW METHODS

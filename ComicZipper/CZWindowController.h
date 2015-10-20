@@ -17,6 +17,7 @@
 - (BOOL)isItemInList:(NSString *)item;
 - (void)addItemsFromArray:(NSArray *)array;
 - (void)reloadData;
+- (BOOL)hasProcessFinished;
 - (NSInteger)numberOfItemsCompressed;
 
 @end
@@ -24,6 +25,7 @@
 @interface CZWindowController : NSWindowController
 
 @property (weak) id delegate;
+@property (nonatomic, getter = isRunning, readonly) BOOL running;
 
 + (instancetype)initWithApplicationState:(NSInteger)applicationState;
 

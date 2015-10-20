@@ -103,7 +103,7 @@
 }
 
 - (BOOL)isItemRunning:(NSInteger)index {
-    return ([[self.archiveItems objectAtIndex:index] isRunning] == YES);
+    return [[self.archiveItems objectAtIndex:index] isRunning];
 }
 
 - (void)clearItems {
@@ -191,7 +191,7 @@
 - (NOZCompressOperation *)createOperationForItem:(CZDropItem *)item {
     NSString *targetPath = [item temporaryPath];
     NSString *sourcePath = [item folderPath];
-    NSString *processTag = [NSString stringWithFormat:@"%lu", [[self archiveItems] indexOfObject:item]];
+    NSString *processTag = [NSString stringWithFormat:@"%lu", [self.archiveItems indexOfObject:item]];
     // Create the request and add the folder to it.
     // Solved the issue with excluding files by extending the NOZCompressRequest class.
     CZCompressRequest *request = [[CZCompressRequest alloc] initWithDestinationPath:targetPath];
@@ -227,7 +227,7 @@
 
 - (void)deleteFolders {
     if (_foldersToDelete != nil) {
-        [NSWorkspace.sharedWorkspace recycleURLs:[self foldersToDelete]
+        [NSWorkspace.sharedWorkspace recycleURLs:self.foldersToDelete
                                completionHandler:nil];
         [self setFoldersToDelete:nil];
     }

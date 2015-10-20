@@ -112,6 +112,10 @@ extern NSString *const CZSettingsFilterEmptyData;
  */
 extern NSString *const CZSettingsCustomFilter;
 /*!
+ *  @brief Key for alert sound settings.
+ */
+extern NSString *const CZSettingsAlertSound;
+/*!
  *  @brief Key for user notifications settings.
  */
 extern NSString *const CZSettingsNotifications;
@@ -120,9 +124,9 @@ extern NSString *const CZSettingsNotifications;
  */
 extern NSString *const CZSettingsBadgeDockIcon;
 /*!
- *  @brief Key for alert sound settings.
+ *  @brief Key for auto quit.
  */
-extern NSString *const CZSettingsAlertSound;
+extern NSString *const CZSettingsAutoQuit;
 /*!
  *  @brief Key for auto start settings.
  */
@@ -131,6 +135,10 @@ extern NSString *const CZSettingsAutoStart;
  *  @brief Key for window state setting.
  */
 extern NSString *const CZSettingsWindowState;
+/*!
+ *  @brief Key for resetting application settings.
+ */
+extern NSString *const CZSettingsResetSettings;
 /*!
  *  @brief Notify window controller of view change.
  */

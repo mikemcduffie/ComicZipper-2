@@ -151,10 +151,13 @@
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Dua-HV-fZR">
                     <rect key="frame" x="18" y="64" width="256" height="36"/>
                     <animations/>
-                    <buttonCell key="cell" type="check" title="Quit applicaiton after compression" bezelStyle="regularSquare" imagePosition="left" enabled="NO" inset="2" id="spP-wB-mWH">
+                    <buttonCell key="cell" type="check" title="Quit applicaiton after compression" bezelStyle="regularSquare" imagePosition="left" inset="2" id="spP-wB-mWH">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" size="13" name="HelveticaNeue-Light"/>
                     </buttonCell>
+                    <connections>
+                        <binding destination="ZPK-Lq-2HQ" name="value" keyPath="values.CZAutoQuit" id="sNa-3Z-EXu"/>
+                    </connections>
                 </button>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tAN-gn-YZp">
                     <rect key="frame" x="36" y="35" width="236" height="37"/>
@@ -344,7 +347,7 @@
                     </connections>
                 </button>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fvx-LF-Zi8">
-                    <rect key="frame" x="38" y="221" width="236" height="40"/>
+                    <rect key="frame" x="38" y="220" width="236" height="40"/>
                     <animations/>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="Folders will be moved to the trash after comic book archive is complete." id="6G4-mh-gkE">
                         <font key="font" size="11" name="HelveticaNeue-Thin"/>
@@ -353,7 +356,7 @@
                     </textFieldCell>
                 </textField>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3Ue-ff-eMf">
-                    <rect key="frame" x="18" y="181" width="256" height="30"/>
+                    <rect key="frame" x="18" y="190" width="256" height="30"/>
                     <animations/>
                     <buttonCell key="cell" type="check" title="Start processing items automatically" bezelStyle="regularSquare" imagePosition="left" inset="2" id="hQ2-tw-u3F">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -364,7 +367,7 @@
                     </connections>
                 </button>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aFF-T3-jdh">
-                    <rect key="frame" x="38" y="147" width="236" height="40"/>
+                    <rect key="frame" x="38" y="154" width="236" height="40"/>
                     <animations/>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="Folders dropped onto the application icon or window will start compressing automatically." id="cfe-XE-HhA">
                         <font key="font" size="11" name="HelveticaNeue-Thin"/>
@@ -373,17 +376,35 @@
                     </textFieldCell>
                 </textField>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Z8c-ZQ-lSt">
-                    <rect key="frame" x="18" y="111" width="256" height="30"/>
+                    <rect key="frame" x="18" y="59" width="256" height="30"/>
                     <animations/>
-                    <buttonCell key="cell" type="check" title="Reload default settings on relaunch" bezelStyle="regularSquare" imagePosition="left" enabled="NO" inset="2" id="7W0-hZ-rHb">
+                    <buttonCell key="cell" type="check" title="Load default settings on relaunch" bezelStyle="regularSquare" imagePosition="left" inset="2" id="7W0-hZ-rHb">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" size="13" name="HelveticaNeue-Light"/>
+                    </buttonCell>
+                    <connections>
+                        <binding destination="ZPK-Lq-2HQ" name="value" keyPath="values.CZResetSettings" id="wxU-Rv-YEh"/>
+                    </connections>
+                </button>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dGa-bq-oIt">
+                    <rect key="frame" x="38" y="94" width="227" height="34"/>
+                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="A folder named Comic Book 001 will be named Comic Book #001 when compressed." id="E0y-X6-xci">
+                        <font key="font" size="11" name="HelveticaNeue-Thin"/>
+                        <color key="textColor" name="windowFrameColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Wny-Iz-UJo">
+                    <rect key="frame" x="18" y="127" width="258" height="25"/>
+                    <buttonCell key="cell" type="check" title="Add number sign to filenames" bezelStyle="regularSquare" imagePosition="left" enabled="NO" inset="2" id="dgG-6T-Vzf">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" size="13" name="HelveticaNeue-Light"/>
                     </buttonCell>
                 </button>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Rca-RN-Moo">
-                    <rect key="frame" x="38" y="65" width="236" height="51"/>
+                    <rect key="frame" x="38" y="37" width="236" height="24"/>
                     <animations/>
-                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="Application must restart for the application default settings to reload. Warning: This will remove your current settings." id="DP2-RQ-s8P">
+                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="Warning: This will remove your current settings." id="DP2-RQ-s8P">
                         <font key="font" size="11" name="HelveticaNeue-Thin"/>
                         <color key="textColor" name="windowFrameColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
