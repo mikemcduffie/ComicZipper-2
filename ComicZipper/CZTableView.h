@@ -23,4 +23,6 @@
 
 @property (nonatomic, assign) id<CZTableViewDelegate> delegate;
 
+- (void)scrollRowToVisible:(NSInteger)rowIndex animate:(BOOL)animate;
+
 @end

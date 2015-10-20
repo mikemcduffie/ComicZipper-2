@@ -36,13 +36,9 @@ NSString *const CZSettingsBadgeDockIcon = @"CZBadgeDockIcon";
 NSString *const CZSettingsAlertSound = @"CZAlertSound";
 NSString *const CZSettingsAutoStart = @"CZAutoStart";
 NSString *const CZSettingsWindowState = @"CZWindowState";
-NSString *const CZApplicationSettingsFileName = @"CZSettings.plist";
 NSString *const CZChangeViewNotification = @"changeView";
 NSString *const CZToggleDragModeNotification = @"toggleDragMode";
-
-+ (NSArray *)validFileExtensions {
-    return @[@"jpg", @"jpeg", @"png", @"gif", @"tiff", @"tif", @"bmp"];
-}
+NSString *const CZCompressionDoneNotification = @"compressionDone";
 
 + (NSString *)applicationSupportPath {
     return @"";
@@ -54,16 +50,16 @@ NSString *const CZToggleDragModeNotification = @"toggleDragMode";
 
 }
 
-+ (NSString *)settingsDirectoryPath {
-    return @"";
++ (NSArray *)validFileExtensions {
+    return @[@"jpg", @"jpeg", @"png", @"gif", @"tiff", @"tif", @"bmp"];
 }
 
 + (NSArray *)filterForHiddenFiles {
-    return @[];
+    return @[@"^\\.(?!DS_Store|_)\\w+"];
 }
 
 + (NSArray *)filterForMetaFiles {
-    return @[];
+    return @[@"Thumbs.db$", @"__MACOSX", @".DS_Store", @"^\\._\\w+"];
 }
 
 @end

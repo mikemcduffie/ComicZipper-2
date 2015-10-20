@@ -28,6 +28,8 @@
 		6A43CA2D1BD033380061C121 /* CZArchiveItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A43CA2C1BD033380061C121 /* CZArchiveItem.m */; settings = {ASSET_TAGS = (); }; };
 		6A43CA301BD0334B0061C121 /* CZDropItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A43CA2F1BD0334B0061C121 /* CZDropItem.m */; settings = {ASSET_TAGS = (); }; };
 		6A8676E01BD0517C00C5069F /* CZConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A8676DF1BD0517C00C5069F /* CZConstants.m */; settings = {ASSET_TAGS = (); }; };
+		6A88D1891BD6793C00274BE0 /* CZAboutController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A88D1871BD6793C00274BE0 /* CZAboutController.m */; settings = {ASSET_TAGS = (); }; };
+		6A88D18A1BD6793C00274BE0 /* About.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A88D1881BD6793C00274BE0 /* About.xib */; settings = {ASSET_TAGS = (); }; };
 		6A9CE7ED1BD1979B002145CC /* CZScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A9CE7EC1BD1979B002145CC /* CZScrollView.m */; settings = {ASSET_TAGS = (); }; };
 		6A9CE7F01BD19FA4002145CC /* ComicZipper.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A9CE7EF1BD19FA4002145CC /* ComicZipper.m */; settings = {ASSET_TAGS = (); }; };
 		6A9CE7F61BD1A7A9002145CC /* CZTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A9CE7F51BD1A7A9002145CC /* CZTableView.m */; settings = {ASSET_TAGS = (); }; };
@@ -87,6 +89,9 @@
 		6A8676DE1BD0517C00C5069F /* CZConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZConstants.h; sourceTree = "<group>"; };
 		6A8676DF1BD0517C00C5069F /* CZConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZConstants.m; sourceTree = "<group>"; };
 		6A8676E11BD051E100C5069F /* ComicZipper.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ComicZipper.pch; sourceTree = "<group>"; };
+		6A88D1861BD6793C00274BE0 /* CZAboutController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZAboutController.h; sourceTree = "<group>"; };
+		6A88D1871BD6793C00274BE0 /* CZAboutController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZAboutController.m; sourceTree = "<group>"; };
+		6A88D1881BD6793C00274BE0 /* About.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = About.xib; sourceTree = "<group>"; };
 		6A9CE7EB1BD1979B002145CC /* CZScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZScrollView.h; sourceTree = "<group>"; };
 		6A9CE7EC1BD1979B002145CC /* CZScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZScrollView.m; sourceTree = "<group>"; };
 		6A9CE7EE1BD19FA4002145CC /* ComicZipper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComicZipper.h; sourceTree = "<group>"; };
@@ -166,6 +171,7 @@
 				6A278C681BD10ABB006C5B22 /* MainView.xib */,
 				6A278C631BD0CDB8006C5B22 /* TableView.xib */,
 				6AD2A3871BD4E951001BB86E /* Settings.xib */,
+				6A88D1881BD6793C00274BE0 /* About.xib */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -181,6 +187,8 @@
 				6A278C621BD0CDB8006C5B22 /* CZTableViewController.m */,
 				6AD2A3851BD4E951001BB86E /* CZSettingsController.h */,
 				6AD2A3861BD4E951001BB86E /* CZSettingsController.m */,
+				6A88D1861BD6793C00274BE0 /* CZAboutController.h */,
+				6A88D1871BD6793C00274BE0 /* CZAboutController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -280,6 +288,7 @@
 			files = (
 				6A43CA111BD029600061C121 /* Assets.xcassets in Resources */,
 				6A278C6A1BD10ABB006C5B22 /* MainView.xib in Resources */,
+				6A88D18A1BD6793C00274BE0 /* About.xib in Resources */,
 				6A43CA1C1BD0297F0061C121 /* Window.xib in Resources */,
 				6A278C651BD0CDB8006C5B22 /* TableView.xib in Resources */,
 				6A43CA141BD029600061C121 /* MainMenu.xib in Resources */,
@@ -319,6 +328,7 @@
 				6A278C721BD12602006C5B22 /* CZApplication.m in Sources */,
 				6A43CA201BD029E00061C121 /* CZWindowController.m in Sources */,
 				6A9CE7F61BD1A7A9002145CC /* CZTableView.m in Sources */,
+				6A88D1891BD6793C00274BE0 /* CZAboutController.m in Sources */,
 				6A43CA2D1BD033380061C121 /* CZArchiveItem.m in Sources */,
 				6A1006781BD2EE5700BEF987 /* CZStatusButton.m in Sources */,
 				6A1006751BD2EDA700BEF987 /* CZTextField.m in Sources */,

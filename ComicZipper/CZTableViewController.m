@@ -29,8 +29,8 @@
 @synthesize comicZipper = _comicZipper;
 
 NSString *const kLabelStopped = @"%li item(s) to compress";
-NSString *const kLabelProgress = @"%li item(s) remaining";
-NSString *const kLabelFinished = @"%li item(s) compressed";
+NSString *const kLabelProgress = @"%li item(s) remaining...";
+NSString *const kLabelFinished = @"%li item(s) compressed!";
 
 - (void)viewDidLoad {
     self.tableView.delegate = self;
@@ -82,6 +82,10 @@ NSString *const kLabelFinished = @"%li item(s) compressed";
 
 - (void)reloadData {
     [self.tableView reloadData];
+}
+
+- (NSInteger)numberOfItemsCompressed {
+    return [self.comicZipper countArchived];
 }
 
 #pragma mark TABLE VIEW DELEGATE METHODS
@@ -146,17 +150,13 @@ NSString *const kLabelFinished = @"%li item(s) compressed";
     NSInteger numberOfItemsToCompress = [self.comicZipper countActive];
     if (numberOfItemsToCompress == row+1) {
         [self updateCount];
-        self.buttonCompres.enabled = YES;
+        
+        if ([self shouldAutoStart]) {
+            [self compressButtonWasClicked:self.buttonCompres];
+        } else {
+            self.buttonCompres.enabled = YES;
+        }
     }
-//    if (numberOfItemsToCompress == row+1) {
-//        [self updateLabelForTableView:[NSString stringWithFormat:@"%li item(s) to compress", numberOfItemsToCompress]];
-//        if ([self shouldAutoStartCompression]) {
-//            [self compressButton:[self compressButton]];
-//        } else {
-//            [[self compressButton] setEnabled:YES];
-//        }
-//    }
-
 }
 
 - (void)tableView:(CZTableView *)tableView
@@ -183,11 +183,6 @@ NSString *const kLabelFinished = @"%li item(s) compressed";
                 [self postNotification:CZChangeViewNotification];
             }
         }
-    } else if (keyCode == 0 && commandState) {
-        // Select all
-        NSRange range = NSMakeRange(0, [self.tableView numberOfRows]);
-        NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:range];
-        [self.tableView selectRowIndexes:indexSet byExtendingSelection:NO];
     } else if (keyCode == 49) {
         // open quickview
     }
@@ -218,6 +213,7 @@ NSString *const kLabelFinished = @"%li item(s) compressed";
 
 - (void)ComicZipper:(ComicZipper *)comicZipper didFinishItemAtIndex:(NSUInteger)index {
     [self reloadDataForRow:index];
+    [self scrollRowToVisible:index];
 }
 
 - (void)ComicZipper:(ComicZipper *)comicZipper didCancelItemAtIndex:(NSUInteger)index {
@@ -229,7 +225,7 @@ NSString *const kLabelFinished = @"%li item(s) compressed";
 - (void)updateCount {
     NSInteger numberOfItemsToCompress = self.comicZipper.countActive;
     NSInteger numberOfItemsCompressed = self.comicZipper.countArchived;
-    NSString *label = @"Loading";
+    NSString *label = @"Loading...";
     
     if (self.comicZipper.isRunning) {
         label = [NSString stringWithFormat:kLabelProgress, numberOfItemsToCompress];
@@ -240,10 +236,25 @@ NSString *const kLabelFinished = @"%li item(s) compressed";
             label = [NSString stringWithFormat:kLabelFinished, numberOfItemsCompressed];
             // Notify window controller to turn on drag mode
             [self postNotification:CZToggleDragModeNotification];
+            [self postNotification:CZCompressionDoneNotification];
         }
     }
     
     [self setLabel:label];
+}
+
+- (void)scrollRowToVisible:(NSInteger)index {
+    CGRect visibleRect = self.tableView.superview.visibleRect;
+    NSRange visibleRows = [self.tableView rowsInRect:visibleRect];
+    if ((index + visibleRows.length) > visibleRows.location) {
+        [self.tableView scrollRowToVisible:index animate:YES];
+    }
+}
+
+#pragma mark PREFERENCES
+
+- (BOOL)shouldAutoStart {
+    return [NSUserDefaults.standardUserDefaults boolForKey:CZSettingsAutoStart];
 }
 
 #pragma mark SETTERS AND GETTERS

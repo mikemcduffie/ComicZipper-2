@@ -132,17 +132,17 @@ extern NSString *const CZSettingsAutoStart;
  */
 extern NSString *const CZSettingsWindowState;
 /*!
- *  @brief The name of the application settings file.
+ *  @brief Notify window controller of view change.
  */
-extern NSString *const CZApplicationSettingsFileName;
+extern NSString *const CZChangeViewNotification;
 /*!
  *  @brief Notification name for toggling drag mode.
  */
 extern NSString *const CZToggleDragModeNotification;
 /*!
- *  @brief Notify window controller of view change.
+ *  @brief Notifiy window controller of compression status.
  */
-extern NSString *const CZChangeViewNotification;
+extern NSString *const CZCompressionDoneNotification;
 /*!
  *  @brief The application's Application support directory.
  */
@@ -151,10 +151,6 @@ extern NSString *const CZChangeViewNotification;
  *  @brief The application's cache directory.
  */
 + (NSString *)cacheDirectoryPath;
-/*!
- *  @brief The application's settings file.
- */
-+ (NSString *)settingsDirectoryPath;
 /*!
  *  @brief The valid file extensions.
  */

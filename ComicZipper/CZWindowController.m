@@ -105,17 +105,50 @@ NSString *const tableViewNibName = @"TableView";
     return (self.currentViewController.identifier == identifier);
 }
 
-- (void)toggleDragMode:(id)sender {
-    if (self.dropView.isInDragMode) {
-        self.dropView.dragMode = NO;
-    } else {
-        self.dropView.dragMode = YES;
+- (void)didReceiveNotification:(NSNotification *)notification {
+    NSString *notificationName = notification.name;
+    if ([notificationName isEqualToString:CZToggleDragModeNotification]) {
+        [self toggleDragMode];
+    } else if ([notificationName isEqualToString:CZChangeViewNotification]) {
+        [self changeView];
+    } else if ([notificationName isEqualToString:CZCompressionDoneNotification]) {
+        [self compressionDidFinish];
     }
 }
 
-- (void)changeView:(id)sender {
+- (void)toggleDragMode {
+    self.dropView.dragMode = !self.dropView.dragMode;
+}
+
+- (void)changeView {
     self.applicationState = CZApplicationStateNoItemDropped;
     [self loadView];
+}
+
+- (void)compressionDidFinish {
+    if ([self isApplicationActive]) {
+        [self notifyByAlertSound];
+    } else {
+        [self notifyByNotification];
+    }
+}
+
+- (void)notifyByAlertSound {
+    if ([self shouldSoundAlert]) {
+        [[NSSound soundNamed:CZDefaultNotifySoundName] play];
+    }
+}
+
+- (void)notifyByNotification {
+    if ([self shouldNotifyUser]) {
+        NSUserNotificationCenter *notificationCenter = [NSUserNotificationCenter defaultUserNotificationCenter];
+        NSUserNotification *notification = [[NSUserNotification alloc] init];
+        NSString *informativeText = [NSString stringWithFormat:@"%li item(s) compressed!", [self.delegate numberOfItemsCompressed]];
+        [notification setTitle:CZApplicationName];
+        [notification setInformativeText:informativeText];
+        [notification setSoundName:CZDefaultNotifySoundName];
+        [notificationCenter deliverNotification:notification];
+    }
 }
 
 #pragma mark DROP VIEW DELEGATE METHODS
@@ -150,10 +183,10 @@ NSString *const tableViewNibName = @"TableView";
         _mainViewController = [[CZMainViewController alloc] initWithNibName:mainViewNibName bundle:nil];
         self.delegate = _mainViewController;
         if (_tableViewController != nil) {
-            [self removeObserverForNotification:CZToggleDragModeNotification
-                                           view:_tableViewController];
-            [self removeObserverForNotification:CZChangeViewNotification
-                                           view:_tableViewController];
+            [self removeNotification:CZToggleDragModeNotification
+                                view:_tableViewController];
+            [self removeNotification:CZChangeViewNotification
+                                view:_tableViewController];
             _tableViewController = nil;
         }
     }
@@ -164,12 +197,15 @@ NSString *const tableViewNibName = @"TableView";
     if (!_tableViewController) {
         _tableViewController = [[CZTableViewController alloc] initWithNibName:tableViewNibName bundle:nil];
         self.delegate = _tableViewController;
-        [self addObserverForNotification:CZToggleDragModeNotification
-                                selector:@selector(toggleDragMode:)
-                                    view:_tableViewController];
-        [self addObserverForNotification:CZChangeViewNotification
-                                selector:@selector(changeView:)
-                                    view:_tableViewController];
+        [self addNotification:CZToggleDragModeNotification
+                     selector:@selector(didReceiveNotification:)
+                         view:_tableViewController];
+        [self addNotification:CZChangeViewNotification
+                     selector:@selector(didReceiveNotification:)
+                         view:_tableViewController];
+        [self addNotification:CZCompressionDoneNotification
+                     selector:@selector(didReceiveNotification:)
+                         view:_tableViewController];
         if (_mainViewController != nil) {
             _mainViewController = nil;
         }
@@ -179,28 +215,39 @@ NSString *const tableViewNibName = @"TableView";
 
 #pragma mark NOTIFICATION METHODS
 
-- (void)addObserverForNotification:(NSString *)notificationName
-                          selector:(SEL)selector
-                              view:(id)view  {
+- (void)addNotification:(NSString *)notificationName
+               selector:(SEL)selector
+                   view:(id)view  {
     [NSNotificationCenter.defaultCenter addObserver:self
                                            selector:selector
                                                name:notificationName
                                              object:view];
 }
 
-- (void)removeObserverForNotification:(NSString *)notificationName
-                                 view:(id)view {
+- (void)removeNotification:(NSString *)notificationName
+                      view:(id)view {
     [NSNotificationCenter.defaultCenter removeObserver:self
                                                   name:notificationName
                                                 object:view];
 }
 
-#pragma mark PRIVATE METHODS
+#pragma mark STATE AND SETTINGS METHODS
 
 - (BOOL)applicationStateIs:(NSInteger)state {
     return ([self applicationState] == state);
 }
 
+- (BOOL)isApplicationActive {
+    return [NSApplication.sharedApplication isActive];
+}
+
+- (BOOL)shouldSoundAlert {
+    return [NSUserDefaults.standardUserDefaults boolForKey:CZSettingsAlertSound];
+}
+
+- (BOOL)shouldNotifyUser {
+    return [NSUserDefaults.standardUserDefaults boolForKey:CZSettingsNotifications];
+}
 
 #pragma mark CONSTRAINT VIEW METHODS
 

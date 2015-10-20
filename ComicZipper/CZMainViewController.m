@@ -19,6 +19,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    // The image must be unregistered as a possible destination in a dragging session.
+    // Otherwise, dragged items that hover over the image will not by detected by the dropview.
     [self.imageView unregisterDraggedTypes];
 }
 

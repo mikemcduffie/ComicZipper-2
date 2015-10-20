@@ -13,10 +13,11 @@
 
 @interface ComicZipper () <NOZCompressDelegate>
 
-@property (nonatomic) NSArray *filters;
 @property (nonatomic) NSMutableArray *foldersToDelete;
 @property (nonatomic) NSMutableArray *archiveItems;
 @property (nonatomic) NSOperationQueue *operations;
+@property (nonatomic) NSArray *filesToFilter;
+@property (nonatomic) BOOL shouldFilterEmpty;
 @property (nonatomic) BOOL shouldDeleteFolder;
 
 @end
@@ -114,7 +115,8 @@
 - (void)compressionStart {
     // Store the settings temporarily so they don't get changed during compression
     self.shouldDeleteFolder = [NSUserDefaults.standardUserDefaults boolForKey:CZSettingsDeleteFolders];
-    self.filters = [self setFilters];
+    self.shouldFilterEmpty = [NSUserDefaults.standardUserDefaults boolForKey:CZSettingsFilterEmptyData];
+    self.filesToFilter = [self setFilters];
     for (CZDropItem *item in self.archiveItems) {
         // Do not compress already archived, cancelled or running items.
         if (item.running == NO && item.cancelled == NO && item.archived == NO) {
@@ -193,8 +195,8 @@
     // Create the request and add the folder to it.
     // Solved the issue with excluding files by extending the NOZCompressRequest class.
     CZCompressRequest *request = [[CZCompressRequest alloc] initWithDestinationPath:targetPath];
-//    [request setIgnoreFiles:self.filters];
-//    [request setIgnoreEmptyData:self.shouldDeleteFolders];
+    request.filesToFilter = self.filesToFilter;
+    request.shouldFilterEmpty = self.shouldFilterEmpty;
     [request addEntriesInDirectory:sourcePath
          compressionSelectionBlock:NULL];
     // Create the operation that will perform the request.
@@ -232,17 +234,17 @@
 }
 
 - (NSArray *)setFilters {
-    NSMutableArray *filters = [NSUserDefaults.standardUserDefaults valueForKey:CZSettingsCustomFilter];
-    
+    NSMutableArray *filter = [[NSUserDefaults.standardUserDefaults valueForKey:CZSettingsCustomFilter] mutableCopy];
+
     if ([NSUserDefaults.standardUserDefaults boolForKey:CZSettingsFilterHidden]) {
-        [filters addObjectsFromArray:[CZConstants filterForHiddenFiles]];
+        [filter addObjectsFromArray:[CZConstants filterForHiddenFiles]];
     }
     
     if ([NSUserDefaults.standardUserDefaults boolForKey:CZSettingsFilterMeta]) {
-        [filters addObjectsFromArray:[CZConstants filterForMetaFiles]];
+        [filter addObjectsFromArray:[CZConstants filterForMetaFiles]];
     }
-
-    return filters;
+    
+    return [filter copy];
 }
 
 #pragma mark SETTERS AND GETTERS
@@ -274,14 +276,6 @@
         _foldersToDelete = [NSMutableArray array];
     }
     return _foldersToDelete;
-}
-
-- (void)setFilter:(NSArray *)filter {
-    if (!_filter) {
-        _filter = [NSArray arrayWithArray:filter];
-    } else {
-        _filter = filter;
-    }
 }
 
 @end

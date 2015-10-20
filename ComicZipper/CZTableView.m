@@ -51,13 +51,13 @@
 #pragma mark MENU METHODS
 
 - (void)menuItemOpenFinder {
-    [self.delegate openItemInFinder:[self selectedRowIndexes]];
+    [self.delegate openItemInFinder:self.selectedRowIndexes];
 }
 
 - (void)menuItemRemove {
     [self.delegate tableView:self
             DidRegisterKeyUp:kDeleteKey
-                atRowIndexes:[self selectedRowIndexes]
+                atRowIndexes:self.selectedRowIndexes
                  withCommand:NO];
 }
 
@@ -109,6 +109,19 @@
     return nil;
 }
 
+- (void)scrollRowToVisible:(NSInteger)index
+                   animate:(BOOL)animate {
+    // Borrowed and slightly adjusted from https://gist.github.com/kgn/1558664
+    if (animate) {
+        NSRect rowRect = [self rectOfRow:index];
+        NSPoint origin = rowRect.origin;
+        NSClipView *clipView = (NSClipView *)[self superview];
+        origin.y += MAX(0, round((NSHeight(rowRect) - NSHeight(clipView.frame)) * 0.5f));
+        [[clipView animator] setBoundsOrigin:origin];
+    } else {
+        [self scrollRowToVisible:index];
+    }
+}
 
 #pragma mark SETTERS AND GETTERS
 

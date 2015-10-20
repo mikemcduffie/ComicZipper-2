@@ -11,15 +11,13 @@
 @protocol CZWindowControllerDelegate <NSObject>
 
 @required
-/*!
- *  @brief 
- */
 - (void)viewShouldHighlight:(BOOL)highlight;
 
 @optional
 - (BOOL)isItemInList:(NSString *)item;
 - (void)addItemsFromArray:(NSArray *)array;
 - (void)reloadData;
+- (NSInteger)numberOfItemsCompressed;
 
 @end
 

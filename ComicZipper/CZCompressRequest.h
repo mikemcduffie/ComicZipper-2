@@ -10,4 +10,7 @@
 
 @interface CZCompressRequest : NOZCompressRequest
 
+@property (nonatomic) BOOL shouldFilterEmpty;
+@property (nonatomic) NSArray *filesToFilter;
+
 @end
