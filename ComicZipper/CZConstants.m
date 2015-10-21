@@ -36,6 +36,7 @@ NSString *const CZSettingsBadgeDockIcon = @"CZBadgeDockIcon";
 NSString *const CZSettingsAutoQuit = @"CZAutoQuit";
 NSString *const CZSettingsAlertSound = @"CZAlertSound";
 NSString *const CZSettingsAutoStart = @"CZAutoStart";
+NSString *const CZSettingsNumberSign = @"CZNumberSign";
 NSString *const CZSettingsWindowState = @"CZWindowState";
 NSString *const CZSettingsResetSettings = @"CZResetSettings";
 NSString *const CZChangeViewNotification = @"changeView";

@@ -396,10 +396,13 @@
                 </textField>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Wny-Iz-UJo">
                     <rect key="frame" x="18" y="127" width="258" height="25"/>
-                    <buttonCell key="cell" type="check" title="Add number sign to filenames" bezelStyle="regularSquare" imagePosition="left" enabled="NO" inset="2" id="dgG-6T-Vzf">
+                    <buttonCell key="cell" type="check" title="Add number sign to filenames" bezelStyle="regularSquare" imagePosition="left" inset="2" id="dgG-6T-Vzf">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" size="13" name="HelveticaNeue-Light"/>
                     </buttonCell>
+                    <connections>
+                        <binding destination="ZPK-Lq-2HQ" name="value" keyPath="values.CZNumberSign" id="677-YS-raT"/>
+                    </connections>
                 </button>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Rca-RN-Moo">
                     <rect key="frame" x="38" y="37" width="236" height="24"/>

@@ -153,17 +153,23 @@ static NSString *const kRegExpTemplate = @" #$1";
 
 - (NSString *)archivePath {
     if (!_archivePath) {
-        // Create the path for the archive to be created. Adds # sign before
-        // the issue (001) number in the filename with regular expressions.
-        NSError *error = nil;
-        NSRegularExpression *regEx = [NSRegularExpression regularExpressionWithPattern:kRegExpPattern
-                                                                               options:0
-                                                                                 error:&error];
-        NSRange rangeForRegEx = NSMakeRange(0, self.folderName.length);
-        NSString *fileName = [regEx stringByReplacingMatchesInString:self.folderName
-                                                             options:0
-                                                               range:rangeForRegEx
-                                                        withTemplate:kRegExpTemplate];
+        NSString *fileName;
+        // Create the path for the archive to be created.
+        // Adds # sign before the issue (001) number in the filename,
+        // if that setting is turned on.
+        if ([NSUserDefaults.standardUserDefaults boolForKey:CZSettingsNumberSign]) {
+            NSError *error = nil;
+            NSRegularExpression *regEx = [NSRegularExpression regularExpressionWithPattern:kRegExpPattern
+                                                                                   options:0
+                                                                                     error:&error];
+            NSRange rangeForRegEx = NSMakeRange(0, self.folderName.length);
+            fileName = [regEx stringByReplacingMatchesInString:self.folderName
+                                                                 options:0
+                                                                   range:rangeForRegEx
+                                                            withTemplate:kRegExpTemplate];
+        } else {
+            fileName = self.folderName;
+        }
         NSString *filePath = [NSString stringWithFormat:@"%@%@.%@", self.parentFolder, fileName, CZFileExtension];
         // Make sure the file name is not already taken.
         int i = 1;

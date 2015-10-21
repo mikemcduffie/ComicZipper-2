@@ -132,6 +132,10 @@ extern NSString *const CZSettingsAutoQuit;
  */
 extern NSString *const CZSettingsAutoStart;
 /*!
+ *  @brief Key for number sign settings.
+ */
+extern NSString *const CZSettingsNumberSign;
+/*!
  *  @brief Key for window state setting.
  */
 extern NSString *const CZSettingsWindowState;
