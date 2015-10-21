@@ -66,6 +66,8 @@
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
     if ([NSUserDefaults.standardUserDefaults boolForKey:CZSettingsResetSettings]) {
         [self resetUserDefaults];
+    } else {
+        [self saveWindowState];
     }
     
     [self clearCacheDirectory];
@@ -111,6 +113,12 @@
 }
 
 #pragma mark LAUNCH AND SHUTDOWN METHODS
+
+- (void)saveWindowState {
+    NSRect windowFrame = self.mainWindow.window.frame;
+    [NSUserDefaults.standardUserDefaults setObject:NSStringFromRect(windowFrame)
+                                            forKey:CZSettingsWindowState];
+}
 
 - (void)resetUserDefaults {
     NSString *domainName = [NSBundle.mainBundle bundleIdentifier];

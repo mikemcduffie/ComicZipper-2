@@ -39,9 +39,18 @@ NSString *const tableViewNibName = @"TableView";
     
     if (self) {
         _applicationState = applicationState;
+        [self.window setTitleVisibility:NSWindowTitleHidden];
+        [self setWindowState];
     }
     
     return self;
+}
+
+- (void)setWindowState {
+    NSRect frame = [self loadLastWindowState];
+    if (!NSIsEmptyRect(frame)) {
+        [self.window setFrame:frame display:YES];
+    }
 }
 
 - (void)windowDidLoad {
@@ -265,6 +274,10 @@ NSString *const tableViewNibName = @"TableView";
 
 - (BOOL)shouldQuitApplication {
     return [NSUserDefaults.standardUserDefaults boolForKey:CZSettingsAutoQuit];
+}
+
+- (NSRect)loadLastWindowState {
+    return NSRectFromString([NSUserDefaults.standardUserDefaults objectForKey:CZSettingsWindowState]);
 }
 
 #pragma mark CONSTRAINT VIEW METHODS

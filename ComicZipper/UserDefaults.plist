@@ -26,5 +26,7 @@
 	<array/>
 	<key>CZUserNotify</key>
 	<true/>
+	<key>CZWindowState</key>
+	<string></string>
 </dict>
 </plist>

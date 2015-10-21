@@ -16,7 +16,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowCollectionBehavior key="collectionBehavior" fullScreenAuxiliary="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="196" y="240" width="400" height="322"/>
+            <rect key="contentRect" x="508" y="300" width="400" height="322"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
             <value key="minSize" type="size" width="400" height="322"/>
             <view key="contentView" wantsLayer="YES" id="EiT-Mj-1SZ" customClass="CZDropView">
@@ -36,9 +36,50 @@ AQQBFgEZAR4AAAAAAAACAQAAAAAAAAAoAAAAAAAAAAAAAAAAAAABIA
                     </caTransition>
                 </animations>
             </view>
-            <toolbar key="toolbar" implicitIdentifier="125F992C-66E6-418D-B385-F691DFEEC0C8" autosavesConfiguration="NO" allowsUserCustomization="NO" displayMode="iconAndLabel" sizeMode="small" id="Ctu-v7-19d">
-                <allowedToolbarItems/>
-                <defaultToolbarItems/>
+            <toolbar key="toolbar" implicitIdentifier="125F992C-66E6-418D-B385-F691DFEEC0C8" autosavesConfiguration="NO" allowsUserCustomization="NO" displayMode="iconAndLabel" sizeMode="regular" id="Ctu-v7-19d">
+                <allowedToolbarItems>
+                    <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="9mY-Fo-4K8"/>
+                    <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="nId-md-iS9"/>
+                    <toolbarItem implicitItemIdentifier="62AEA744-7ECA-4720-93D9-0AD0AF79A069" label="Cancel" paletteLabel="Cancel" tag="-1" image="delete" id="CJ4-4s-LGa"/>
+                    <toolbarItem implicitItemIdentifier="91A63E3F-1DF3-4635-9BFF-699535BEB105" label="" paletteLabel="" image="cancel" selectable="YES" id="pYO-3U-UM3">
+                        <nil key="toolTip"/>
+                        <size key="minSize" width="21" height="21"/>
+                        <size key="maxSize" width="35" height="29"/>
+                        <button key="view" verticalHuggingPriority="750" springLoaded="YES" id="33c-yR-d0Y">
+                            <rect key="frame" x="0.0" y="14" width="33" height="27"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="cancel" imagePosition="above" alignment="center" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyDown" inset="2" id="eiV-uO-O6S">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="system"/>
+                            </buttonCell>
+                        </button>
+                        <connections>
+                            <action selector="orderFrontStandardAboutPanel:" target="-1" id="vPC-Ht-zam"/>
+                        </connections>
+                    </toolbarItem>
+                    <toolbarItem implicitItemIdentifier="E14FCEEE-9071-4684-BA1A-959E50C99289" label="Custom View" paletteLabel="Custom View" id="PCX-Ky-zbW">
+                        <nil key="toolTip"/>
+                        <size key="minSize" width="38" height="17"/>
+                        <size key="maxSize" width="92" height="17"/>
+                        <textField key="view" horizontalHuggingPriority="251" verticalHuggingPriority="750" id="ZGo-Mf-wJu">
+                            <rect key="frame" x="0.0" y="14" width="92" height="17"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="ComicZipper" id="jOI-X5-KoN">
+                                <font key="font" metaFont="system"/>
+                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                    </toolbarItem>
+                </allowedToolbarItems>
+                <defaultToolbarItems>
+                    <toolbarItem reference="9mY-Fo-4K8"/>
+                    <toolbarItem reference="9mY-Fo-4K8"/>
+                    <toolbarItem reference="PCX-Ky-zbW"/>
+                    <toolbarItem reference="9mY-Fo-4K8"/>
+                    <toolbarItem reference="9mY-Fo-4K8"/>
+                    <toolbarItem reference="pYO-3U-UM3"/>
+                </defaultToolbarItems>
             </toolbar>
             <connections>
                 <outlet property="delegate" destination="-2" id="iKU-7z-MIE"/>
@@ -46,4 +87,8 @@ AQQBFgEZAR4AAAAAAAACAQAAAAAAAAAoAAAAAAAAAAAAAAAAAAABIA
             <point key="canvasLocation" x="207" y="338"/>
         </window>
     </objects>
+    <resources>
+        <image name="cancel" width="48" height="48"/>
+        <image name="delete" width="48" height="48"/>
+    </resources>
 </document>
