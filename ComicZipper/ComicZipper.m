@@ -135,7 +135,13 @@
 }
 
 - (void)compressionStopAll {
-    
+    if (_operations) {
+        [[self operations] cancelAllOperations];
+        
+        for (CZDropItem *item in [self archiveItems]) {
+            [item setCancelled:YES];
+        }
+    }
 }
 
 - (void)compressOperation:(NOZCompressOperation *)operation didUpdateProgress:(float)progress {

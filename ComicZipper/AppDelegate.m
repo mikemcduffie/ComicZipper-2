@@ -24,18 +24,26 @@
 #pragma mark WINDOW CONTROLLER METHODS
 
 - (void)launchMainWindow {
-    self.mainWindow = [CZWindowController initWithApplicationState:CZApplicationStateNoItemDropped];
-    [self.mainWindow showWindow:self];
-    [self.mainWindow.window makeKeyAndOrderFront:self];
+    if (!self.mainWindow) {
+        self.mainWindow = [CZWindowController initWithApplicationState:CZApplicationStateNoItemDropped];
+        [self.mainWindow showWindow:self];
+        [self.mainWindow.window makeKeyAndOrderFront:self];
+    }
 }
 
 - (IBAction)openAboutWindow:(id)sender {
-    self.aboutWindow = [[CZAboutController alloc] init];
+    if (!self.aboutWindow) {
+        self.aboutWindow = [[CZAboutController alloc] init];
+    }
+ 
     [self.aboutWindow showWindow:self];
 }
 
 - (IBAction)openPreferences:(id)sender {
-    self.settingsWindow = [[CZSettingsController alloc] init];
+    if (!self.settingsWindow) {
+        self.settingsWindow = [[CZSettingsController alloc] init];
+    }
+    
     [self.settingsWindow showWindow:self];
 }
 
@@ -46,7 +54,7 @@
  */
 - (void)application:(NSApplication *)sender openFiles:(nonnull NSArray *)filenames {
     [self launchMainWindow];
-//    [[self mainController] addItemsDraggedToDock:filenames];
+    [self.mainWindow addItemsDraggedToDock:filenames];
 }
 /*!
  *  @brief Sent by the default notification center immediately before the application object is initialized.

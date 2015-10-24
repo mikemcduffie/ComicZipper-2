@@ -13,8 +13,10 @@
 #import "CZTableCellView.h"
 #import "ComicZipper.h"
 #import "CZDropItem.h"
+#import <QuickLook/QuickLook.h>
+#import <Quartz/Quartz.h>
 
-@interface CZTableViewController () <CZWindowControllerDelegate, CZTableViewDelegate, ComicZipperDelegate>
+@interface CZTableViewController () <CZWindowControllerDelegate, CZTableViewDelegate, ComicZipperDelegate, QLPreviewPanelDataSource, QLPreviewPanelDelegate>
 
 @property (strong) IBOutlet CZScrollView *scrollView;
 @property (strong) IBOutlet CZTableView *tableView;
@@ -59,10 +61,20 @@ NSString *const kLabelFinished = @"%li item(s) compressed!";
     NSApplication.sharedApplication.dockTile.badgeLabel = badgeLabel;
 }
 
+- (void)viewWillUnload {
+    [self.comicZipper clearItems];
+    [self.view removeFromSuperview];
+}
+
+- (void)cancelAllItems {
+    [self.comicZipper compressionStopAll];
+}
+
 - (IBAction)compressButtonWasClicked:(id)sender {
     [sender setEnabled:NO];
     [self.comicZipper compressionStart];
     [self postNotification:CZToggleDragModeNotification];
+    [self postNotification:CZCompressionStartNotification];
 }
 
 - (void)reloadDataForRow:(NSInteger)index {
@@ -124,7 +136,7 @@ NSString *const kLabelFinished = @"%li item(s) compressed!";
     if ([column.identifier isEqualToString:@"ColumnLeft"]) {
         item.rowIndex = row;
         if (item.isArchived) {
-            // Set the cover image
+            [view setImage:[item image]];
         } else {
             [view setImage:[NSImage imageNamed:@"NSFolder"]];
         }
@@ -197,7 +209,7 @@ NSString *const kLabelFinished = @"%li item(s) compressed!";
             }
         }
     } else if (keyCode == 49) {
-        // QUICKLOOK
+        [QLPreviewPanel.sharedPreviewPanel orderFront:nil];
     }
 }
 
@@ -290,6 +302,36 @@ NSString *const kLabelFinished = @"%li item(s) compressed!";
 
 - (void)setComicZipper:(ComicZipper *)comicZipper {
     _comicZipper = comicZipper;
+}
+
+#pragma mark DELEGATE AND DATA SOURCE METHODS FOR QUICKLOOK
+
+- (BOOL)acceptsPreviewPanelControl:(QLPreviewPanel *)panel {
+    return YES;
+}
+
+- (void)beginPreviewPanelControl:(QLPreviewPanel *)panel {
+    [[QLPreviewPanel sharedPreviewPanel] setDelegate:self];
+    [[QLPreviewPanel sharedPreviewPanel] setDataSource:self];
+}
+
+- (void)endPreviewPanelControl:(QLPreviewPanel *)panel {
+    [[QLPreviewPanel sharedPreviewPanel] setDelegate:nil];
+    [[QLPreviewPanel sharedPreviewPanel] setDataSource:nil];
+}
+
+- (NSInteger)numberOfPreviewItemsInPreviewPanel:(QLPreviewPanel *)panel {
+    return [[self comicZipper] countArchived];
+}
+
+- (id<QLPreviewItem>)previewPanel:(QLPreviewPanel *)panel previewItemAtIndex:(NSInteger)index {
+    return [self.comicZipper itemAtIndex:index];
+}
+
+#pragma mark MISC
+
+- (void)dealloc {
+    [self setApplicationBadge:@""];
 }
 
 @end

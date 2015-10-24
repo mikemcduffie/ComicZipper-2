@@ -40,21 +40,14 @@ AQQBFgEZAR4AAAAAAAACAQAAAAAAAAAoAAAAAAAAAAAAAAAAAAABIA
                 <allowedToolbarItems>
                     <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="9mY-Fo-4K8"/>
                     <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="nId-md-iS9"/>
-                    <toolbarItem implicitItemIdentifier="62AEA744-7ECA-4720-93D9-0AD0AF79A069" label="Cancel" paletteLabel="Cancel" tag="-1" image="delete" id="CJ4-4s-LGa"/>
-                    <toolbarItem implicitItemIdentifier="91A63E3F-1DF3-4635-9BFF-699535BEB105" label="" paletteLabel="" image="cancel" selectable="YES" id="pYO-3U-UM3">
-                        <nil key="toolTip"/>
-                        <size key="minSize" width="21" height="21"/>
-                        <size key="maxSize" width="35" height="29"/>
-                        <button key="view" verticalHuggingPriority="750" springLoaded="YES" id="33c-yR-d0Y">
-                            <rect key="frame" x="0.0" y="14" width="33" height="27"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="cancel" imagePosition="above" alignment="center" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyDown" inset="2" id="eiV-uO-O6S">
-                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" metaFont="system"/>
-                            </buttonCell>
-                        </button>
+                    <toolbarItem implicitItemIdentifier="6BB23968-F700-4D82-8961-9F711C2B7920" explicitItemIdentifier="CZToolbarClearItem" label="Clear" paletteLabel="Clear" tag="-1" image="delete" id="ynT-a6-y1h">
                         <connections>
-                            <action selector="orderFrontStandardAboutPanel:" target="-1" id="vPC-Ht-zam"/>
+                            <action selector="toolbarButtonClearWasClicked:" target="-2" id="mTq-2q-NQ0"/>
+                        </connections>
+                    </toolbarItem>
+                    <toolbarItem implicitItemIdentifier="2313E5B1-52FF-441B-BD03-7DA4875F23B4" explicitItemIdentifier="CZToolbarCancelItem" label="Cancel" paletteLabel="Cancel" tag="-1" image="cancel" id="Apg-2j-J3x">
+                        <connections>
+                            <action selector="toolbarButtonCancelWasClicked:" target="-2" id="Qp7-12-333"/>
                         </connections>
                     </toolbarItem>
                     <toolbarItem implicitItemIdentifier="E14FCEEE-9071-4684-BA1A-959E50C99289" label="Custom View" paletteLabel="Custom View" id="PCX-Ky-zbW">
@@ -78,7 +71,7 @@ AQQBFgEZAR4AAAAAAAACAQAAAAAAAAAoAAAAAAAAAAAAAAAAAAABIA
                     <toolbarItem reference="PCX-Ky-zbW"/>
                     <toolbarItem reference="9mY-Fo-4K8"/>
                     <toolbarItem reference="9mY-Fo-4K8"/>
-                    <toolbarItem reference="pYO-3U-UM3"/>
+                    <toolbarItem reference="9mY-Fo-4K8"/>
                 </defaultToolbarItems>
             </toolbar>
             <connections>
@@ -88,7 +81,7 @@ AQQBFgEZAR4AAAAAAAACAQAAAAAAAAAoAAAAAAAAAAAAAAAAAAABIA
         </window>
     </objects>
     <resources>
-        <image name="cancel" width="48" height="48"/>
-        <image name="delete" width="48" height="48"/>
+        <image name="cancel" width="24" height="24"/>
+        <image name="delete" width="24" height="24"/>
     </resources>
 </document>

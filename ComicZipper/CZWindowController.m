@@ -10,9 +10,12 @@
 #import "CZTableViewController.h"
 #import "CZMainViewController.h"
 #import "CZDropView.h"
+#import "CZDropItem.h"
+#import <Quartz/Quartz.h>
 
 @interface CZWindowController () <CZDropViewDelegate>
 
+@property (nonatomic, strong) NSToolbar *toolBar;
 @property (nonatomic, strong) CZDropView *dropView;
 @property (nonatomic, strong) NSViewController *currentViewController;
 @property (nonatomic, strong) CZMainViewController *mainViewController;
@@ -38,9 +41,10 @@ NSString *const tableViewNibName = @"TableView";
     self = [super initWithWindowNibName:windowNibName];
     
     if (self) {
-        _applicationState = applicationState;
-        [self.window setTitleVisibility:NSWindowTitleHidden];
+        self.window.titleVisibility = NSWindowTitleHidden;
         [self setWindowState];
+        _applicationState = applicationState;
+        _toolBar = self.window.toolbar;
     }
     
     return self;
@@ -67,6 +71,7 @@ NSString *const tableViewNibName = @"TableView";
             break;
         case CZApplicationStateFirstItemDrop:
             self.currentViewController = self.tableViewController;
+            [self changeToolbarItems:CZToolbarClearItem];
             break;
         case CZApplicationStatePopulatedList:
             if ([self isCurrentViewController:tableViewNibName]) {
@@ -114,6 +119,17 @@ NSString *const tableViewNibName = @"TableView";
     return (self.currentViewController.identifier == identifier);
 }
 
+#pragma mark TOOLBAR METHODS 
+
+- (IBAction)toolbarButtonClearWasClicked:(id)sender {
+    [self.tableViewController viewWillUnload];
+    [self removeTableView];
+}
+
+- (IBAction)toolbarButtonCancelWasClicked:(id)sender {
+    [self.tableViewController cancelAllItems];
+}
+
 #pragma mark NOTIFICATION METHODS
 
 - (void)didReceiveNotification:(NSNotification *)notification {
@@ -121,9 +137,11 @@ NSString *const tableViewNibName = @"TableView";
     if ([notificationName isEqualToString:CZToggleDragModeNotification]) {
         [self toggleDragMode];
     } else if ([notificationName isEqualToString:CZChangeViewNotification]) {
-        [self changeView];
+        [self removeTableView];
     } else if ([notificationName isEqualToString:CZCompressionDoneNotification]) {
         [self compressionDidFinish];
+    } else if ([notificationName isEqualToString:CZCompressionStartNotification]) {
+        [self changeToolbarItems:CZToolbarCancelItem];
     }
 }
 
@@ -131,9 +149,15 @@ NSString *const tableViewNibName = @"TableView";
     self.dropView.dragMode = !self.dropView.dragMode;
 }
 
-- (void)changeView {
+- (void)removeTableView {
     self.applicationState = CZApplicationStateNoItemDropped;
+    [self changeToolbarItems:CZToolbarNoItem];
     [self loadView];
+}
+
+- (void)changeToolbarItems:(CZToolbarItems)toolbarItem {
+    [self.toolBar removeItemAtIndex:5];
+    [self.toolBar insertItemWithItemIdentifier:ToolbarItem(toolbarItem) atIndex:5];
 }
 
 - (void)compressionDidFinish {
@@ -146,6 +170,8 @@ NSString *const tableViewNibName = @"TableView";
     if ([self shouldQuitApplication]) {
         [NSApplication.sharedApplication terminate:self];
     }
+    
+    [self changeToolbarItems:CZToolbarClearItem];
 }
 
 - (void)notifyByAlertSound {
@@ -191,6 +217,71 @@ NSString *const tableViewNibName = @"TableView";
     [self.delegate addItemsFromArray:files];
 }
 
+#pragma mark DOCK ICON DROP METHODS
+
+- (void)addItemsDraggedToDock:(NSArray *)items {
+    NSMutableArray *validItems = [NSMutableArray array];
+    __block BOOL failed = NO;
+    [items enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        BOOL isDir;
+        // Check if the dropped file is a directory
+        if ([[NSFileManager alloc] fileExistsAtPath:obj isDirectory:&isDir] && isDir) {
+            // Get the fileURL and create a DropItem object.
+            CZDropItem *item = [CZDropItem initWithURL:[NSURL fileURLWithPath:obj isDirectory:YES]];
+            // Check if the dragged item is already in the archiveItems array.
+            if (item != nil && ![self dropView:nil isItemInList:[obj description]]) {
+                [validItems addObject:item];
+            } else {
+                failed = YES;
+            }
+        } else {
+            failed = YES;
+        }
+    }];
+    if ([validItems count]) {
+        [self dropView:nil didReceiveFiles:validItems];
+    }
+    if (failed) {
+        [self shakeWindow];
+    }
+}
+
+/*!
+ *  @brief Creates an animation simulating a shake.
+ */
+- (NSDictionary *)shakeAnimation:(NSRect)windowFrame {
+    // Borrowed from cimgf.com/2008/02/27/core-animation-tutorial-window-shake-effect/
+    // Set the shake properties
+    int numberOfShakes = 3;
+    float shakesDuration = 0.5f;
+    float shakesVigor = 0.05f;
+    CAKeyframeAnimation *shakeAnimation = [CAKeyframeAnimation animation];
+    CGMutablePathRef shakePath = CGPathCreateMutable();
+    CGPathMoveToPoint(shakePath, nil, NSMinX(windowFrame), NSMinY(windowFrame));
+    for (NSInteger i = 0; i < numberOfShakes; i++) {
+        float positionOfX = windowFrame.size.width * shakesVigor;
+        CGPathAddLineToPoint(shakePath, nil, NSMinX(windowFrame) - positionOfX, NSMinY(windowFrame));
+        CGPathAddLineToPoint(shakePath, nil, NSMinX(windowFrame) + positionOfX, NSMinY(windowFrame));
+    }
+    CGPathCloseSubpath(shakePath);
+    [shakeAnimation setPath:shakePath];
+    [shakeAnimation setDuration:shakesDuration];
+    
+    return [NSDictionary dictionaryWithObject:shakeAnimation
+                                       forKey:@"frameOrigin"];
+}
+/*!
+ *  @brief Shakes the window
+ *  @discussion Calls the shakeAnimation: method.
+ */
+- (void)shakeWindow {
+    NSWindow *window = self.window;
+    NSDictionary *animations = [self shakeAnimation:[window frame]];
+    [window setAnimations:animations];
+    [[window animator] setFrameOrigin:window.frame.origin];
+    
+}
+
 #pragma mark GETTERS AND SETTERS METHODS
 
 - (CZMainViewController *)mainViewController {
@@ -201,6 +292,10 @@ NSString *const tableViewNibName = @"TableView";
             [self removeNotification:CZToggleDragModeNotification
                                 view:_tableViewController];
             [self removeNotification:CZChangeViewNotification
+                                view:_tableViewController];
+            [self removeNotification:CZCompressionDoneNotification
+                                view:_tableViewController];
+            [self removeNotification:CZCompressionStartNotification
                                 view:_tableViewController];
             _tableViewController = nil;
         }
@@ -219,6 +314,9 @@ NSString *const tableViewNibName = @"TableView";
                      selector:@selector(didReceiveNotification:)
                          view:_tableViewController];
         [self addNotification:CZCompressionDoneNotification
+                     selector:@selector(didReceiveNotification:)
+                         view:_tableViewController];
+        [self addNotification:CZCompressionStartNotification
                      selector:@selector(didReceiveNotification:)
                          view:_tableViewController];
         if (_mainViewController != nil) {

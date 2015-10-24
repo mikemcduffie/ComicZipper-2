@@ -9,5 +9,7 @@
 @interface CZTableViewController : NSViewController
 
 @property (weak) id delegate;
+- (void)viewWillUnload;
+- (void)cancelAllItems;
 
 @end

@@ -1,3 +1,7 @@
+
+#import <Quartz/Quartz.h>
+#import <QuickLook/QuickLook.h>
+
 /*
  *  CZArchiveItem.h
  *  ComicZipper
@@ -9,7 +13,7 @@
  *  @brief A CZArchiveItem object represents the comic book archive.
  *  @discussion The object represents either the folder that will become the archive, or the end product itself.
  */
-@interface CZArchiveItem : NSObject
+@interface CZArchiveItem : NSObject <QLPreviewItem>
 
 @property (nonatomic, getter = isRunning) BOOL running;
 @property (nonatomic, getter = isArchived) BOOL archived;
@@ -22,6 +26,7 @@
 
 - (NSString *)name;
 - (NSURL *)fileURL;
+- (NSImage *)image;
 - (NSString *)filePath;
 - (NSString *)folderPath;
 - (NSString *)archivePath;

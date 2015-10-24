@@ -11,6 +11,7 @@
 @interface CZArchiveItem ()
 
 @property (nonatomic, copy) NSURL *fileURL;
+@property (nonatomic, copy) NSURL *imageURL;
 @property (nonatomic, copy) NSString *parentFolder;
 @property (nonatomic, copy) NSString *folderName;
 @property (nonatomic, copy) NSString *folderPath;
@@ -23,7 +24,7 @@
 @implementation CZArchiveItem
 
 @synthesize temporaryPath = _temporaryPath;
-//@synthesize previewItemURL = _previewItemURL;
+@synthesize previewItemURL = _previewItemURL;
 
 #pragma mark CONSTANTS
 
@@ -69,6 +70,10 @@ static NSString *const kRegExpTemplate = @" #$1";
     return _fileURL;
 }
 
+- (NSImage *)image {
+    return [[NSImage alloc] initWithContentsOfURL:self.imageURL];
+}
+
 - (NSString *)filePath {
     if (self.isArchived == YES) {
         return self.archivePath;
@@ -96,6 +101,18 @@ static NSString *const kRegExpTemplate = @" #$1";
 
 - (NSString *)description {
     return self.folderPath;
+}
+
+- (NSURL *)imageURL {
+    if (!_imageURL) {
+        _imageURL = [self retrieveURLForImage];
+    }
+    
+    return _imageURL;
+}
+
+- (NSURL *)previewItemURL {
+    return self.imageURL;
 }
 
 #pragma mark PATH SETUP METHODS
@@ -183,6 +200,46 @@ static NSString *const kRegExpTemplate = @" #$1";
     
     return _archivePath;
 }
+
+#pragma mark IMAGE METHODS
+
+- (NSURL *)retrieveURLForImage {
+    // Check first if the item has a cached image stored away. It'll otherwise retrieve and store it in the cache directory.
+    NSString *cachedFilePath = [NSString stringWithFormat:@"%@.jpg", self.temporaryPath];
+    NSData *data = [NSData dataWithContentsOfFile:cachedFilePath];
+    if (data == nil) {
+        NSString *filePath = [self retrieveImage];
+        if (filePath == nil) {
+            return nil;
+        }
+        data = [NSData dataWithContentsOfFile:filePath];
+        [data writeToFile:cachedFilePath atomically:YES];
+    }
+    
+    return [NSURL fileURLWithPath:cachedFilePath];
+}
+
+- (NSString *)retrieveImage {
+    NSDirectoryEnumerator *directoryEnumerator = [NSFileManager.defaultManager enumeratorAtURL:[NSURL fileURLWithPath:self.folderPath
+                                                                                                          isDirectory:YES]
+                                                                    includingPropertiesForKeys:nil
+                                                                                       options:NSDirectoryEnumerationSkipsHiddenFiles
+                                                                                  errorHandler:nil];
+    NSString *imagePath;
+    for (NSURL *file in directoryEnumerator) {
+        if ([[CZConstants validFileExtensions] containsObject:[file.pathExtension lowercaseString]]) {
+            imagePath = [file path];
+            break;
+        }
+    }
+    
+    if (!imagePath) {
+        return nil;
+    }
+    
+    return imagePath;
+}
+
 
 #pragma mark PRIVATE METHODS
 

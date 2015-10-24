@@ -24,8 +24,24 @@ typedef enum {
     /*!
      *  @brief Application already has loaded items to process.
      */
-    CZApplicationStatePopulatedList
-} ApplicationStates;
+    CZApplicationStatePopulatedList,
+    /*!
+     *  @brief Application is processing items.
+     */
+    CZApplicationStateisCompressing,
+    /*!
+     *  @brief Application has finished processing items.
+     */
+    CZApplicationStateCompressDone
+} ApplicationState;
+
+typedef enum {
+    CZToolbarCancelItem,
+    CZToolbarClearItem,
+    CZToolbarNoItem
+} CZToolbarItems;
+
+#define ToolbarItem(enum) [@[@"CZToolbarCancelItem",@"CZToolbarClearItem", NSToolbarFlexibleSpaceItemIdentifier] objectAtIndex:enum]
 
 /*!
  *  @brief Delete key.
@@ -152,9 +168,13 @@ extern NSString *const CZChangeViewNotification;
  */
 extern NSString *const CZToggleDragModeNotification;
 /*!
- *  @brief Notifiy window controller of compression status.
+ *  @brief Notify window controller of compression status.
  */
 extern NSString *const CZCompressionDoneNotification;
+/*!
+ *  @brief Notify window controller of compression status.
+ */
+extern NSString *const CZCompressionStartNotification;
 /*!
  *  @brief The application's Application support directory.
  */

@@ -42,6 +42,7 @@ NSString *const CZSettingsResetSettings = @"CZResetSettings";
 NSString *const CZChangeViewNotification = @"changeView";
 NSString *const CZToggleDragModeNotification = @"toggleDragMode";
 NSString *const CZCompressionDoneNotification = @"compressionDone";
+NSString *const CZCompressionStartNotification = @"compressionStart";
 
 + (NSString *)applicationSupportPath {
     return @"";

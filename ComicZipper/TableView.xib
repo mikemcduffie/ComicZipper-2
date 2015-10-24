@@ -116,13 +116,6 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vqV-lf-e97">
-                    <rect key="frame" x="330" y="277" width="59" height="34"/>
-                    <buttonCell key="cell" type="square" title="Cancel all" bezelStyle="shadowlessSquare" image="NSStopProgressFreestandingTemplate" imagePosition="above" alignment="center" alternateImage="NSStopProgressTemplate" imageScaling="proportionallyDown" inset="2" id="AnQ-RP-VZE">
-                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" size="13" name="HelveticaNeue-Light"/>
-                    </buttonCell>
-                </button>
             </subviews>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="v8Y-n9-QJk" secondAttribute="bottom" constant="9" id="4ZG-bV-I60"/>
@@ -138,8 +131,4 @@
             <animations/>
         </customView>
     </objects>
-    <resources>
-        <image name="NSStopProgressFreestandingTemplate" width="14" height="14"/>
-        <image name="NSStopProgressTemplate" width="11" height="11"/>
-    </resources>
 </document>

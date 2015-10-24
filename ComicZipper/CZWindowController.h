@@ -28,5 +28,6 @@
 @property (nonatomic, getter = isRunning, readonly) BOOL running;
 
 + (instancetype)initWithApplicationState:(NSInteger)applicationState;
+- (void)addItemsDraggedToDock:(NSArray *)items;
 
 @end
