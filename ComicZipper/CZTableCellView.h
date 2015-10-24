@@ -2,13 +2,15 @@
 //  CZTableCellView.h
 //  ComicZipper
 //
-//  Created by Ardalan Samimi on 03/10/15.
-//  Copyright © 2015 Ardalan Samimi. All rights reserved.
+//  Created by Ardalan Samimi on 17/10/15.
+//  Copyright © 2015 Saturn Five. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
-
 @interface CZTableCellView : NSTableCellView
+/*!
+ *  @brief Index of cell view.
+ */
+@property (nonatomic) NSInteger rowIndex;
 /*!
  *  @brief Determines the width of the cell view.
  *  @discussion Must be set for the subviews to autoresize correctly.
@@ -41,7 +43,9 @@
  *  @param progress A double value between 0.0 and 1.0.
  */
 - (void)setProgress:(double)progress;
-
+/*!
+ *  @brief Set action of target.
+ */
 - (void)setAction:(SEL)selector forTarget:(id)sender;
 
 - (NSTextField *)textFieldTitle;

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CZNumberSign</key>
+	<false/>
+	<key>CZResetSettings</key>
+	<false/>
+	<key>CZAutoQuit</key>
+	<false/>
+	<key>CZAlertSound</key>
+	<true/>
+	<key>CZAutoStart</key>
+	<false/>
+	<key>CZBadgeDockIcon</key>
+	<true/>
+	<key>CZDeleteFolders</key>
+	<false/>
+	<key>CZExcludeHidden</key>
+	<true/>
+	<key>CZExcludeMeta</key>
+	<true/>
+	<key>CZExcludeEmpty</key>
+	<true/>
+	<key>CZExcludedFiles</key>
+	<array/>
+	<key>CZUserNotify</key>
+	<true/>
+	<key>CZWindowState</key>
+	<string></string>
+</dict>
+</plist>

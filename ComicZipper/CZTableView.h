@@ -2,8 +2,8 @@
 //  CZTableView.h
 //  ComicZipper
 //
-//  Created by Ardalan Samimi on 27/09/15.
-//  Copyright (c) 2015 Ardalan Samimi. All rights reserved.
+//  Created by Ardalan Samimi on 16/10/15.
+//  Copyright © 2015 Saturn Five. All rights reserved.
 //
 
 @class CZTableView;
@@ -11,7 +11,10 @@
 @protocol CZTableViewDelegate <NSTableViewDelegate>
 
 @required
-- (void)tableView:(CZTableView *)tableView DidRegisterKeyUp:(int)keyCode atRowIndexes:(NSIndexSet *)indexes withCommand:(BOOL)commandState;
+- (void)tableView:(CZTableView *)tableView
+ DidRegisterKeyUp:(int)keyCode
+     atRowIndexes:(NSIndexSet *)indexes
+      withCommand:(BOOL)commandState;
 - (void)openItemInFinder:(NSIndexSet *)rows;
 
 @end
@@ -19,5 +22,7 @@
 @interface CZTableView : NSTableView
 
 @property (nonatomic, assign) id<CZTableViewDelegate> delegate;
+
+- (void)scrollRowToVisible:(NSInteger)rowIndex animate:(BOOL)animate;
 
 @end

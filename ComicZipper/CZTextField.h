@@ -2,11 +2,9 @@
 //  CZTextField.h
 //  ComicZipper
 //
-//  Created by Ardalan Samimi on 04/10/15.
-//  Copyright © 2015 Ardalan Samimi. All rights reserved.
+//  Created by Ardalan Samimi on 17/10/15.
+//  Copyright © 2015 Saturn Five. All rights reserved.
 //
-
-#import <Cocoa/Cocoa.h>
 
 @interface CZTextField : NSTextField
 

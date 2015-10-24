@@ -2,8 +2,8 @@
 //  CZScrollView.m
 //  ComicZipper
 //
-//  Created by Ardalan Samimi on 29/09/15.
-//  Copyright © 2015 Ardalan Samimi. All rights reserved.
+//  Created by Ardalan Samimi on 16/10/15.
+//  Copyright © 2015 Saturn Five. All rights reserved.
 //
 
 #import "CZScrollView.h"
@@ -18,17 +18,15 @@
 
 - (void)drawRect:(NSRect)dirtyRect {
     [super drawRect:dirtyRect];
-
-    if ([self isHighlighted]) {
+    if (self.isHighlighted) {
         [NSBezierPath setDefaultLineWidth:5.0];
         [[NSColor keyboardFocusIndicatorColor] set];
         [NSBezierPath fillRect:dirtyRect];
     }
 }
 
-
-- (void)toggleHighlight {
-    [self setHighlight:![self isHighlighted]];
+- (void)toggleHighlight:(BOOL)highlight {
+    self.highlight = highlight;
     [self setNeedsDisplay:YES];
 }
 

@@ -2,7 +2,7 @@
 //  CZStatusButton.m
 //  ComicZipper
 //
-//  Created by Ardalan Samimi on 10/10/15.
+//  Created by Ardalan Samimi on 17/10/15.
 //  Copyright © 2015 Saturn Five. All rights reserved.
 //
 
@@ -16,6 +16,10 @@
 
 - (void)mouseExited:(NSEvent *)theEvent {
     [self setImage:[NSImage imageNamed:CZStatusIconAbortNormal]];
+}
+
+- (void)setRowIndex:(NSInteger)rowIndex {
+    _rowIndex = rowIndex;
 }
 
 @end

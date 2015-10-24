@@ -2,20 +2,22 @@
 //  CZTableCellView.m
 //  ComicZipper
 //
-//  Created by Ardalan Samimi on 03/10/15.
-//  Copyright © 2015 Ardalan Samimi. All rights reserved.
+//  Created by Ardalan Samimi on 17/10/15.
+//  Copyright © 2015 Saturn Five. All rights reserved.
 //
 
 #import "CZTableCellView.h"
-#import "CZTextField.h"
 #import "CZStatusButton.h"
+#import "CZTextField.h"
+
+
 @interface CZTableCellView ()
 
-@property (nonatomic, strong) NSButton *statusButton;
-@property (nonatomic, strong) NSImageView *rightImageView;
-@property (nonatomic, strong) NSImageView *statusIconView;
-@property (nonatomic, strong) NSTextField *textFieldTitle;
-@property (nonatomic, strong) NSTextField *textFieldDetail;
+@property (nonatomic, strong) NSImageView *imageViewLeft;
+@property (nonatomic, strong) NSImageView *imageViewRight;
+@property (nonatomic, strong) CZTextField *textFieldTitle;
+@property (nonatomic, strong) CZTextField *textFieldDetail;
+@property (nonatomic, strong) CZStatusButton *buttonStatus;
 @property (nonatomic, strong) NSProgressIndicator *progressIndicator;
 @property (nonatomic, readonly) float width;
 
@@ -35,6 +37,8 @@
     return self;
 }
 
+#pragma mark PUBLIC METHODS
+
 - (float)width {
     // Make sure the object widths are always up to date. Otherwise, a cell already in place will have the original width even after window has resized.
     if (_width < self.frame.size.width) {
@@ -43,41 +47,43 @@
     return _width;
 }
 
+
 - (void)setWidth:(float)width {
     _width = width;
 }
 
 - (void)setTitleText:(NSString *)title {
-    [[self textFieldTitle] setStringValue:title];
+    [self.textFieldTitle setStringValue:title];
 }
 
 - (void)setDetailText:(NSString *)detail {
-    [[self textFieldDetail] setStringValue:detail];
+    [self.textFieldDetail setStringValue:detail];
 }
 
 - (void)setImage:(NSImage *)image {
-    [[self rightImageView] setImage:image];
+    [self.imageViewLeft setImage:image];
 }
 
 - (void)setStatus:(NSString *)status {
     if ([status isEqual:CZStatusIconAbortNormal]) {
-        [[self statusButton] setImage:[NSImage imageNamed:status]];
+        [self.buttonStatus setImage:[NSImage imageNamed:status]];
     } else {
-        [[self statusIconView] setImage:[NSImage imageNamed:status]];
+        [self.imageViewRight setImage:[NSImage imageNamed:status]];
     }
 }
 
 - (void)setAction:(SEL)selector forTarget:(id)sender {
-    [[self statusButton] setTarget:sender];
-    [[self statusButton] setAction:selector];
-    [[self statusButton] setIdentifier:[self identifier]];
+    [self.buttonStatus setTarget:sender];
+    [self.buttonStatus setAction:selector];
+    [self.buttonStatus setRowIndex:self.rowIndex];
 }
 
 - (void)setProgress:(double)progress {
     [[self progressIndicator] setDoubleValue:progress];
 }
 
-#pragma mark PRIVATE METHODS
+
+#pragma mark SETTERS AND GETTERS
 
 - (NSTextField *)textFieldTitle {
     if (!_textFieldTitle) {
@@ -104,43 +110,43 @@
     return _textFieldDetail;
 }
 
-- (NSImageView *)rightImageView {
-    if (!_rightImageView) {
-        _rightImageView = [[NSImageView alloc] initWithFrame:NSMakeRect(0, 0, 50, kTableColumnHeight)];
-        [self addSubview:_rightImageView];
+- (NSImageView *)imageViewLeft {
+    if (!_imageViewLeft) {
+        _imageViewLeft = [[NSImageView alloc] initWithFrame:NSMakeRect(0, 0, 50, kTableRowHeight)];
+        [self addSubview:_imageViewLeft];
     }
     
-    return _rightImageView;
+    return _imageViewLeft;
 }
 
 
-- (NSImageView *)statusIconView {
-    if (!_statusIconView) {
-        [self removeFromSuperview:&_statusButton];
-        _statusIconView = [[NSImageView alloc] initWithFrame:NSMakeRect(0, 0, 50, kTableColumnHeight)];
-        [self addSubview:_statusIconView];
+- (NSImageView *)imageViewRight {
+    if (!_imageViewRight) {
+        [self removeFromSuperview:&_buttonStatus];
+        _imageViewRight = [[NSImageView alloc] initWithFrame:NSMakeRect(0, 0, 50, kTableRowHeight)];
+        [self addSubview:_imageViewRight];
     }
     
-    return _statusIconView;
+    return _imageViewRight;
 }
 
-- (NSButton *)statusButton {
-    if (!_statusButton) {
-        [self removeFromSuperview:&_statusIconView];
-        _statusButton = [[CZStatusButton alloc] initWithFrame:NSMakeRect(0, 0, 50, kTableColumnHeight)];
-        [_statusButton setBordered:NO];
-        [_statusButton setButtonType:NSMomentaryChangeButton];
-        [_statusButton setBezelStyle:NSRegularSquareBezelStyle];
-        [_statusButton setHighlighted:NO];
-        [self addSubview:_statusButton];
-        NSTrackingArea* trackingArea = [[NSTrackingArea alloc]
-                                        initWithRect:[_statusButton bounds]
-                                        options:NSTrackingMouseEnteredAndExited | NSTrackingActiveAlways
-                                        owner:_statusButton userInfo:nil];
-        [_statusButton addTrackingArea:trackingArea];
+- (NSButton *)buttonStatus {
+    if (!_buttonStatus) {
+        [self removeFromSuperview:&_imageViewRight];
+        _buttonStatus = [[CZStatusButton alloc] initWithFrame:NSMakeRect(0, 0, 50, kTableRowHeight)];
+        [_buttonStatus setBordered:NO];
+        [_buttonStatus setButtonType:NSMomentaryChangeButton];
+        [_buttonStatus setBezelStyle:NSRegularSquareBezelStyle];
+        [_buttonStatus setHighlighted:NO];
+        [self addSubview:_buttonStatus];
+        NSTrackingArea* trackingArea = [[NSTrackingArea alloc] initWithRect:[_buttonStatus bounds]
+                                                                    options:NSTrackingMouseEnteredAndExited | NSTrackingActiveAlways
+                                                                      owner:_buttonStatus
+                                                                   userInfo:nil];
+        [_buttonStatus addTrackingArea:trackingArea];
     }
     
-    return _statusButton;
+    return _buttonStatus;
 }
 
 - (NSProgressIndicator *)progressIndicator {

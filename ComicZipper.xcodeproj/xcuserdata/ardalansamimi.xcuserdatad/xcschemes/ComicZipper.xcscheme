@@ -14,23 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "6A6CB0251BB8119800D39E5D"
+               BlueprintIdentifier = "6A43CA061BD029600061C121"
                BuildableName = "ComicZipper.app"
                BlueprintName = "ComicZipper"
-               ReferencedContainer = "container:ComicZipper.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "6A6CB0381BB8119800D39E5D"
-               BuildableName = "ComicZipperTests.xctest"
-               BlueprintName = "ComicZipperTests"
                ReferencedContainer = "container:ComicZipper.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -42,21 +28,11 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "6A6CB0381BB8119800D39E5D"
-               BuildableName = "ComicZipperTests.xctest"
-               BlueprintName = "ComicZipperTests"
-               ReferencedContainer = "container:ComicZipper.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "6A6CB0251BB8119800D39E5D"
+            BlueprintIdentifier = "6A43CA061BD029600061C121"
             BuildableName = "ComicZipper.app"
             BlueprintName = "ComicZipper"
             ReferencedContainer = "container:ComicZipper.xcodeproj">
@@ -79,7 +55,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "6A6CB0251BB8119800D39E5D"
+            BlueprintIdentifier = "6A43CA061BD029600061C121"
             BuildableName = "ComicZipper.app"
             BlueprintName = "ComicZipper"
             ReferencedContainer = "container:ComicZipper.xcodeproj">
@@ -98,7 +74,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "6A6CB0251BB8119800D39E5D"
+            BlueprintIdentifier = "6A43CA061BD029600061C121"
             BuildableName = "ComicZipper.app"
             BlueprintName = "ComicZipper"
             ReferencedContainer = "container:ComicZipper.xcodeproj">

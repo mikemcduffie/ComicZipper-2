@@ -2,8 +2,8 @@
 //  CZDropView.h
 //  ComicZipper
 //
-//  Created by Ardalan Samimi on 27/09/15.
-//  Copyright (c) 2015 Ardalan Samimi. All rights reserved.
+//  Created by Ardalan Samimi on 15/10/15.
+//  Copyright © 2015 Saturn Five. All rights reserved.
 //
 
 @class CZDropView;
@@ -11,16 +11,15 @@
 @protocol CZDropViewDelegate <NSObject>
 
 @required
-- (void)dropView:(CZDropView *)dropView didReceiveFiles:(NSArray *)items;
-- (BOOL)dropView:(CZDropView *)dropView isItemInList:(NSString *)description;
-- (BOOL)isDropViewFront;
-- (void)dropView:(CZDropView *)dropView shouldToggleHighlight:(BOOL)highlight;
+- (BOOL)dropView:(CZDropView *)dropView isItemInList:(NSString *)item;
+- (void)dropView:(CZDropView *)dropView didReceiveFiles:(NSArray *)files;
+- (void)dropView:(CZDropView *)dropView viewShouldHighlight:(BOOL)highlight;
 
 @end
 
 @interface CZDropView : NSView
 
 @property (weak) id delegate;
-@property (nonatomic, getter = inDragMode) BOOL dragMode;
+@property (nonatomic, getter = isInDragMode) BOOL dragMode;
 
 @end

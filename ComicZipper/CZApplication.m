@@ -2,8 +2,8 @@
 //  CZApplication.m
 //  ComicZipper
 //
-//  Created by Ardalan Samimi on 08/10/15.
-//  Copyright © 2015 Ardalan Samimi. All rights reserved.
+//  Created by Ardalan Samimi on 16/10/15.
+//  Copyright © 2015 Saturn Five. All rights reserved.
 //
 
 #import "CZApplication.h"
@@ -36,6 +36,5 @@
     
     [super sendEvent:theEvent];
 }
-
 
 @end
