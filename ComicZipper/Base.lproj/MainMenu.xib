@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="8191" systemVersion="15B42" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="8191"/>
@@ -126,7 +126,20 @@ CA
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Help" systemMenu="help" id="F2S-fz-NVQ">
                         <items>
-                            <menuItem title="ComicZipper Help" keyEquivalent="?" id="FKE-Sm-Kum">
+                            <menuItem title="ComicZipper Website" id="GDV-dN-cle">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="openWebsite:" target="Voe-Tx-rLC" id="PPZ-D6-J5o"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="ComicZipper Project Page" id="xIP-9w-nmP">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="openProjectPage:" target="Voe-Tx-rLC" id="Yd8-OU-jdR"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="Axe-Ae-nJR"/>
+                            <menuItem title="ComicZipper Help" keyEquivalent="/" id="FKE-Sm-Kum">
                                 <connections>
                                     <action selector="showHelp:" target="-1" id="y7X-2Q-9no"/>
                                 </connections>

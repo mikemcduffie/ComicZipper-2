@@ -8,6 +8,8 @@
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 
+-(IBAction)openWebsite:(id)sender;
+-(IBAction)openProjectPage:(id)sender;
 
 @end
 

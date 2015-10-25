@@ -120,6 +120,22 @@
     return NO;
 }
 
+#pragma mark HELP MENU HYPERLINKS
+
+/*!
+ *  @brief Sent by the application to the delegate when the item is selected in the Help menu.
+ */
+
+-(IBAction)openWebsite:(id)sender
+{
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://saturn-five.github.io/ComicZipper-2/"]];
+}
+
+-(IBAction)openProjectPage:(id)sender
+{
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/pkrll/ComicZipper-2"]];
+}
+
 #pragma mark LAUNCH AND SHUTDOWN METHODS
 
 - (void)saveWindowState {
