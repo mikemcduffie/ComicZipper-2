@@ -41,10 +41,9 @@ NSString *const tableViewNibName = @"TableView";
     self = [super initWithWindowNibName:windowNibName];
     
     if (self) {
-        self.window.titleVisibility = NSWindowTitleHidden;
-        [self setWindowState];
         _applicationState = applicationState;
         _toolBar = self.window.toolbar;
+        [self setWindowState];
     }
     
     return self;
@@ -53,8 +52,13 @@ NSString *const tableViewNibName = @"TableView";
 - (void)setWindowState {
     NSRect frame = [self loadLastWindowState];
     if (!NSIsEmptyRect(frame)) {
-        [self.window setFrame:frame display:YES];
+        [self.window setFrame:frame display:NO];
     }
+
+    self.window.titleVisibility = NSWindowTitleHidden;
+
+    [self showWindow:self];
+    [self.window makeKeyAndOrderFront:self];
 }
 
 - (void)windowDidLoad {

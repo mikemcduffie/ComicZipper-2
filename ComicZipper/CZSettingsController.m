@@ -46,6 +46,7 @@ const int kTableCellViewHeight = 20;
         self.filters = [[NSUserDefaults.standardUserDefaults valueForKey:CZSettingsCustomFilter] mutableCopy];
         self.tableViewFilters.delegate = self;
         self.tableViewFilters.dataSource = self;
+        [self showWindow:self];
     }
     
     return self;

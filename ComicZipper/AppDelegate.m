@@ -26,8 +26,6 @@
 - (void)launchMainWindow {
     if (!self.mainWindow) {
         self.mainWindow = [CZWindowController initWithApplicationState:CZApplicationStateNoItemDropped];
-        [self.mainWindow showWindow:self];
-        [self.mainWindow.window makeKeyAndOrderFront:self];
     }
 }
 
@@ -35,16 +33,12 @@
     if (!self.aboutWindow) {
         self.aboutWindow = [[CZAboutController alloc] init];
     }
- 
-    [self.aboutWindow showWindow:self];
 }
 
 - (IBAction)openPreferences:(id)sender {
     if (!self.settingsWindow) {
         self.settingsWindow = [[CZSettingsController alloc] init];
     }
-    
-    [self.settingsWindow showWindow:self];
 }
 
 #pragma mark DELEGATE METHODS

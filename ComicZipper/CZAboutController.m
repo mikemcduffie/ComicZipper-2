@@ -17,6 +17,10 @@
 - (instancetype)init {
     self = [super initWithWindowNibName:@"About"
                                   owner:self];
+    if (self) {
+        [self showWindow:self];
+    }
+    
     return self;
 }
 
