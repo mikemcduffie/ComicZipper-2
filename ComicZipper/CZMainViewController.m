@@ -34,4 +34,8 @@
     }
 }
 
+- (void)dealloc {
+    [self.view removeFromSuperview];
+}
+
 @end
