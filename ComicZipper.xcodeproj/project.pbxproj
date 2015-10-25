@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		04D37B341BDC7067009B6B0D /* ComicZipperHelp.help in Resources */ = {isa = PBXBuildFile; fileRef = 04D37B2B1BDC5EA6009B6B0D /* ComicZipperHelp.help */; };
 		6A1006721BD2EB4D00BEF987 /* CZTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A1006711BD2EB4D00BEF987 /* CZTableCellView.m */; settings = {ASSET_TAGS = (); }; };
 		6A1006751BD2EDA700BEF987 /* CZTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A1006741BD2EDA700BEF987 /* CZTextField.m */; settings = {ASSET_TAGS = (); }; };
 		6A1006781BD2EE5700BEF987 /* CZStatusButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A1006771BD2EE5700BEF987 /* CZStatusButton.m */; settings = {ASSET_TAGS = (); }; };
@@ -38,6 +39,16 @@
 		6AF24BAB1BD54ECC0004F52F /* UserDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6AF24BAA1BD54ECC0004F52F /* UserDefaults.plist */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		04D37B321BDC7048009B6B0D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6A43C9FF1BD029600061C121 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 04D37B2A1BDC5EA6009B6B0D;
+			remoteInfo = ComicZipperHelp;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		6A278C6E1BD12540006C5B22 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -53,6 +64,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		04D37B2B1BDC5EA6009B6B0D /* ComicZipperHelp.help */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ComicZipperHelp.help; sourceTree = BUILT_PRODUCTS_DIR; };
+		04D37B2D1BDC5EA6009B6B0D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6A1006701BD2EB4D00BEF987 /* CZTableCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZTableCellView.h; sourceTree = "<group>"; };
 		6A1006711BD2EB4D00BEF987 /* CZTableCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZTableCellView.m; sourceTree = "<group>"; };
 		6A1006731BD2EDA700BEF987 /* CZTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZTextField.h; sourceTree = "<group>"; };
@@ -105,6 +118,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		04D37B281BDC5EA6009B6B0D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6A43CA041BD029600061C121 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -116,11 +136,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		04D37B2C1BDC5EA6009B6B0D /* ComicZipperHelp */ = {
+			isa = PBXGroup;
+			children = (
+				04D37B2D1BDC5EA6009B6B0D /* Info.plist */,
+			);
+			path = ComicZipperHelp;
+			sourceTree = "<group>";
+		};
 		6A43C9FE1BD029600061C121 = {
 			isa = PBXGroup;
 			children = (
 				6A278C6B1BD12540006C5B22 /* ZipUtilities.framework */,
 				6A43CA091BD029600061C121 /* ComicZipper */,
+				04D37B2C1BDC5EA6009B6B0D /* ComicZipperHelp */,
 				6A43CA081BD029600061C121 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -129,6 +158,7 @@
 			isa = PBXGroup;
 			children = (
 				6A43CA071BD029600061C121 /* ComicZipper.app */,
+				04D37B2B1BDC5EA6009B6B0D /* ComicZipperHelp.help */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -230,6 +260,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		04D37B2A1BDC5EA6009B6B0D /* ComicZipperHelp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 04D37B301BDC5EA6009B6B0D /* Build configuration list for PBXNativeTarget "ComicZipperHelp" */;
+			buildPhases = (
+				04D37B271BDC5EA6009B6B0D /* Sources */,
+				04D37B281BDC5EA6009B6B0D /* Frameworks */,
+				04D37B291BDC5EA6009B6B0D /* Resources */,
+				04D37B311BDC6DD4009B6B0D /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ComicZipperHelp;
+			productName = ComicZipperHelp;
+			productReference = 04D37B2B1BDC5EA6009B6B0D /* ComicZipperHelp.help */;
+			productType = "com.apple.product-type.bundle";
+		};
 		6A43CA061BD029600061C121 /* ComicZipper */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6A43CA181BD029600061C121 /* Build configuration list for PBXNativeTarget "ComicZipper" */;
@@ -243,6 +291,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				04D37B331BDC7048009B6B0D /* PBXTargetDependency */,
 			);
 			name = ComicZipper;
 			productName = ComicZipper;
@@ -258,6 +307,9 @@
 				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Saturn Five";
 				TargetAttributes = {
+					04D37B2A1BDC5EA6009B6B0D = {
+						CreatedOnToolsVersion = 7.0.1;
+					};
 					6A43CA061BD029600061C121 = {
 						CreatedOnToolsVersion = 7.0.1;
 					};
@@ -277,15 +329,24 @@
 			projectRoot = "";
 			targets = (
 				6A43CA061BD029600061C121 /* ComicZipper */,
+				04D37B2A1BDC5EA6009B6B0D /* ComicZipperHelp */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		04D37B291BDC5EA6009B6B0D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6A43CA051BD029600061C121 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04D37B341BDC7067009B6B0D /* ComicZipperHelp.help in Resources */,
 				6A43CA111BD029600061C121 /* Assets.xcassets in Resources */,
 				6A278C6A1BD10ABB006C5B22 /* MainView.xib in Resources */,
 				6A88D18A1BD6793C00274BE0 /* About.xib in Resources */,
@@ -300,6 +361,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		04D37B311BDC6DD4009B6B0D /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Build Jeckyll based Help bundle\n/usr/bin/make -C \"$(dirname \"$PRODUCT_SETTINGS_PATH\")\"";
+		};
 		6A278C6F1BD12599006C5B22 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -311,11 +385,18 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "#!/bin/bash\nbuildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"$INFOPLIST_FILE\")\nbuildNumber=$((0x$buildNumber))\nbuildNumber=$(($buildNumber + 1))\nbuildNumber=$(printf \"%04X\" $buildNumber)\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"$INFOPLIST_FILE\"\n\n# Set the build number to the count of Git commits\n#buildNumber=$(git rev-list --count HEAD)\n#buildNumber=$(printf \"%04X\" $buildNumber)\n#/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"$INFOPLIST_FILE\"";
+			shellScript = "#!/bin/bash\nbuildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"$INFOPLIST_FILE\")\nbuildNumber=$((0x$buildNumber))\nbuildNumber=$(($buildNumber + 1))\nbuildNumber=$(printf \"%04X\" $buildNumber)\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"$INFOPLIST_FILE\"\n\n# Set the build number to the count of Git commits\n#buildNumber=$(git rev-list --count HEAD)\n#buildNumber=$(printf \"%04X\" $buildNumber)\n#/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"$INFOPLIST_FILE\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		04D37B271BDC5EA6009B6B0D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6A43CA031BD029600061C121 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -344,6 +425,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		04D37B331BDC7048009B6B0D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 04D37B2A1BDC5EA6009B6B0D /* ComicZipperHelp */;
+			targetProxy = 04D37B321BDC7048009B6B0D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		6A43CA121BD029600061C121 /* MainMenu.xib */ = {
 			isa = PBXVariantGroup;
@@ -356,6 +445,32 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		04D37B2E1BDC5EA6009B6B0D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = ComicZipperHelp/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				PRODUCT_BUNDLE_IDENTIFIER = com.saturnfive.ComicZipperHelp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				WRAPPER_EXTENSION = help;
+			};
+			name = Debug;
+		};
+		04D37B2F1BDC5EA6009B6B0D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = ComicZipperHelp/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				PRODUCT_BUNDLE_IDENTIFIER = com.saturnfive.ComicZipperHelp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				WRAPPER_EXTENSION = help;
+			};
+			name = Release;
+		};
 		6A43CA161BD029600061C121 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -474,6 +589,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		04D37B301BDC5EA6009B6B0D /* Build configuration list for PBXNativeTarget "ComicZipperHelp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				04D37B2E1BDC5EA6009B6B0D /* Debug */,
+				04D37B2F1BDC5EA6009B6B0D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		6A43CA021BD029600061C121 /* Build configuration list for PBXProject "ComicZipper" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
