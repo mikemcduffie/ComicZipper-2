@@ -50,12 +50,12 @@ NSString *const tableViewNibName = @"TableView";
 }
 
 - (void)setWindowState {
+    self.window.titleVisibility = NSWindowTitleHidden;
+
     NSRect frame = [self loadLastWindowState];
     if (!NSIsEmptyRect(frame)) {
-        [self.window setFrame:frame display:NO];
+        [self.window setFrame:frame display:YES];
     }
-
-    self.window.titleVisibility = NSWindowTitleHidden;
 
     [self showWindow:self];
     [self.window makeKeyAndOrderFront:self];
@@ -280,9 +280,9 @@ NSString *const tableViewNibName = @"TableView";
  */
 - (void)shakeWindow {
     NSWindow *window = self.window;
-    NSDictionary *animations = [self shakeAnimation:[window frame]];
+    NSDictionary *animations = [self shakeAnimation:window.frame];
     [window setAnimations:animations];
-    [[window animator] setFrameOrigin:window.frame.origin];
+    [window.animator setFrameOrigin:window.frame.origin];
     
 }
 
@@ -302,7 +302,6 @@ NSString *const tableViewNibName = @"TableView";
             [self removeNotification:CZCompressionStartNotification
                                 view:_tableViewController];
             _tableViewController = nil;
-            NSLog(@"A");
             self.dropView.dragMode = YES;
         }
     }
