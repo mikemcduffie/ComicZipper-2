@@ -6,4 +6,7 @@ order: .INF
 
 Action                      | Shortcut
 :-------------------------- | :--------------------------
-Quit application            | Command (⌘)-Q
+Select All                  | Command (⌘)-A
+Remove From List            | ⌫ (Delete)
+ComicZipper Help            | Command (⌘)-/
+Quit ComicZipper            | Command (⌘)-Q

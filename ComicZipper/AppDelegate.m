@@ -61,6 +61,13 @@
  */
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     [self launchMainWindow];
+    NSMenu* edit = [[[[NSApplication sharedApplication] mainMenu] itemWithTitle: @"Edit"] submenu];
+    if ([[edit itemAtIndex: [edit numberOfItems] - 1] action] == NSSelectorFromString(@"orderFrontCharacterPalette:"))
+        [edit removeItemAtIndex: [edit numberOfItems] - 1];
+    if ([[edit itemAtIndex: [edit numberOfItems] - 1] action] == NSSelectorFromString(@"startDictation:"))
+        [edit removeItemAtIndex: [edit numberOfItems] - 1];
+    if ([[edit itemAtIndex: [edit numberOfItems] - 1] isSeparatorItem])
+        [edit removeItemAtIndex: [edit numberOfItems] - 1];
 }
 /*!
  *  @brief Sent by the default notification center immediately before the application terminates.
@@ -120,13 +127,11 @@
  *  @brief Sent by the application to the delegate when the item is selected in the Help menu.
  */
 
--(IBAction)openWebsite:(id)sender
-{
+- (IBAction)openWebsite:(id)sender {
     [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://saturn-five.github.io/ComicZipper-2/"]];
 }
 
--(IBAction)openProjectPage:(id)sender
-{
+- (IBAction)openProjectPage:(id)sender {
     [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/pkrll/ComicZipper-2"]];
 }
 
