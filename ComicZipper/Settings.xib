@@ -320,7 +320,7 @@
                 <button identifier="CZDeleteFolders" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mtD-ix-ATX">
                     <rect key="frame" x="18" y="262" width="256" height="30"/>
                     <animations/>
-                    <buttonCell key="cell" type="check" title="Move folders to trash after compression" bezelStyle="regularSquare" imagePosition="left" inset="2" id="Wi4-7F-mlt">
+                    <buttonCell key="cell" type="check" title="Move folders to trash when finished" bezelStyle="regularSquare" imagePosition="left" inset="2" id="Wi4-7F-mlt">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" size="13" name="HelveticaNeue-Light"/>
                     </buttonCell>
