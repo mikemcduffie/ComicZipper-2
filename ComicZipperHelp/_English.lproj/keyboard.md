@@ -7,6 +7,6 @@ order: .INF
 Action                      | Shortcut
 :-------------------------- | :--------------------------
 Select All                  | Command (⌘)-A
-Remove From List            | ⌫
+Remove From List            | ⌫ (Delete)
 ComicZipper Help            | Command (⌘)-/
 Quit ComicZipper            | Command (⌘)-Q
