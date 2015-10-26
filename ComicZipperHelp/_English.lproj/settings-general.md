@@ -15,7 +15,7 @@ Enable these options (ON by default) to be is notified after all items are finis
 
 ![Notification](notification.png)
 
-##Enable badge notifcations
+##Enable badge notifications
 
 Provides user feedback for remaining items to process via an icon notification badge. The number of remaining items to process is displayed in a red circle on the icon in the dock and application switcher interface.
 
