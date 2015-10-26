@@ -302,6 +302,8 @@ NSString *const tableViewNibName = @"TableView";
             [self removeNotification:CZCompressionStartNotification
                                 view:_tableViewController];
             _tableViewController = nil;
+            NSLog(@"A");
+            self.dropView.dragMode = YES;
         }
     }
     return _mainViewController;

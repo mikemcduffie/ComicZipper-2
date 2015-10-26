@@ -18,7 +18,6 @@
                 <outlet property="checkBoxExcludeMeta" destination="6ZY-jE-SgQ" id="b0P-bJ-4iW"/>
                 <outlet property="checkBoxNotifyUser" destination="D2k-0c-FwT" id="yhI-jZ-oJc"/>
                 <outlet property="checkBoxQuitApplication" destination="Dua-HV-fZR" id="Hl7-L3-hDc"/>
-                <outlet property="checkBoxReloadDefaults" destination="Z8c-ZQ-lSt" id="tO2-5U-7tp"/>
                 <outlet property="tableViewFilters" destination="vlV-vr-W1K" id="lio-0Q-3F1"/>
                 <outlet property="toolbar" destination="Bap-mm-6iG" id="Py0-I9-fIk"/>
                 <outlet property="toolbarItemAdvanced" destination="qdv-AD-h01" id="pl7-0C-1GX"/>
@@ -78,7 +77,7 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="D2k-0c-FwT">
-                    <rect key="frame" x="30" y="225" width="246" height="30"/>
+                    <rect key="frame" x="28" y="223" width="246" height="30"/>
                     <animations/>
                     <buttonCell key="cell" type="check" bezelStyle="regularSquare" imagePosition="left" inset="2" id="UGn-UF-NH9">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -89,7 +88,7 @@
                     </connections>
                 </button>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Y4l-zK-fAs">
-                    <rect key="frame" x="55" y="221" width="217" height="38"/>
+                    <rect key="frame" x="53" y="219" width="217" height="38"/>
                     <animations/>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="Display a notification when ComicZipper is in the background." id="3Db-kJ-p1O">
                         <font key="font" size="12" name="HelveticaNeue-Light"/>
@@ -101,7 +100,7 @@
                     </connections>
                 </textField>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Gkb-t8-UAV">
-                    <rect key="frame" x="30" y="181" width="246" height="30"/>
+                    <rect key="frame" x="28" y="179" width="246" height="30"/>
                     <animations/>
                     <buttonCell key="cell" type="check" bezelStyle="regularSquare" imagePosition="left" inset="2" id="QsN-Gb-NUc">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -112,7 +111,7 @@
                     </connections>
                 </button>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IkX-q2-gGt">
-                    <rect key="frame" x="55" y="177" width="217" height="38"/>
+                    <rect key="frame" x="53" y="175" width="217" height="38"/>
                     <animations/>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="Play a sound when ComicZipper is the front app." id="ofx-bw-hOe">
                         <font key="font" size="12" name="HelveticaNeue-Light"/>
@@ -120,8 +119,44 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pL0-NK-yax">
+                    <rect key="frame" x="20" y="256" width="256" height="23"/>
+                    <animations/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Notify when all items are completed." id="ROw-0A-v1u">
+                        <font key="font" size="13" name="HelveticaNeue-Light"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iAk-Mm-wAv">
+                    <rect key="frame" x="20" y="37" width="256" height="30"/>
+                    <animations/>
+                    <buttonCell key="cell" type="check" title="Load default settings on relaunch" bezelStyle="regularSquare" imagePosition="left" inset="2" id="ueu-DA-8f1">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" size="13" name="HelveticaNeue-Light"/>
+                    </buttonCell>
+                    <connections>
+                        <binding destination="ZPK-Lq-2HQ" name="value" keyPath="values.CZResetSettings" id="4Bj-00-zam"/>
+                    </connections>
+                </button>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PKD-vE-ZQc">
+                    <rect key="frame" x="40" y="20" width="236" height="24"/>
+                    <animations/>
+                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="Warning: This will remove your current settings!" id="gY8-Ef-hZq">
+                        <font key="font" size="11" name="HelveticaNeue-Thin"/>
+                        <color key="textColor" name="windowFrameColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <box verticalHuggingPriority="750" fixedFrame="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Q83-Jv-YAi">
+                    <rect key="frame" x="12" y="71" width="262" height="5"/>
+                    <animations/>
+                    <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
+                    <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <font key="titleFont" metaFont="system"/>
+                </box>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Tu7-E5-DUL">
-                    <rect key="frame" x="18" y="135" width="258" height="36"/>
+                    <rect key="frame" x="18" y="126" width="258" height="36"/>
                     <animations/>
                     <buttonCell key="cell" type="check" title="Enable badge notifications" bezelStyle="regularSquare" imagePosition="left" inset="2" id="0eg-dN-ifC">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -132,20 +167,11 @@
                     </connections>
                 </button>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FZu-D4-L4C">
-                    <rect key="frame" x="38" y="106" width="236" height="37"/>
+                    <rect key="frame" x="38" y="99" width="236" height="37"/>
                     <animations/>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="The ComicZipper icon will display the number of remaining items to be processed." id="WDb-uk-ski">
                         <font key="font" size="11" name="HelveticaNeue-Thin"/>
                         <color key="textColor" name="windowFrameColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pL0-NK-yax">
-                    <rect key="frame" x="20" y="261" width="256" height="23"/>
-                    <animations/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Notify when all items are completed." id="ROw-0A-v1u">
-                        <font key="font" size="13" name="HelveticaNeue-Light"/>
-                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
@@ -318,7 +344,7 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <button identifier="CZDeleteFolders" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mtD-ix-ATX">
-                    <rect key="frame" x="18" y="262" width="256" height="30"/>
+                    <rect key="frame" x="18" y="256" width="256" height="30"/>
                     <animations/>
                     <buttonCell key="cell" type="check" title="Move folders to trash when finished" bezelStyle="regularSquare" imagePosition="left" inset="2" id="Wi4-7F-mlt">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -329,7 +355,7 @@
                     </connections>
                 </button>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fvx-LF-Zi8">
-                    <rect key="frame" x="38" y="229" width="236" height="40"/>
+                    <rect key="frame" x="38" y="223" width="236" height="40"/>
                     <animations/>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="Folders will be moved to the trash after processing is complete." id="6G4-mh-gkE">
                         <font key="font" size="11" name="HelveticaNeue-Thin"/>
@@ -338,7 +364,7 @@
                     </textFieldCell>
                 </textField>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3Ue-ff-eMf">
-                    <rect key="frame" x="18" y="202" width="256" height="30"/>
+                    <rect key="frame" x="18" y="192" width="256" height="30"/>
                     <animations/>
                     <buttonCell key="cell" type="check" title="Start processing items automatically" bezelStyle="regularSquare" imagePosition="left" inset="2" id="hQ2-tw-u3F">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -349,7 +375,7 @@
                     </connections>
                 </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Dua-HV-fZR">
-                    <rect key="frame" x="18" y="140" width="256" height="36"/>
+                    <rect key="frame" x="18" y="123" width="256" height="36"/>
                     <animations/>
                     <buttonCell key="cell" type="check" title="Quit application when finished" bezelStyle="regularSquare" imagePosition="left" inset="2" id="spP-wB-mWH">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -360,7 +386,7 @@
                     </connections>
                 </button>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aFF-T3-jdh">
-                    <rect key="frame" x="38" y="169" width="236" height="40"/>
+                    <rect key="frame" x="38" y="159" width="236" height="40"/>
                     <animations/>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="Folders dropped onto the application icon or window will start compressing automatically." id="cfe-XE-HhA">
                         <font key="font" size="11" name="HelveticaNeue-Thin"/>
@@ -368,19 +394,17 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Z8c-ZQ-lSt">
-                    <rect key="frame" x="18" y="29" width="256" height="30"/>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tAN-gn-YZp">
+                    <rect key="frame" x="38" y="96" width="236" height="37"/>
                     <animations/>
-                    <buttonCell key="cell" type="check" title="Load default settings on relaunch" bezelStyle="regularSquare" imagePosition="left" inset="2" id="7W0-hZ-rHb">
-                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                        <font key="font" size="13" name="HelveticaNeue-Light"/>
-                    </buttonCell>
-                    <connections>
-                        <binding destination="ZPK-Lq-2HQ" name="value" keyPath="values.CZResetSettings" id="wxU-Rv-YEh"/>
-                    </connections>
-                </button>
+                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="The ComicZipper application will automatically quit after all items are finished processing." id="ZyK-AV-SHY">
+                        <font key="font" size="11" name="HelveticaNeue-Thin"/>
+                        <color key="textColor" name="windowFrameColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dGa-bq-oIt">
-                    <rect key="frame" x="38" y="59" width="227" height="34"/>
+                    <rect key="frame" x="38" y="35" width="227" height="34"/>
                     <animations/>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="Insert a '#&quot; sign in front of the issue number for simple filenames, e.g. &quot;My Comic Book 001&quot;" id="E0y-X6-xci">
                         <font key="font" size="11" name="HelveticaNeue-Thin"/>
@@ -389,7 +413,7 @@
                     </textFieldCell>
                 </textField>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Wny-Iz-UJo">
-                    <rect key="frame" x="18" y="89" width="258" height="25"/>
+                    <rect key="frame" x="18" y="65" width="258" height="25"/>
                     <animations/>
                     <buttonCell key="cell" type="check" title="Add number sign before issue number" bezelStyle="regularSquare" imagePosition="left" inset="2" id="dgG-6T-Vzf">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -399,24 +423,6 @@
                         <binding destination="ZPK-Lq-2HQ" name="value" keyPath="values.CZNumberSign" id="677-YS-raT"/>
                     </connections>
                 </button>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Rca-RN-Moo">
-                    <rect key="frame" x="38" y="12" width="236" height="24"/>
-                    <animations/>
-                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="Warning: This will remove your current settings!" id="DP2-RQ-s8P">
-                        <font key="font" size="11" name="HelveticaNeue-Thin"/>
-                        <color key="textColor" name="windowFrameColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tAN-gn-YZp">
-                    <rect key="frame" x="38" y="113" width="236" height="37"/>
-                    <animations/>
-                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="The ComicZipper application will automatically quit after all items are finished processing." id="ZyK-AV-SHY">
-                        <font key="font" size="11" name="HelveticaNeue-Thin"/>
-                        <color key="textColor" name="windowFrameColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
             </subviews>
             <animations/>
             <point key="canvasLocation" x="825" y="208"/>

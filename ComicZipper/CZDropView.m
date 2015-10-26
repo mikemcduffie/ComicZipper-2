@@ -22,7 +22,7 @@
 
 - (void)awakeFromNib {
     [self registerForDraggedTypes:[NSArray arrayWithObjects:NSFilenamesPboardType, nil]];
-    
+    self.dragMode = YES;
 }
 
 - (void)setHighlight:(BOOL)highlight {
@@ -40,7 +40,7 @@
  */
 - (NSDragOperation)draggingEntered:(id<NSDraggingInfo>)sender {
     // Abort drag operation if the view should not be in drop mode (in compression mode no objects should be added).
-    if (self.isInDragMode == YES) {
+    if (self.isInDragMode == NO) {
         return NSDragOperationNone;
     }
     // Turn on the highlight
